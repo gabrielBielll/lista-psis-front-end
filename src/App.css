@@ -21,11 +21,15 @@ body {
   color: var(--marrom-texto);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
 }
 
 .AppContainer {
   max-width: 900px;
-  margin: 2rem auto;
+  margin: 2rem 0;
   padding: clamp(1.5rem, 5vw, 3rem);
 }
 
