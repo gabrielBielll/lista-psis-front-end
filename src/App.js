@@ -10,11 +10,17 @@ export default function App() {
   const [psicologasList, setPsicologasList] = useState([]);
   const [iniciarMatch, setIniciarMatch] = useState(false);
   const [resultadoMatch, setResultadoMatch] = useState([]);
+  const [isClientReady, setIsClientReady] = useState(false); // Added state
   const numeroClinica = '5521996561994';
 
   useEffect(() => {
     const shuffled = [...psicologasData].sort(() => 0.5 - Math.random());
     setPsicologasList(shuffled);
+  }, []);
+
+  // Added useEffect for client readiness
+  useEffect(() => {
+    setIsClientReady(true);
   }, []);
 
   const handleMatchComplete = (matches) => {
@@ -44,7 +50,8 @@ export default function App() {
       );
     }
 
-    if (resultadoMatch.length > 0) {
+    // Modified condition for rendering results
+    if (isClientReady && resultadoMatch.length > 0) {
       return (
         <div className="resultado-container">
           <h2>✨ Sua especialista ideal</h2>
