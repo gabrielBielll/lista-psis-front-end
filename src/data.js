@@ -11,7 +11,7 @@ export const psicologasData = [
   {
     id: 2,
     nome: 'Jessica S. Reimol',
-    fotoUrl: '/psicologas_fotos/psi_2.svg',
+    fotoUrl: '/psicologas_fotos/jessica_reimol.png',
     abordagem: 'Terapia Cognitivo-Comportamental',
     bio: 'Psicóloga com formação em Terapia Cognitivo-Comportamental e pós-graduanda em Psicopatologia, oferecendo escuta qualificada, intervenções baseadas em evidências e foco no desenvolvimento emocional dos pacientes.',
     especialidades: ['Saúde Mental', 'Psicopatologia', 'Adultos'],

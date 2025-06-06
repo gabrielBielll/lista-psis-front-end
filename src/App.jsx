@@ -84,7 +84,7 @@ export default function App() {
       {/* The <style> tag will be removed and its content moved to App.css */}
       <div className="AppContainer">
         <header className="app-header">
-          <h1>Encontre a especialista ideal para você</h1>
+          <h1>Encontre um especialista ideal para você</h1>
           <p>Cuidar da sua saúde mental é um ato de amor-próprio. Estamos aqui para ajudar.</p>
           {!iniciarMatch && resultadoMatch.length === 0 && (
              <a onClick={() => setIniciarMatch(true)} className="match-start-link" style={{cursor: 'pointer'}}>Ou responda ao nosso questionário para encontrar seu match ideal</a>
