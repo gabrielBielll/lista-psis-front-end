@@ -35,6 +35,15 @@ export const psicologasData = [
     especialidades: ['Questões Existenciais', 'Autoconhecimento'],
     tagsParaMatch: ['psicanalise', 'autoconhecimento', 'existencial', 'reflexao-profunda']
   },
+  {
+    id: 5,
+    nome: 'Andrezza Alves da Mata',
+    fotoUrl: '/psicologas_fotos/andrezza_mata_photo.png',
+    abordagem: 'Psicanálise',
+    bio: 'Psicanalista com pós-graduação em Psicologia, Andrezza dedica-se ao estudo e tratamento de dinâmicas psíquicas complexas. Com foco em histeria e neurose obsessiva, ela auxilia pacientes na exploração profunda do inconsciente para promover autoconhecimento e resolução de conflitos internos.',
+    especialidades: ['Psicanálise', 'Histeria', 'Neurose Obsessiva'],
+    tagsParaMatch: ['psicanalise', 'histeria', 'neurose-obsessiva', 'autoconhecimento', 'reflexao-profunda']
+  }
 ];
 
 export const perguntasMatch = [
