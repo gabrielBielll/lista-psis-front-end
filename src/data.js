@@ -2,7 +2,7 @@ export const psicologasData = [
   {
     id: 1,
     nome: 'Karina S. Carvalho',
-    fotoUrl: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=600',
+    fotoUrl: '/psicologas_fotos/psi_1.svg',
     abordagem: 'Análise do Comportamento Aplicada',
     bio: 'Psicóloga com formação em Terapia Cognitivo-Comportamental e pós-graduanda em Análise do Comportamento Aplicada. Acredita que o vínculo é a base do processo terapêutico e busca proporcionar autonomia e desenvolvimento aos pacientes.',
     especialidades: ['Ansiedade', 'TDAH', 'Relacionamentos'],
@@ -11,7 +11,7 @@ export const psicologasData = [
   {
     id: 2,
     nome: 'Jessica S. Reimol',
-    fotoUrl: 'https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&w=600',
+    fotoUrl: '/psicologas_fotos/psi_2.svg',
     abordagem: 'Terapia Cognitivo-Comportamental',
     bio: 'Psicóloga com formação em Terapia Cognitivo-Comportamental e pós-graduanda em Psicopatologia, oferecendo escuta qualificada, intervenções baseadas em evidências e foco no desenvolvimento emocional dos pacientes.',
     especialidades: ['Saúde Mental', 'Psicopatologia', 'Adultos'],
@@ -20,7 +20,7 @@ export const psicologasData = [
   {
     id: 3,
     nome: 'Juliana dos Santos',
-    fotoUrl: 'https://images.pexels.com/photos/1181519/pexels-photo-1181519.jpeg?auto=compress&cs=tinysrgb&w=600',
+    fotoUrl: '/psicologas_fotos/psi_3.svg',
     abordagem: 'Psicanálise',
     bio: 'Especialista em saúde mental e atenção psicossocial, com foco no atendimento de crianças e transtornos de personalidade. Acredito na importância de compreender as raízes dos conflitos para uma mudança real.',
     especialidades: ['Crianças', 'Autismo', 'Personalidade'],
@@ -29,7 +29,7 @@ export const psicologasData = [
   {
     id: 4,
     nome: 'Bruna N. Bernardi',
-    fotoUrl: 'https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=600',
+    fotoUrl: '/psicologas_fotos/psi_4.svg',
     abordagem: 'Psicanálise',
     bio: 'Auxilia pacientes a navegarem por questões existenciais complexas, promovendo uma jornada profunda de autoconhecimento e ressignificação de suas histórias de vida.',
     especialidades: ['Questões Existenciais', 'Autoconhecimento'],
