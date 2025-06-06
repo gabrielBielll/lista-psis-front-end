@@ -54,7 +54,7 @@ export default function App() {
     if (isClientReady && resultadoMatch.length > 0) {
       return (
         <div className="resultado-container">
-          <h2>✨ Sua especialista ideal</h2>
+          <h2>Sua especialista ideal</h2>
           <p>Com base nas suas respostas, esta é a profissional que mais se alinha com seu momento atual.</p>
           {resultadoMatch.map(psi => (
              <div key={psi.id} className="psi-card resultado-card">
