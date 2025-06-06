@@ -2,7 +2,7 @@ export const psicologasData = [
   {
     id: 1,
     nome: 'Karina S. Carvalho',
-    fotoUrl: '/psicologas_fotos/psi_1.svg',
+    fotoUrl: '/psicologas_fotos/karina_carvalho_photo.png',
     abordagem: 'Análise do Comportamento Aplicada',
     bio: 'Psicóloga com formação em Terapia Cognitivo-Comportamental e pós-graduanda em Análise do Comportamento Aplicada. Acredita que o vínculo é a base do processo terapêutico e busca proporcionar autonomia e desenvolvimento aos pacientes.',
     especialidades: ['Ansiedade', 'TDAH', 'Relacionamentos'],
@@ -20,7 +20,7 @@ export const psicologasData = [
   {
     id: 3,
     nome: 'Juliana dos Santos',
-    fotoUrl: '/psicologas_fotos/psi_3.svg',
+    fotoUrl: '/psicologas_fotos/juliana_santos_photo.png',
     abordagem: 'Psicanálise',
     bio: 'Especialista em saúde mental e atenção psicossocial, com foco no atendimento de crianças e transtornos de personalidade. Acredito na importância de compreender as raízes dos conflitos para uma mudança real.',
     especialidades: ['Crianças', 'Autismo', 'Personalidade'],
@@ -29,7 +29,7 @@ export const psicologasData = [
   {
     id: 4,
     nome: 'Bruna N. Bernardi',
-    fotoUrl: '/psicologas_fotos/psi_4.svg',
+    fotoUrl: '/psicologas_fotos/bruna_bernardi_photo.png',
     abordagem: 'Psicanálise',
     bio: 'Auxilia pacientes a navegarem por questões existenciais complexas, promovendo uma jornada profunda de autoconhecimento e ressignificação de suas histórias de vida.',
     especialidades: ['Questões Existenciais', 'Autoconhecimento'],
