@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Catalogo from './components/Catalogo.js';
-import QuestionarioMatch from './components/QuestionarioMatch.js';
-import CalendarIcon from './components/CalendarIcon.js'; // Assuming CalendarIcon might be used directly in App.js in the future or for consistency
+import Catalogo from './components/Catalogo.jsx';
+import QuestionarioMatch from './components/QuestionarioMatch.jsx';
+import CalendarIcon from './components/CalendarIcon.jsx'; // Assuming CalendarIcon might be used directly in App.js in the future or for consistency
 import { psicologasData } from './data.js';
 // Note: App.css will be imported in main.js or App.js as per plan step 8.
 // If importing here, add: import './App.css';

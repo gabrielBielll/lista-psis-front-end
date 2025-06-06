@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CalendarIcon from './CalendarIcon.js';
+import CalendarIcon from './CalendarIcon.jsx';
 
 const Catalogo = ({ psicologas }) => {
   const [expandedCardId, setExpandedCardId] = useState(null);
