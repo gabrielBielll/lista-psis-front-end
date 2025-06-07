@@ -30,10 +30,10 @@ export const psicologasData = [
     id: 4,
     nome: 'Bruna N. Bernardi',
     fotoUrl: '/psicologas_fotos/bruna_bernardi_photo.png',
-    abordagem: 'Psicanálise',
-    bio: 'Auxilia pacientes a navegarem por questões existenciais complexas, promovendo uma jornada profunda de autoconhecimento e ressignificação de suas histórias de vida.',
-    especialidades: ['Questões Existenciais', 'Autoconhecimento'],
-    tagsParaMatch: ['psicanalise', 'autoconhecimento', 'existencial', 'reflexao-profunda']
+    abordagem: 'Terapia Cognitivo-Comportamental',
+    bio: 'Psicóloga com formação em Terapia Cognitivo-Comportamental e pós-graduanda Análise do Comportamento Aplicada. Possui experiência no atendimento psicológico online voltado para adultos, adolescentes e o público considerado atípico - neurodivergente -. Acredita que o vínculo é a base do processo terapêutico, oferece intervenções baseadas em evidências e busca proporcionar através do tratamento autonomia e desenvolvimento emocional e comportamental dos pacientes.',
+    especialidades: ["TCC", "Neurodivergentes", "Adultos", "Adolescentes"],
+    tagsParaMatch: ["tcc", "neurodivergente", "adultos", "adolescentes", "ansiedade", "habilidades-sociais", "ferramentas-praticas"]
   },
   {
     id: 5,
