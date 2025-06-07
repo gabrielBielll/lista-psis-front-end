@@ -138,8 +138,8 @@ const QuestionarioMatch = ({ onMatchComplete }) => {
           return (
               <>
                 <div className="match-progresso-barra"><div className="match-progresso-preenchimento" style={{ width: `${finalProgresso}%` }}></div></div>
-                <h3 className="match-pergunta">Se desejar, descreva com as suas palavras o que você está a sentir ou a procurar.</h3>
-                <p className="match-subpergunta">Isto ajuda-nos a refinar ainda mais a sua recomendação. (Opcional)</p>
+                <h3 className="match-pergunta">Descreva seu momento em suas palavras.</h3>
+                <p className="match-subpergunta">Nossa Inteligência Artificial analisará sua descrição para refinar a recomendação, garantindo a escolha mais precisa. (Opcional)</p>
                 <textarea
                     className="match-textarea"
                     value={textoLivre}

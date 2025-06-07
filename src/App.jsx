@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Catalogo from './components/Catalogo.jsx';
 import QuestionarioMatch from './components/QuestionarioMatch.jsx';
 import CalendarIcon from './components/CalendarIcon.jsx';
-import MagicWandIcon from './components/MagicWandIcon.jsx'; // Import MagicWandIcon
+// import MagicWandIcon from './components/MagicWandIcon.jsx'; // Import MagicWandIcon REMOVED
 import { psicologasData } from './data.js';
 // Note: App.css will be imported in main.js or App.js as per plan step 8.
 // If importing here, add: import './App.css';
@@ -100,7 +100,7 @@ export default function App() {
             <h2>Não sabe qual profissional escolher?</h2>
             <p>Responda a 5 perguntas rápidas e nosso sistema inteligente encontra a especialista que mais combina com seu momento e suas preferências.</p>
             <button className="botao-iniciar-match" onClick={() => setIniciarMatch(true)}>
-              <MagicWandIcon /> Encontrar meu especialista ideal
+              ✨ Encontrar meu especialista ideal
             </button>
           </div>
         )}
