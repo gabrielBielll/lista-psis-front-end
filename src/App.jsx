@@ -52,26 +52,30 @@ export default function App() {
 
     // Modified condition for rendering results
     if (isClientReady && resultadoMatch.length > 0) {
+      const matchedPsi = resultadoMatch[0]; // Assuming one match
       return (
         <div className="resultado-container">
-          <h2>Sua especialista ideal</h2>
-          <p>Com base nas suas respostas, esta é a profissional que mais se alinha com seu momento atual.</p>
-          {resultadoMatch.map(psi => (
-             <div key={psi.id} className="psi-card resultado-card">
-              <img src={psi.fotoUrl} onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/150x150/EAE5DE/CCC?text=Foto'; }} alt={`Foto de ${psi.nome}`} className="psi-foto" />
-              <div className="psi-info">
-                <h3 className="psi-nome">{psi.nome}</h3>
-                <p className="psi-abordagem">{psi.abordagem}</p>
-                <p className="psi-bio">{psi.bio}</p>
-              </div>
-              <div className="card-botoes">
-                <button className="botao-agendar" onClick={() => handleWhatsAppResultadoClick(psi.nome)}>
-                    <CalendarIcon /> Agendar
-                </button>
-                <button className="botao-perfil" onClick={resetApp}>Ver outras profissionais</button>
-              </div>
+          {/* Use a more generic title or remove if the message is self-sufficient */}
+          <h2>Resultado do Questionário</h2>
+          <p>{matchedPsi.mensagemResultado}</p> {/* Display the custom message */}
+
+          {/* Display the matched psychologist's card */}
+          <div key={matchedPsi.id} className="psi-card resultado-card">
+            <img src={matchedPsi.fotoUrl} onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/150x150/EAE5DE/CCC?text=Foto'; }} alt={`Foto de ${matchedPsi.nome}`} className="psi-foto" />
+            <div className="psi-info">
+              <h3 className="psi-nome">{matchedPsi.nome}</h3>
+              <p className="psi-abordagem">{matchedPsi.abordagem}</p>
+              {/* Displaying the full bio here might be redundant if mensagemResultado is comprehensive.
+                  Or it could be kept. Let's keep it for now, but the user might want to remove it later if the message is enough. */}
+              <p className="psi-bio">{matchedPsi.bio}</p>
             </div>
-          ))}
+            <div className="card-botoes">
+              <button className="botao-agendar" onClick={() => handleWhatsAppResultadoClick(matchedPsi.nome)}>
+                  <CalendarIcon /> Agendar
+              </button>
+              <button className="botao-perfil" onClick={resetApp}>Ver outras profissionais</button>
+            </div>
+          </div>
         </div>
       );
     }
