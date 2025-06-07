@@ -101,3 +101,7 @@ body {
     .card-botoes { width: 100%; margin-top: 1rem; }
     .psi-especialidades { justify-content: center; }
 }
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
