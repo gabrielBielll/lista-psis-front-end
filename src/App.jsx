@@ -53,7 +53,7 @@ export default function App() {
       const matchedPsi = resultadoMatch[0];
       return (
         <div className="resultado-container">
-          <h2>Resultado do Questionário</h2>
+          <h2>✨ Sua especialista ideal</h2>
           <p>{matchedPsi.mensagemResultado}</p>
 
           <div key={matchedPsi.id} className="psi-card resultado-card">
