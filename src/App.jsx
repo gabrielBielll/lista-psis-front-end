@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Catalogo from './components/Catalogo.jsx';
 import QuestionarioMatch from './components/QuestionarioMatch.jsx';
-import CalendarIcon from './components/CalendarIcon.jsx'; // Assuming CalendarIcon might be used directly in App.js in the future or for consistency
+import CalendarIcon from './components/CalendarIcon.jsx';
+import MagicWandIcon from './components/MagicWandIcon.jsx'; // Import MagicWandIcon
 import { psicologasData } from './data.js';
 // Note: App.css will be imported in main.js or App.js as per plan step 8.
 // If importing here, add: import './App.css';
@@ -10,7 +11,7 @@ export default function App() {
   const [psicologasList, setPsicologasList] = useState([]);
   const [iniciarMatch, setIniciarMatch] = useState(false);
   const [resultadoMatch, setResultadoMatch] = useState([]);
-  const [isClientReady, setIsClientReady] = useState(false); // Added state
+  const [isClientReady, setIsClientReady] = useState(false);
   const numeroClinica = '5521996561994';
 
   useEffect(() => {
@@ -18,7 +19,6 @@ export default function App() {
     setPsicologasList(shuffled);
   }, []);
 
-  // Added useEffect for client readiness
   useEffect(() => {
     setIsClientReady(true);
   }, []);
@@ -36,7 +36,6 @@ export default function App() {
   const resetApp = () => {
     setIniciarMatch(false);
     setResultadoMatch([]);
-    // Re-shuffle the list if desired when resetting, or keep the original shuffled list
     const shuffled = [...psicologasData].sort(() => 0.5 - Math.random());
     setPsicologasList(shuffled);
   };
@@ -50,23 +49,18 @@ export default function App() {
       );
     }
 
-    // Modified condition for rendering results
     if (isClientReady && resultadoMatch.length > 0) {
-      const matchedPsi = resultadoMatch[0]; // Assuming one match
+      const matchedPsi = resultadoMatch[0];
       return (
         <div className="resultado-container">
-          {/* Use a more generic title or remove if the message is self-sufficient */}
           <h2>Resultado do Questionário</h2>
-          <p>{matchedPsi.mensagemResultado}</p> {/* Display the custom message */}
+          <p>{matchedPsi.mensagemResultado}</p>
 
-          {/* Display the matched psychologist's card */}
           <div key={matchedPsi.id} className="psi-card resultado-card">
             <img src={matchedPsi.fotoUrl} onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/150x150/EAE5DE/CCC?text=Foto'; }} alt={`Foto de ${matchedPsi.nome}`} className="psi-foto" />
             <div className="psi-info">
               <h3 className="psi-nome">{matchedPsi.nome}</h3>
               <p className="psi-abordagem">{matchedPsi.abordagem}</p>
-              {/* Displaying the full bio here might be redundant if mensagemResultado is comprehensive.
-                  Or it could be kept. Let's keep it for now, but the user might want to remove it later if the message is enough. */}
               <p className="psi-bio">{matchedPsi.bio}</p>
             </div>
             <div className="card-botoes">
@@ -80,25 +74,35 @@ export default function App() {
       );
     }
 
+    // If not showing results or questionnaire, and promo hasn't been clicked, show catalog
+    // The promo block will be rendered outside and before this specific catalog part
     return <Catalogo psicologas={psicologasList} />;
   }
 
   return (
     <>
-      {/* The <style> tag will be removed and its content moved to App.css */}
       <div className="AppContainer">
         <header className="app-header">
           <h1>Encontre um especialista ideal para você</h1>
           <p>Cuidar da sua saúde mental é um ato de amor-próprio. Estamos aqui para ajudar.</p>
-          {!iniciarMatch && resultadoMatch.length === 0 && (
-             <a onClick={() => setIniciarMatch(true)} className="match-start-link" style={{cursor: 'pointer'}}>Ou responda ao nosso questionário para encontrar seu match ideal</a>
-          )}
+          {/* Old link removed from here */}
         </header>
 
         {(iniciarMatch || resultadoMatch.length > 0) && (
           <button onClick={resetApp} className="botao-home">
             ‹ Ver todas as profissionais
           </button>
+        )}
+
+        {/* NEW PROMO BLOCK - Conditionally render this before renderContent if catalog is to be shown */}
+        {!iniciarMatch && resultadoMatch.length === 0 && (
+          <div className="promo-match-container">
+            <h2>Não sabe qual profissional escolher?</h2>
+            <p>Responda a 5 perguntas rápidas e nosso sistema inteligente encontra a especialista que mais combina com seu momento e suas preferências.</p>
+            <button className="botao-iniciar-match" onClick={() => setIniciarMatch(true)}>
+              <MagicWandIcon /> Encontrar meu especialista ideal
+            </button>
+          </div>
         )}
 
         {renderContent()}

@@ -105,3 +105,61 @@ body {
 button {
   -webkit-tap-highlight-color: transparent;
 }
+
+/* --- Promo Match Container --- */
+.promo-match-container {
+  background-color: var(--branco); /* Optional: or a subtle background from palette */
+  padding: 2rem;
+  border-radius: 16px;
+  margin-bottom: 3rem; /* Space before the catalog or other content */
+  text-align: center;
+  box-shadow: 0 4px 25px var(--sombra-suave);
+  border: 1px solid var(--cinza-borda);
+}
+
+.promo-match-container h2 {
+  font-family: var(--font-serif);
+  color: var(--verde-oliva);
+  font-size: clamp(1.8rem, 4vw, 2.2rem); /* Responsive font size */
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+.promo-match-container p {
+  font-size: 1.1rem;
+  color: var(--marrom-texto);
+  max-width: 500px; /* Limit line length for readability */
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.botao-iniciar-match {
+  display: inline-flex; /* To align icon and text */
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px; /* Slightly more padding for a primary button */
+  border-radius: 50px;
+  border: 2px solid var(--laranja-acao);
+  background-color: var(--laranja-acao);
+  color: var(--branco);
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none; /* If it were an anchor */
+}
+
+.botao-iniciar-match:hover {
+  background-color: #d48f70; /* Slightly darker shade of orange */
+  border-color: #d48f70;
+  transform: translateY(-2px); /* Subtle lift effect */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.botao-iniciar-match svg {
+  /* Styles for the SVG within the button are already in its component,
+     but we can override or add if needed, e.g., size if not fixed in SVG component.
+     The MagicWandIcon component already has margin-right. */
+}
