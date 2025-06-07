@@ -163,3 +163,49 @@ button {
      but we can override or add if needed, e.g., size if not fixed in SVG component.
      The MagicWandIcon component already has margin-right. */
 }
+
+/* --- Styles for AI Free Text Input in Match --- */
+.match-subpergunta {
+  margin-top: -1.5rem; /* Based on user's inline style */
+  margin-bottom: 1.5rem; /* Based on user's inline style */
+  color: #8c8a87; /* Based on user's inline style */
+}
+
+.match-textarea {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 2px solid var(--cinza-borda); /* Using CSS variable */
+  font-family: var(--font-sans); /* Using CSS variable */
+  font-size: 1rem;
+  resize: vertical;
+  box-sizing: border-box;
+  margin-bottom: 1.5rem;
+}
+
+.match-textarea:focus {
+  border-color: var(--verde-oliva); /* Using CSS variable */
+  outline: none;
+}
+
+.botao-finalizar {
+  background-color: var(--laranja-acao); /* Using CSS variable */
+  color: var(--branco); /* Using CSS variable */
+  border: none;
+  border-radius: 50px;
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.botao-finalizar:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(210, 132, 90, 0.35); /* d2525a is --laranja-acao, so using its RGB for shadow */
+}
+
+.botao-finalizar:disabled {
+  background-color: var(--verde-acao); /* Using CSS variable */
+  cursor: wait;
+}
