@@ -2,7 +2,7 @@ export const psicologasData = [
   {
     id: 1,
     nome: "Karine Dos Santos Carvalho",
-    fotoUrl: '/psicologas_fotos/karina_carvalho_photo.png',
+    fotoUrl: '/psicologas_fotos/karine.webp', // Updated fotoUrl
     abordagem: 'Terapia Cognitivo-Comportamental',
     bio: "Psicóloga com formação em Terapia Cognitivo-Comportamental (TCC) e pós-graduanda em Análise do Comportamento Aplicada (ABA). Atua no atendimento clínico de adultos, com experiência também no acompanhamento do público considerado atípico (neurodivergente), em um espaço terapêutico acolhedor e centrado no fortalecimento do vínculo como base do processo terapêutico. Sua prática é fundamentada na Terapia Cognitivo-Comportamental (TCC), abordagem que busca identificar padrões de pensamento e comportamento, promovendo mudanças que favoreçam o desenvolvimento emocional, comportamental e a autonomia dos pacientes. Possui experiência no acompanhamento de questões como ansiedade, TDAH, TEA (Transtorno do Espectro Autista), desregulação emocional, dificuldades nos relacionamentos amorosos e no desenvolvimento de habilidades sociais.",
     especialidades: ["TCC", "ABA", "Neurodivergentes", "Adultos", "Ansiedade", "TDAH", "TEA", "Relacionamentos"],
@@ -13,7 +13,7 @@ export const psicologasData = [
   {
     id: 2,
     nome: "Jéssica Passeri Da Silva",
-    fotoUrl: '/psicologas_fotos/jessica_reimol_photo.png',
+    fotoUrl: '/psicologas_fotos/jessica.webp', // Updated fotoUrl
     abordagem: 'Terapia Cognitivo-Comportamental',
     bio: "Psicóloga com formação em Terapia Cognitivo-Comportamental e pós-graduanda em Psicopatologia. Atua no atendimento clínico de adultos, oferecendo uma escuta qualificada e acolhedora, com foco no desenvolvimento emocional e comportamental dos pacientes. Sua prática é fundamentada na Terapia Cognitivo-Comportamental (TCC), abordagem que busca identificar e ressignificar padrões de pensamento e comportamento que geram sofrimento. Possui experiência no acompanhamento de demandas relacionadas a transtornos de ansiedade, transtornos de humor, TDAH, dificuldades nos relacionamentos e questões ligadas à comunicação interpessoal.",
     especialidades: ["TCC", "Psicopatologia", "Adultos", "Ansiedade", "Transtornos de Humor", "TDAH"],
@@ -24,7 +24,7 @@ export const psicologasData = [
   {
     id: 3, // Juliana Dos Santos Reimol
     nome: "Juliana Dos Santos Reimol",
-    fotoUrl: '/psicologas_fotos/juliana.webp', // Updated fotoUrl
+    fotoUrl: '/psicologas_fotos/juliana.webp', // Verified from previous step
     abordagem: 'Psicanálise',
     bio: "Psicóloga (Universidade Salgado de Oliveira), pós-graduada em psicologia hospitalar e da saúde, e pós-graduanda em saúde mental e atenção psicossocial. Atua pela psicanálise com crianças, jovens e adultos, e como supervisora de estágio na Associação Fluminense de Reabilitação. Vasta experiência clínica e em saúde mental. Atendimentos online, presenciais (Copacabana/Niterói-RJ) e domiciliares.",
     especialidades: ["Psicanálise", "Saúde Mental", "Crianças", "Jovens", "Adultos", "Psicologia Hospitalar"],
@@ -35,7 +35,7 @@ export const psicologasData = [
   {
     id: 4, // Bruna N. Bernardi
     nome: "Bruna N. Bernardi",
-    fotoUrl: '/psicologas_fotos/bruna_bernardi_photo.png',
+    fotoUrl: '/psicologas_fotos/bruna.webp', // Updated fotoUrl
     abordagem: 'Psicanálise',
     bio: "Psicóloga com experiência no atendimento clínico de adolescentes e adultos sob a perspectiva da Psicanálise. Foca em oferecer um espaço acolhedor, ético e seguro, pautado no respeito e escuta ativa. Possui estudos em psicopatologia (transtornos de humor e psicóticos) e experiência com ansiedade, depressão, angústia, estresse, medos, dificuldades em relacionamentos, além de processos de autoconhecimento e fortalecimento da autoconfiança.",
     especialidades: ["Psicanálise", "Adultos", "Adolescentes", "Psicopatologia", "Autoconhecimento"],
@@ -46,7 +46,7 @@ export const psicologasData = [
   {
     id: 5,
     nome: "Andrezza Alves da Mata",
-    fotoUrl: '/psicologas_fotos/andrezza.webp', // Updated fotoUrl
+    fotoUrl: '/psicologas_fotos/andrezza.webp', // Verified from previous step
     abordagem: 'Psicanálise',
     bio: "Psicóloga, com Formação Clínica em Psicanálise pela Práxis Lacaniana. Ao longo de sua trajetória, participou de diversos cursos voltados à Psicanálise no Contemporâneo, aprofundando sua escuta clínica frente às singularidades da subjetividade atual. Sua atuação é orientada pela psicanálise, com experiência no atendimento clínico de adultos, abordando questões como angústia, sofrimento psíquico, relações familiares, conflitos subjetivos e processos de escuta e elaboração. Atende também sintomas psicossomáticos, quadros ansiosos, depressivos, Transtorno Obsessivo-Compulsivo (TOC), TDAH, bem como demandas relacionadas a relacionamentos amorosos, familiares e outras vivências afetivas.",
     especialidades: ["Psicanálise", "Adultos", "Angústia", "Sofrimento Psíquico", "TOC", "Psicossomática", "TDAH"],
