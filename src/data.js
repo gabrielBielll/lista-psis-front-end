@@ -24,11 +24,11 @@ export const psicologasData = [
   {
     id: 3, // Juliana Dos Santos Reimol
     nome: "Juliana Dos Santos Reimol",
-    fotoUrl: '/psicologas_fotos/juliana_santos_photo.png',
+    fotoUrl: '/psicologas_fotos/juliana.webp', // Updated fotoUrl
     abordagem: 'Psicanálise',
-    bio: "Psicóloga (Universidade Salgado de Oliveira), pós-graduada em psicologia hospitalar e da saúde, e pós-graduanda em saúde mental e atenção psicossocial. Atua pela psicanálise com crianças, jovens e adultos, e como supervisora de estágio na Associação Fluminense de Reabilitação. Vasta experiência clínica e em saúde mental. Atendimentos online, presenciais (Copacabana/Niterói-RJ) e domiciliares.", // Updated Bio
-    especialidades: ["Psicanálise", "Saúde Mental", "Crianças", "Jovens", "Adultos", "Psicologia Hospitalar"], // Updated Especialidades
-    tagsParaMatch: ["psicanalise", "criancas", "jovens", "adultos", "reflexao-profunda", "analise-profunda", "saude-mental"], // Updated Tags
+    bio: "Psicóloga (Universidade Salgado de Oliveira), pós-graduada em psicologia hospitalar e da saúde, e pós-graduanda em saúde mental e atenção psicossocial. Atua pela psicanálise com crianças, jovens e adultos, e como supervisora de estágio na Associação Fluminense de Reabilitação. Vasta experiência clínica e em saúde mental. Atendimentos online, presenciais (Copacabana/Niterói-RJ) e domiciliares.",
+    especialidades: ["Psicanálise", "Saúde Mental", "Crianças", "Jovens", "Adultos", "Psicologia Hospitalar"],
+    tagsParaMatch: ["psicanalise", "criancas", "jovens", "adultos", "reflexao-profunda", "analise-profunda", "saude-mental"],
     crp: "05/64368",
     mensagemResultado: "Juliana é psicanalista especialista em psicologia infantil e desenvolvimento. Ela vai te ajudar a entender profundamente as questões do seu filho(a) e orientar a família!"
   },
@@ -37,16 +37,16 @@ export const psicologasData = [
     nome: "Bruna N. Bernardi",
     fotoUrl: '/psicologas_fotos/bruna_bernardi_photo.png',
     abordagem: 'Psicanálise',
-    bio: "Psicóloga com experiência no atendimento clínico de adolescentes e adultos sob a perspectiva da Psicanálise. Foca em oferecer um espaço acolhedor, ético e seguro, pautado no respeito e escuta ativa. Possui estudos em psicopatologia (transtornos de humor e psicóticos) e experiência com ansiedade, depressão, angústia, estresse, medos, dificuldades em relacionamentos, além de processos de autoconhecimento e fortalecimento da autoconfiança.", // Updated Bio
-    especialidades: ["Psicanálise", "Adultos", "Adolescentes", "Psicopatologia", "Autoconhecimento"], // Updated Especialidades
-    tagsParaMatch: ["psicanalise", "autoconhecimento", "reflexao-profunda", "ansiedade", "humor", "relacionamentos", "acolhimento"], // Updated Tags
+    bio: "Psicóloga com experiência no atendimento clínico de adolescentes e adultos sob a perspectiva da Psicanálise. Foca em oferecer um espaço acolhedor, ético e seguro, pautado no respeito e escuta ativa. Possui estudos em psicopatologia (transtornos de humor e psicóticos) e experiência com ansiedade, depressão, angústia, estresse, medos, dificuldades em relacionamentos, além de processos de autoconhecimento e fortalecimento da autoconfiança.",
+    especialidades: ["Psicanálise", "Adultos", "Adolescentes", "Psicopatologia", "Autoconhecimento"],
+    tagsParaMatch: ["psicanalise", "autoconhecimento", "reflexao-profunda", "ansiedade", "humor", "relacionamentos", "acolhimento"],
     crp: "00/00000",
     mensagemResultado: "Bruna é psicanalista com foco existencial e autoconhecimento. Ela vai te acompanhar numa jornada profunda de autodescoberta e busca de sentido!"
   },
   {
     id: 5,
     nome: "Andrezza Alves da Mata",
-    fotoUrl: '/psicologas_fotos/andrezza_mata_photo.png',
+    fotoUrl: '/psicologas_fotos/andrezza.webp', // Updated fotoUrl
     abordagem: 'Psicanálise',
     bio: "Psicóloga, com Formação Clínica em Psicanálise pela Práxis Lacaniana. Ao longo de sua trajetória, participou de diversos cursos voltados à Psicanálise no Contemporâneo, aprofundando sua escuta clínica frente às singularidades da subjetividade atual. Sua atuação é orientada pela psicanálise, com experiência no atendimento clínico de adultos, abordando questões como angústia, sofrimento psíquico, relações familiares, conflitos subjetivos e processos de escuta e elaboração. Atende também sintomas psicossomáticos, quadros ansiosos, depressivos, Transtorno Obsessivo-Compulsivo (TOC), TDAH, bem como demandas relacionadas a relacionamentos amorosos, familiares e outras vivências afetivas.",
     especialidades: ["Psicanálise", "Adultos", "Angústia", "Sofrimento Psíquico", "TOC", "Psicossomática", "TDAH"],
