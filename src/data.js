@@ -22,25 +22,25 @@ export const psicologasData = [
     mensagemResultado: "Jéssica é especialista em TCC para transtornos de humor e comunicação. Ela vai te ajudar a recuperar sua energia e melhorar suas habilidades sociais com estratégias eficazes!"
   },
   {
-    id: 3,
+    id: 3, // Juliana Dos Santos Reimol
     nome: "Juliana Dos Santos Reimol",
     fotoUrl: '/psicologas_fotos/juliana_santos_photo.png',
     abordagem: 'Psicanálise',
-    bio: 'Especialista em saúde mental e atenção psicossocial, com foco no atendimento de crianças e transtornos de personalidade. Acredito na importância de compreender as raízes dos conflitos para uma mudança real.',
-    especialidades: ["Infantil", "Desenvolvimento", "Psicanálise"], // From Subtask 4, no change specified in script for this one directly
-    tagsParaMatch: ["existencial", "criancas", "reflexao-profunda", "desenvolvimento-infantil", "especialista-infantil"], // From Subtask 4, no change specified in script for this one directly
+    bio: "Psicóloga (Universidade Salgado de Oliveira), pós-graduada em psicologia hospitalar e da saúde, e pós-graduanda em saúde mental e atenção psicossocial. Atua pela psicanálise com crianças, jovens e adultos, e como supervisora de estágio na Associação Fluminense de Reabilitação. Vasta experiência clínica e em saúde mental. Atendimentos online, presenciais (Copacabana/Niterói-RJ) e domiciliares.", // Updated Bio
+    especialidades: ["Psicanálise", "Saúde Mental", "Crianças", "Jovens", "Adultos", "Psicologia Hospitalar"], // Updated Especialidades
+    tagsParaMatch: ["psicanalise", "criancas", "jovens", "adultos", "reflexao-profunda", "analise-profunda", "saude-mental"], // Updated Tags
     crp: "05/64368",
     mensagemResultado: "Juliana é psicanalista especialista em psicologia infantil e desenvolvimento. Ela vai te ajudar a entender profundamente as questões do seu filho(a) e orientar a família!"
   },
   {
-    id: 4,
+    id: 4, // Bruna N. Bernardi
     nome: "Bruna N. Bernardi",
     fotoUrl: '/psicologas_fotos/bruna_bernardi_photo.png',
     abordagem: 'Psicanálise',
-    bio: 'Auxilia pacientes a navegarem por questões existenciais complexas, promovendo uma jornada profunda de autoconhecimento e ressignificação de suas histórias de vida.',
-    especialidades: ["Existencial", "Autoconhecimento", "Psicanálise"], // From Subtask 4
-    tagsParaMatch: ["existencial", "autoconhecimento", "reflexao-profunda", "existencial-profundo", "autodescobrimento"], // From Subtask 4
-    crp: "00/00000", // Updated in Subtask 10
+    bio: "Psicóloga com experiência no atendimento clínico de adolescentes e adultos sob a perspectiva da Psicanálise. Foca em oferecer um espaço acolhedor, ético e seguro, pautado no respeito e escuta ativa. Possui estudos em psicopatologia (transtornos de humor e psicóticos) e experiência com ansiedade, depressão, angústia, estresse, medos, dificuldades em relacionamentos, além de processos de autoconhecimento e fortalecimento da autoconfiança.", // Updated Bio
+    especialidades: ["Psicanálise", "Adultos", "Adolescentes", "Psicopatologia", "Autoconhecimento"], // Updated Especialidades
+    tagsParaMatch: ["psicanalise", "autoconhecimento", "reflexao-profunda", "ansiedade", "humor", "relacionamentos", "acolhimento"], // Updated Tags
+    crp: "00/00000",
     mensagemResultado: "Bruna é psicanalista com foco existencial e autoconhecimento. Ela vai te acompanhar numa jornada profunda de autodescoberta e busca de sentido!"
   },
   {
