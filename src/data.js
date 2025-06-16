@@ -4,9 +4,9 @@ export const psicologasData = [
     nome: "Karine Dos Santos Carvalho",
     fotoUrl: '/psicologas_fotos/karina_carvalho_photo.png',
     abordagem: 'Terapia Cognitivo-Comportamental',
-    bio: 'Psicóloga com formação em Terapia Cognitivo-Comportamental e pós-graduanda em Análise do Comportamento Aplicada. Acredita que o vínculo é a base do processo terapêutico e busca proporcionar autonomia e desenvolvimento aos pacientes.',
-    especialidades: ["Ansiedade", "Relacionamentos", "TCC"],
-    tagsParaMatch: ["ansiedade", "relacionamentos-amorosos", "ferramentas-praticas", "tcc", "abordagem-direta"],
+    bio: "Psicóloga com formação em Terapia Cognitivo-Comportamental (TCC) e pós-graduanda em Análise do Comportamento Aplicada (ABA). Atua no atendimento clínico de adultos, com experiência também no acompanhamento do público considerado atípico (neurodivergente), em um espaço terapêutico acolhedor e centrado no fortalecimento do vínculo como base do processo terapêutico. Sua prática é fundamentada na Terapia Cognitivo-Comportamental (TCC), abordagem que busca identificar padrões de pensamento e comportamento, promovendo mudanças que favoreçam o desenvolvimento emocional, comportamental e a autonomia dos pacientes. Possui experiência no acompanhamento de questões como ansiedade, TDAH, TEA (Transtorno do Espectro Autista), desregulação emocional, dificuldades nos relacionamentos amorosos e no desenvolvimento de habilidades sociais.",
+    especialidades: ["TCC", "ABA", "Neurodivergentes", "Adultos", "Ansiedade", "TDAH", "TEA", "Relacionamentos"],
+    tagsParaMatch: ["ansiedade", "relacionamentos-amorosos", "ferramentas-praticas", "tcc", "abordagem-direta", "tdah", "tea", "desregulacao-emocional", "habilidades-sociais", "neurodivergencia"],
     crp: "05/71731",
     mensagemResultado: "Karine é especialista em Terapia Cognitivo-Comportamental com foco em ansiedade e relacionamentos. Ela vai te dar ferramentas práticas para lidar com suas preocupações e melhorar seus vínculos afetivos!"
   },
@@ -15,9 +15,9 @@ export const psicologasData = [
     nome: "Jéssica Passeri Da Silva",
     fotoUrl: '/psicologas_fotos/jessica_reimol_photo.png',
     abordagem: 'Terapia Cognitivo-Comportamental',
-    bio: 'Psicóloga com formação em Terapia Cognitivo-Comportamental e pós-graduanda em Psicopatologia, oferecendo escuta qualificada, intervenções baseadas em evidências e foco no desenvolvimento emocional dos pacientes.',
-    especialidades: ["Transtornos de Humor", "Comunicação", "TCC"],
-    tagsParaMatch: ["humor", "comunicacao", "ferramentas-praticas", "tcc", "abordagem-direta"],
+    bio: "Psicóloga com formação em Terapia Cognitivo-Comportamental e pós-graduanda em Psicopatologia. Atua no atendimento clínico de adultos, oferecendo uma escuta qualificada e acolhedora, com foco no desenvolvimento emocional e comportamental dos pacientes. Sua prática é fundamentada na Terapia Cognitivo-Comportamental (TCC), abordagem que busca identificar e ressignificar padrões de pensamento e comportamento que geram sofrimento. Possui experiência no acompanhamento de demandas relacionadas a transtornos de ansiedade, transtornos de humor, TDAH, dificuldades nos relacionamentos e questões ligadas à comunicação interpessoal.",
+    especialidades: ["TCC", "Psicopatologia", "Adultos", "Ansiedade", "Transtornos de Humor", "TDAH"],
+    tagsParaMatch: ["humor", "comunicacao", "ferramentas-praticas", "tcc", "abordagem-direta", "tdah", "ansiedade"],
     crp: "05/71439",
     mensagemResultado: "Jéssica é especialista em TCC para transtornos de humor e comunicação. Ela vai te ajudar a recuperar sua energia e melhorar suas habilidades sociais com estratégias eficazes!"
   },
@@ -27,8 +27,8 @@ export const psicologasData = [
     fotoUrl: '/psicologas_fotos/juliana_santos_photo.png',
     abordagem: 'Psicanálise',
     bio: 'Especialista em saúde mental e atenção psicossocial, com foco no atendimento de crianças e transtornos de personalidade. Acredito na importância de compreender as raízes dos conflitos para uma mudança real.',
-    especialidades: ["Infantil", "Desenvolvimento", "Psicanálise"],
-    tagsParaMatch: ["existencial", "criancas", "reflexao-profunda", "desenvolvimento-infantil", "especialista-infantil"],
+    especialidades: ["Infantil", "Desenvolvimento", "Psicanálise"], // From Subtask 4, no change specified in script for this one directly
+    tagsParaMatch: ["existencial", "criancas", "reflexao-profunda", "desenvolvimento-infantil", "especialista-infantil"], // From Subtask 4, no change specified in script for this one directly
     crp: "05/64368",
     mensagemResultado: "Juliana é psicanalista especialista em psicologia infantil e desenvolvimento. Ela vai te ajudar a entender profundamente as questões do seu filho(a) e orientar a família!"
   },
@@ -38,9 +38,9 @@ export const psicologasData = [
     fotoUrl: '/psicologas_fotos/bruna_bernardi_photo.png',
     abordagem: 'Psicanálise',
     bio: 'Auxilia pacientes a navegarem por questões existenciais complexas, promovendo uma jornada profunda de autoconhecimento e ressignificação de suas histórias de vida.',
-    especialidades: ["Existencial", "Autoconhecimento", "Psicanálise"],
-    tagsParaMatch: ["existencial", "autoconhecimento", "reflexao-profunda", "existencial-profundo", "autodescobrimento"],
-    crp: "00/00000", // Updated CRP for Bruna
+    especialidades: ["Existencial", "Autoconhecimento", "Psicanálise"], // From Subtask 4
+    tagsParaMatch: ["existencial", "autoconhecimento", "reflexao-profunda", "existencial-profundo", "autodescobrimento"], // From Subtask 4
+    crp: "00/00000", // Updated in Subtask 10
     mensagemResultado: "Bruna é psicanalista com foco existencial e autoconhecimento. Ela vai te acompanhar numa jornada profunda de autodescoberta e busca de sentido!"
   },
   {
@@ -48,9 +48,9 @@ export const psicologasData = [
     nome: "Andrezza Alves da Mata",
     fotoUrl: '/psicologas_fotos/andrezza_mata_photo.png',
     abordagem: 'Psicanálise',
-    bio: 'Psicanalista com pós-graduação em Psicologia, Andrezza dedica-se ao estudo e tratamento de dinâmicas psíquicas complexas. Com foco em histeria e neurose obsessiva, ela auxilia pacientes na exploração profunda do inconsciente para promover autoconhecimento e resolução de conflitos internos.',
-    especialidades: ["Psicossomática", "Expressão Emocional", "Psicanálise"],
-    tagsParaMatch: ["somatizacao", "mente-corpo", "expressao-emocional", "psicossomatica", "especialista-somatico"],
+    bio: "Psicóloga, com Formação Clínica em Psicanálise pela Práxis Lacaniana. Ao longo de sua trajetória, participou de diversos cursos voltados à Psicanálise no Contemporâneo, aprofundando sua escuta clínica frente às singularidades da subjetividade atual. Sua atuação é orientada pela psicanálise, com experiência no atendimento clínico de adultos, abordando questões como angústia, sofrimento psíquico, relações familiares, conflitos subjetivos e processos de escuta e elaboração. Atende também sintomas psicossomáticos, quadros ansiosos, depressivos, Transtorno Obsessivo-Compulsivo (TOC), TDAH, bem como demandas relacionadas a relacionamentos amorosos, familiares e outras vivências afetivas.",
+    especialidades: ["Psicanálise", "Adultos", "Angústia", "Sofrimento Psíquico", "TOC", "Psicossomática", "TDAH"],
+    tagsParaMatch: ["somatizacao", "mente-corpo", "expressao-emocional", "psicossomatica", "especialista-somatico", "psicanalise", "ansiedade", "humor", "obsessivo", "tdah", "relacionamentos-amorosos", "relacoes-familiares", "conflitos-subjetivos"],
     crp: "05/62770",
     mensagemResultado: "Andrezza é psicanalista especialista na relação mente-corpo. Ela vai te ajudar a entender como suas emoções se manifestam fisicamente e encontrar formas saudáveis de expressão!"
   }
