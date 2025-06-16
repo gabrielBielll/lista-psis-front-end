@@ -8,7 +8,7 @@ export const psicologasData = [
     especialidades: ["TCC", "ABA", "Neurodivergentes", "Adultos", "Ansiedade", "TDAH", "TEA", "Relacionamentos"],
     tagsParaMatch: ["ansiedade", "relacionamentos-amorosos", "ferramentas-praticas", "tcc", "abordagem-direta", "tdah", "tea", "desregulacao-emocional", "habilidades-sociais", "neurodivergencia"],
     crp: "05/71731",
-    mensagemResultado: "Karine é especialista em Terapia Cognitivo-Comportamental com foco em ansiedade e relacionamentos. Ela vai te dar ferramentas práticas para lidar com suas preocupações e melhorar seus vínculos afetivos!"
+    mensagemResultado: "Karine é especialista em Terapia Cognitivo-Comportamental com foco no desenvolvimento da autonomia e no bem-estar emocional. Ela vai te dar ferramentas práticas para lidar com os desafios do dia a dia e fortalecer sua segurança emocional!"
   },
   {
     id: 2,
@@ -19,7 +19,7 @@ export const psicologasData = [
     especialidades: ["TCC", "Psicopatologia", "Adultos", "Ansiedade", "Transtornos de Humor", "TDAH"],
     tagsParaMatch: ["humor", "comunicacao", "ferramentas-praticas", "tcc", "abordagem-direta", "tdah", "ansiedade"],
     crp: "05/71439",
-    mensagemResultado: "Jéssica é especialista em TCC para transtornos de humor e comunicação. Ela vai te ajudar a recuperar sua energia e melhorar suas habilidades sociais com estratégias eficazes!"
+    mensagemResultado: "Jéssica é especialista em Terapia Cognitivo-Comportamental com foco na reestruturação de pensamentos e no desenvolvimento de habilidades interpessoais. Ela vai te guiar com estratégias eficazes para promover seu desenvolvimento e melhorar sua qualidade de vida!"
   },
   {
     id: 3,
@@ -27,10 +27,10 @@ export const psicologasData = [
     fotoUrl: '/psicologas_fotos/juliana.webp',
     abordagem: 'Psicanálise',
     bio: "Psicóloga (Universidade Salgado de Oliveira), pós-graduada em psicologia hospitalar e da saúde, e pós-graduanda em saúde mental e atenção psicossocial. Atua pela psicanálise com crianças, jovens e adultos, e como supervisora de estágio na Associação Fluminense de Reabilitação. Vasta experiência clínica e em saúde mental. Atendimentos online, presenciais (Copacabana/Niterói-RJ) e domiciliares.",
-    especialidades: ["Psicanálise", "Paternidade", "Desenvolvimento Familiar", "Saúde Mental"], // Updated
-    tagsParaMatch: ["psicanalise", "paternidade", "desenvolvimento-familiar", "saude-mental", "reflexao-profunda", "analise-profunda", "existencial", "personalidade"], // Updated
+    especialidades: ["Psicanálise", "Paternidade", "Desenvolvimento Familiar", "Saúde Mental"],
+    tagsParaMatch: ["psicanalise", "paternidade", "desenvolvimento-familiar", "saude-mental", "reflexao-profunda", "analise-profunda", "existencial", "personalidade"],
     crp: "05/64368",
-    mensagemResultado: "Juliana é psicanalista especialista em psicologia infantil e desenvolvimento. Ela vai te ajudar a entender profundamente as questões do seu filho(a) e orientar a família!"
+    mensagemResultado: "Juliana é especialista em Psicanálise com foco em saúde mental e na elaboração de conflitos internos. Com sua vasta experiência, ela vai te oferecer uma escuta profunda para compreender suas questões e construir caminhos mais conscientes!"
   },
   {
     id: 4,
@@ -41,7 +41,7 @@ export const psicologasData = [
     especialidades: ["Psicanálise", "Adultos", "Adolescentes", "Psicopatologia", "Autoconhecimento"],
     tagsParaMatch: ["psicanalise", "autoconhecimento", "reflexao-profunda", "ansiedade", "humor", "relacionamentos", "acolhimento"],
     crp: "05/74113",
-    mensagemResultado: "Bruna é psicanalista com foco existencial e autoconhecimento. Ela vai te acompanhar numa jornada profunda de autodescoberta e busca de sentido!"
+    mensagemResultado: "Bruna é especialista em Psicanálise com foco em autoconhecimento e no fortalecimento da autoconfiança. Ela vai te acompanhar com uma escuta acolhedora em sua jornada de autodescoberta para que você encontre mais segurança em suas escolhas!"
   },
   {
     id: 5,
@@ -52,7 +52,7 @@ export const psicologasData = [
     especialidades: ["Psicanálise", "Adultos", "Angústia", "Sofrimento Psíquico", "TOC", "Psicossomática", "TDAH"],
     tagsParaMatch: ["somatizacao", "mente-corpo", "expressao-emocional", "psicossomatica", "especialista-somatico", "psicanalise", "ansiedade", "humor", "obsessivo", "tdah", "relacionamentos-amorosos", "relacoes-familiares", "conflitos-subjetivos"],
     crp: "05/62770",
-    mensagemResultado: "Andrezza é psicanalista especialista na relação mente-corpo. Ela vai te ajudar a entender como suas emoções se manifestam fisicamente e encontrar formas saudáveis de expressão!"
+    mensagemResultado: "Andrezza é especialista em Psicanálise com foco na escuta do sofrimento psíquico e na análise de conflitos subjetivos. Ela vai te proporcionar um espaço de acolhimento para elaborar suas angústias e ressignificar suas experiências afetivas!"
   }
 ];
 
