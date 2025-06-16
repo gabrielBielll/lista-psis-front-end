@@ -1,53 +1,58 @@
 export const psicologasData = [
   {
     id: 1,
-    nome: 'Karina S. Carvalho',
+    nome: "Karine Dos Santos Carvalho",
     fotoUrl: '/psicologas_fotos/karina_carvalho_photo.png',
-    abordagem: 'Terapia Cognitivo-Comportamental', // Updated
-    bio: 'Psicóloga com formação em Terapia Cognitivo-Comportamental e pós-graduanda em Análise do Comportamento Aplicada. Acredita que o vínculo é a base do processo terapêutico e busca proporcionar autonomia e desenvolvimento aos pacientes.', // Kept existing
-    especialidades: ["Ansiedade", "Relacionamentos", "TCC"], // Updated
-    tagsParaMatch: ["ansiedade", "relacionamentos-amorosos", "ferramentas-praticas", "tcc", "abordagem-direta"], // Updated
-    mensagemResultado: "Karine é especialista em Terapia Cognitivo-Comportamental com foco em ansiedade e relacionamentos. Ela vai te dar ferramentas práticas para lidar com suas preocupações e melhorar seus vínculos afetivos!" // Added
+    abordagem: 'Terapia Cognitivo-Comportamental',
+    bio: 'Psicóloga com formação em Terapia Cognitivo-Comportamental e pós-graduanda em Análise do Comportamento Aplicada. Acredita que o vínculo é a base do processo terapêutico e busca proporcionar autonomia e desenvolvimento aos pacientes.',
+    especialidades: ["Ansiedade", "Relacionamentos", "TCC"],
+    tagsParaMatch: ["ansiedade", "relacionamentos-amorosos", "ferramentas-praticas", "tcc", "abordagem-direta"], // Reverted to stable tags from before merging attempts
+    crp: "05/71731",
+    mensagemResultado: "Karine é especialista em Terapia Cognitivo-Comportamental com foco em ansiedade e relacionamentos. Ela vai te dar ferramentas práticas para lidar com suas preocupações e melhorar seus vínculos afetivos!"
   },
   {
     id: 2,
-    nome: 'Jessica S. Reimol',
+    nome: "Jéssica Passeri Da Silva",
     fotoUrl: '/psicologas_fotos/jessica_reimol_photo.png',
-    abordagem: 'Terapia Cognitivo-Comportamental', // Kept existing
-    bio: 'Psicóloga com formação em Terapia Cognitivo-Comportamental e pós-graduanda em Psicopatologia, oferecendo escuta qualificada, intervenções baseadas em evidências e foco no desenvolvimento emocional dos pacientes.', // Kept existing
-    especialidades: ["Transtornos de Humor", "Comunicação", "TCC"], // Updated
-    tagsParaMatch: ["humor", "comunicacao", "ferramentas-praticas", "tcc", "abordagem-direta"], // Updated
-    mensagemResultado: "Jéssica é especialista em TCC para transtornos de humor e comunicação. Ela vai te ajudar a recuperar sua energia e melhorar suas habilidades sociais com estratégias eficazes!" // Added
+    abordagem: 'Terapia Cognitivo-Comportamental',
+    bio: 'Psicóloga com formação em Terapia Cognitivo-Comportamental e pós-graduanda em Psicopatologia, oferecendo escuta qualificada, intervenções baseadas em evidências e foco no desenvolvimento emocional dos pacientes.',
+    especialidades: ["Transtornos de Humor", "Comunicação", "TCC"],
+    tagsParaMatch: ["humor", "comunicacao", "ferramentas-praticas", "tcc", "abordagem-direta"], // Reverted to stable tags
+    crp: "05/71439",
+    mensagemResultado: "Jéssica é especialista em TCC para transtornos de humor e comunicação. Ela vai te ajudar a recuperar sua energia e melhorar suas habilidades sociais com estratégias eficazes!"
   },
   {
     id: 3,
-    nome: 'Juliana dos Santos',
+    nome: "Juliana Dos Santos Reimol",
     fotoUrl: '/psicologas_fotos/juliana_santos_photo.png',
-    abordagem: 'Psicanálise', // Kept existing
-    bio: 'Especialista em saúde mental e atenção psicossocial, com foco no atendimento de crianças e transtornos de personalidade. Acredito na importância de compreender as raízes dos conflitos para uma mudança real.', // Kept existing
-    especialidades: ["Infantil", "Desenvolvimento", "Psicanálise"], // Updated
-    tagsParaMatch: ["existencial", "criancas", "reflexao-profunda", "desenvolvimento-infantil", "especialista-infantil"], // Updated
-    mensagemResultado: "Juliana é psicanalista especialista em psicologia infantil e desenvolvimento. Ela vai te ajudar a entender profundamente as questões do seu filho(a) e orientar a família!" // Added
+    abordagem: 'Psicanálise',
+    bio: 'Especialista em saúde mental e atenção psicossocial, com foco no atendimento de crianças e transtornos de personalidade. Acredito na importância de compreender as raízes dos conflitos para uma mudança real.',
+    especialidades: ["Infantil", "Desenvolvimento", "Psicanálise"],
+    tagsParaMatch: ["existencial", "criancas", "reflexao-profunda", "desenvolvimento-infantil", "especialista-infantil"], // Reverted to stable tags
+    crp: "05/64368",
+    mensagemResultado: "Juliana é psicanalista especialista em psicologia infantil e desenvolvimento. Ela vai te ajudar a entender profundamente as questões do seu filho(a) e orientar a família!"
   },
   {
     id: 4,
-    nome: 'Bruna N. Bernardi',
+    nome: "Bruna N. Bernardi",
     fotoUrl: '/psicologas_fotos/bruna_bernardi_photo.png',
-    abordagem: 'Psicanálise', // Updated
-    bio: 'Auxilia pacientes a navegarem por questões existenciais complexas, promovendo uma jornada profunda de autoconhecimento e ressignificação de suas histórias de vida.', // Updated to original Psicanalytic bio
-    especialidades: ["Existencial", "Autoconhecimento", "Psicanálise"], // Updated
-    tagsParaMatch: ["existencial", "autoconhecimento", "reflexao-profunda", "existencial-profundo", "autodescobrimento"], // Updated
-    mensagemResultado: "Bruna é psicanalista com foco existencial e autoconhecimento. Ela vai te acompanhar numa jornada profunda de autodescoberta e busca de sentido!" // Added
+    abordagem: 'Psicanálise',
+    bio: 'Auxilia pacientes a navegarem por questões existenciais complexas, promovendo uma jornada profunda de autoconhecimento e ressignificação de suas histórias de vida.',
+    especialidades: ["Existencial", "Autoconhecimento", "Psicanálise"],
+    tagsParaMatch: ["existencial", "autoconhecimento", "reflexao-profunda", "existencial-profundo", "autodescobrimento"], // Reverted to stable tags
+    crp: "",
+    mensagemResultado: "Bruna é psicanalista com foco existencial e autoconhecimento. Ela vai te acompanhar numa jornada profunda de autodescoberta e busca de sentido!"
   },
   {
     id: 5,
-    nome: 'Andrezza Alves da Mata',
+    nome: "Andrezza Alves da Mata",
     fotoUrl: '/psicologas_fotos/andrezza_mata_photo.png',
-    abordagem: 'Psicanálise', // Kept existing
-    bio: 'Psicanalista com pós-graduação em Psicologia, Andrezza dedica-se ao estudo e tratamento de dinâmicas psíquicas complexas. Com foco em histeria e neurose obsessiva, ela auxilia pacientes na exploração profunda do inconsciente para promover autoconhecimento e resolução de conflitos internos.', // Kept existing
-    especialidades: ["Psicossomática", "Expressão Emocional", "Psicanálise"], // Updated
-    tagsParaMatch: ["somatizacao", "mente-corpo", "expressao-emocional", "psicossomatica", "especialista-somatico"], // Updated
-    mensagemResultado: "Andrezza é psicanalista especialista na relação mente-corpo. Ela vai te ajudar a entender como suas emoções se manifestam fisicamente e encontrar formas saudáveis de expressão!" // Added
+    abordagem: 'Psicanálise',
+    bio: 'Psicanalista com pós-graduação em Psicologia, Andrezza dedica-se ao estudo e tratamento de dinâmicas psíquicas complexas. Com foco em histeria e neurose obsessiva, ela auxilia pacientes na exploração profunda do inconsciente para promover autoconhecimento e resolução de conflitos internos.',
+    especialidades: ["Psicossomática", "Expressão Emocional", "Psicanálise"],
+    tagsParaMatch: ["somatizacao", "mente-corpo", "expressao-emocional", "psicossomatica", "especialista-somatico"], // Reverted to stable tags
+    crp: "05/62770",
+    mensagemResultado: "Andrezza é psicanalista especialista na relação mente-corpo. Ela vai te ajudar a entender como suas emoções se manifestam fisicamente e encontrar formas saudáveis de expressão!"
   }
 ];
 
