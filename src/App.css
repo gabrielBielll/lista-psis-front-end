@@ -209,3 +209,11 @@ button {
   background-color: var(--verde-acao); /* Using CSS variable */
   cursor: wait;
 }
+
+.psi-crp {
+  font-size: 0.85rem;
+  color: var(--marrom-texto); /* Using existing variable for text color */
+  margin-top: -0.5rem;    /* Negative margin to bring it closer to the name */
+  margin-bottom: 0.75rem; /* Space before the 'abordagem' */
+  font-style: italic;     /* Optional: to make it slightly distinct */
+}
