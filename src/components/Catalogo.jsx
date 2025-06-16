@@ -23,7 +23,7 @@ const Catalogo = ({ psicologas }) => {
             <img src={psi.fotoUrl} onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/150x150/EAE5DE/CCC?text=Foto'; }} alt={`Foto de ${psi.nome}`} className="psi-foto" />
             <div className="psi-info">
                 <h3 className="psi-nome">{psi.nome}</h3>
-                {psi.crp && <p className="psi-crp">{psi.crp}</p>}
+                {psi.crp && <p className="psi-crp"><strong>CRP:</strong> {psi.crp}</p>}
                 <p className="psi-abordagem">{psi.abordagem}</p>
                 <p className={`psi-bio ${!isExpanded ? 'psi-bio--collapsed' : ''}`}>{psi.bio}</p>
                 <div className="psi-especialidades">

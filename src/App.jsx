@@ -60,7 +60,7 @@ export default function App() {
             <img src={matchedPsi.fotoUrl} onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/150x150/EAE5DE/CCC?text=Foto'; }} alt={`Foto de ${matchedPsi.nome}`} className="psi-foto" />
             <div className="psi-info">
               <h3 className="psi-nome">{matchedPsi.nome}</h3>
-              {matchedPsi.crp && <p className="psi-crp">{matchedPsi.crp}</p>}
+              {matchedPsi.crp && <p className="psi-crp"><strong>CRP:</strong> {matchedPsi.crp}</p>}
               <p className="psi-abordagem">{matchedPsi.abordagem}</p>
               <p className="psi-bio">{matchedPsi.bio}</p>
             </div>
