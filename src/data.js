@@ -26,7 +26,7 @@ export const psicologasData = [
     nome: "Juliana Dos Santos Reimol",
     fotoUrl: '/psicologas_fotos/juliana.webp',
     abordagem: 'Psicanálise',
-    bio: "Psicóloga (Universidade Salgado de Oliveira), pós-graduada em psicologia hospitalar e da saúde, e pós-graduanda em saúde mental e atenção psicossocial. Atua pela psicanálise com crianças, jovens e adultos, e como supervisora de estágio na Associação Fluminense de Reabilitação. Vasta experiência clínica e em saúde mental. Atendimentos online, presenciais (Copacabana/Niterói-RJ) e domiciliares.",
+    bio: "Psicóloga (Universidade Salgado de Oliveira), pós-graduada em psicologia hospitalar e da saúde, e pós-graduanda em saúde mental e atenção psicossocial. Atua pela psicanálise com crianças, jovens e adultos, e como supervisora de estágio na Associação Fluminense de Reabilitação. Vasta experiência clínica e em saúde mental. Atendimentos online.", // Updated Bio
     especialidades: ["Psicanálise", "Paternidade", "Desenvolvimento Familiar", "Saúde Mental"],
     tagsParaMatch: ["psicanalise", "paternidade", "desenvolvimento-familiar", "saude-mental", "reflexao-profunda", "analise-profunda", "existencial", "personalidade"],
     crp: "05/64368",
@@ -41,7 +41,7 @@ export const psicologasData = [
     especialidades: ["Psicanálise", "Adultos", "Adolescentes", "Psicopatologia", "Autoconhecimento"],
     tagsParaMatch: ["psicanalise", "autoconhecimento", "reflexao-profunda", "ansiedade", "humor", "relacionamentos", "acolhimento"],
     crp: "05/74113",
-    mensagemResultado: "Bruna é especialista em Psicanálise com foco em autoconhecimento e no fortalecimento da autoconfiança. Ela vai te acompanhar com uma escuta acolhedora em sua jornada de autodescoberta para que você encontre mais segurança em suas escolhas!"
+    mensagemResultado: "Bruna é psicanalista com foco existencial e autoconhecimento. Ela vai te acompanhar numa jornada profunda de autodescoberta e busca de sentido!"
   },
   {
     id: 5,
