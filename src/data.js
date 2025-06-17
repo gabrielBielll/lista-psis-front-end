@@ -57,54 +57,60 @@ export const psicologasData = [
 ];
 
 export const perguntasMatch = [
+  // Pergunta 1: Focada no principal sentimento/problema do usuário.
   {
-    pergunta: 'Como você se sente ultimamente?',
+    pergunta: 'Qual destas situações descreve melhor o que você está sentindo agora?',
     respostas: [
-      { texto: 'Ansioso(a) e preocupado(a) com tudo', tag: 'ansiedade', peso: 3 },
-      { texto: 'Triste e sem energia para as coisas', tag: 'humor', peso: 3 },
-      { texto: 'Confuso(a) e perdido(a) na vida', tag: 'existencial', peso: 2 },
-      { texto: 'Preso(a) em pensamentos que não saem da cabeça', tag: 'tdah', peso: 3 },
-      { texto: 'Estressado(a) e com sintomas físicos estranhos', tag: 'somatizacao', peso: 3 }
+      { texto: 'Uma ansiedade e estresse constantes, que me sobrecarregam.', tag: 'ansiedade', peso: 2 },
+      { texto: 'Ando com humor deprimido, sem energia e motivação.', tag: 'transtornos-de-humor', peso: 2 },
+      { texto: 'Tenho pensamentos repetitivos e comportamentos que sinto que não consigo controlar.', tag: 'toc-transtorno-obsessivo-compulsivo', peso: 3 },
+      { texto: 'Minha mente parece muito dispersa, tenho dificuldade para focar e me organizar.', tag: 'tdah', peso: 3 },
+      { texto: 'Sinto que meu mal-estar emocional se manifesta no meu corpo (dores, cansaço).', tag: 'sintomas-psicossomaticos', peso: 3 }
     ]
   },
+
+  // Pergunta 2: Focada no contexto do problema (relacional, pessoal, etc.).
   {
-    pergunta: 'O que te motiva a buscar ajuda?',
+    pergunta: 'Onde você sente que sua principal dificuldade aparece?',
     respostas: [
-      { texto: 'Melhorar meus relacionamentos amorosos', tag: 'relacionamentos-amorosos', peso: 3 },
-      { texto: 'Me comunicar melhor com as pessoas', tag: 'comunicacao', peso: 2 },
-      { texto: 'Questões do meu filho(a): comportamento, desenvolvimento, escola', tag: 'criancas', peso: 3 },
-      { texto: 'Me conhecer melhor e crescer como pessoa', tag: 'habilidades-sociais', peso: 3 },
-      { texto: 'Entender por que meu corpo reage ao estresse', tag: 'mente-corpo', peso: 3 }
+      { texto: 'Nos meus relacionamentos, que estão gerando conflitos e sofrimento.', tag: 'conflitos-relacionais', peso: 3 },
+      { texto: 'Sinto que minha forma de pensar e sentir é diferente da maioria, o que me traz desafios.', tag: 'neurodivergencia', peso: 3 },
+      { texto: 'Na minha autoconfiança, que está baixa e me impede de avançar.', tag: 'autoconfianca', peso: 3 },
+      { texto: 'Estou lidando com a dor de uma grande perda ou luto.', tag: 'luto', peso: 3 },
+      { texto: 'Em conversas e interações, pois quero me comunicar melhor com as pessoas.', tag: 'comunicacao-interpessoal', peso: 3 },
     ]
   },
+  
+  // Pergunta 3: A mais importante para diferenciar as ABORDAGENS.
   {
-    pergunta: 'Como você prefere resolver problemas?',
+    pergunta: 'Que tipo de ajuda você imagina que seria mais útil para você?',
     respostas: [
-      { texto: 'Quero soluções práticas e rápidas', tag: 'ferramentas-praticas', peso: 3 },
-      { texto: 'Gosto de entender o \'porquê\' profundo das coisas', tag: 'reflexao-profunda', peso: 3 },
-      { texto: 'Preciso me acalmar e focar no presente', tag: 'mindfulness', peso: 2 },
-      { texto: 'Prefiro ter controle e um plano estruturado', tag: 'controle', peso: 3 },
-      { texto: 'Quero expressar o que sinto sem julgamento', tag: 'expressao-emocional', peso: 3 }
+      { texto: 'Quero ferramentas práticas e estratégias claras para aplicar no dia a dia.', tag: 'terapia-cognitivo-comportamental-tcc', peso: 3 },
+      { texto: 'Prefiro um espaço para explorar as raízes profundas das minhas questões e me entender.', tag: 'psicanalise', peso: 3 },
+      { texto: 'Preciso de uma abordagem bem estruturada, focada em análise do comportamento.', tag: 'analise-do-comportamento-aplicada-aba', peso: 4 },
+      { texto: 'Me interesso por uma análise profunda, focada na linguagem e no inconsciente.', tag: 'psicanalise-lacaniana', peso: 4 }
     ]
   },
+
+  // Pergunta 4: Focada nos objetivos a longo prazo.
   {
-    pergunta: 'Qual situação te representa mais?',
+    pergunta: 'Qual o seu maior objetivo com a terapia?',
     respostas: [
-      { texto: 'Preciso de ferramentas para usar no dia a dia', tag: 'tcc', peso: 3 },
-      { texto: 'Quero explorar meus sentimentos profundamente', tag: 'psicanalise', peso: 3 },
-      { texto: 'Meu filho(a) tem dificuldades na escola ou comportamento', tag: 'desenvolvimento-infantil', peso: 3 },
-      { texto: 'Busco entender o sentido da minha vida', tag: 'estrutura', peso: 3 },
-      { texto: 'Quero entender a conexão entre mente e corpo', tag: 'psicossomatica', peso: 3 }
+      { texto: 'Meu maior objetivo é o autoconhecimento, entender quem eu sou.', tag: 'autoconhecimento', peso: 3 },
+      { texto: 'Amadurecer e aprender a regular melhor minhas emoções intensas.', tag: 'desregulacao-emocional', peso: 3 },
+      { texto: 'Tenho interesse em entender a fundo as diferentes condições da saúde mental.', tag: 'psicopatologia', peso: 2 },
+      { texto: 'Desenvolver e treinar minhas habilidades sociais para interagir melhor.', tag: 'habilidades-sociais', peso: 3 }
     ]
   },
+
+  // Pergunta 5: Uma pergunta final para capturar demandas específicas.
   {
-    pergunta: 'Que tipo de profissional você imagina te ajudando?',
+    pergunta: 'Qual destas frases tem mais a ver com você?',
     respostas: [
-      { texto: 'Alguém prático(a) e objetivo(a)', tag: 'abordagem-direta', peso: 3 },
-      { texto: 'Alguém que me faça refletir profundamente', tag: 'abordagem-analitica', peso: 3 },
-      { texto: 'Especialista em crianças e desenvolvimento', tag: 'especialista-infantil', peso: 3 },
-      { texto: 'Alguém que me ajude na jornada de autoconhecimento', tag: 'bem-estar-emocional', peso: 3 },
-      { texto: 'Especialista em sintomas físicos e emocionais', tag: 'especialista-somatico', peso: 3 }
+      { texto: 'Eu uso a palavra "sofrimento" para descrever o que sinto, é algo que me angustia.', tag: 'sofrimento-psiquico', peso: 3 },
+      { texto: 'Meu caso está ligado a um contexto de saúde (hospital, doença crônica, etc.).', tag: 'psicologia-hospitalar-e-da-saude', peso: 4 },
+      { texto: 'Eu sinto que preciso amadurecer meu lado emocional como um todo.', tag: 'desenvolvimento-emocional', peso: 3 },
+      { texto: 'Como adulto, me identifico com características do espectro autista e busco ajuda para isso.', tag: 'tea-transtorno-do-espectro-autista', peso: 4 }
     ]
   }
 ];
