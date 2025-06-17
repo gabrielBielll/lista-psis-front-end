@@ -37,7 +37,7 @@ const QuestionarioMatch = ({ onMatchComplete }) => {
                     if(psi.tagsParaMatch.includes(item.tag)) {
                         // Ensure item.confianca is a number, default to 0 if not
                         const confianca = typeof item.confianca === 'number' ? item.confianca : 0;
-                        const pontuacaoIA = 10 * confianca;
+                        const pontuacaoIA = 30 * confianca;
                         scores[psi.id] += pontuacaoIA;
                     }
                 });
