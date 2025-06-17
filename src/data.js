@@ -5,7 +5,7 @@ export const psicologasData = [
     fotoUrl: '/psicologas_fotos/karine.webp',
     abordagem: 'Terapia Cognitivo-Comportamental',
     bio: "Psicóloga com formação em Terapia Cognitivo-Comportamental (TCC) e pós-graduanda em Análise do Comportamento Aplicada (ABA). Atua no atendimento clínico de adultos, com experiência também no acompanhamento do público considerado atípico (neurodivergente), em um espaço terapêutico acolhedor e centrado no fortalecimento do vínculo como base do processo terapêutico. Sua prática é fundamentada na Terapia Cognitivo-Comportamental (TCC), abordagem que busca identificar padrões de pensamento e comportamento, promovendo mudanças que favoreçam o desenvolvimento emocional, comportamental e a autonomia dos pacientes. Possui experiência no acompanhamento de questões como ansiedade, TDAH, TEA (Transtorno do Espectro Autista), desregulação emocional, dificuldades nos relacionamentos amorosos e no desenvolvimento de habilidades sociais.",
-    especialidades: ["TCC", "ABA", "Adultos", "Neurodivergência", "Ansiedade", "TDAH", "TEA"], // Updated
+    especialidades: ["Terapia Cognitivo-Comportamental (TCC)", "Análise do Comportamento Aplicada (ABA)", "Adultos", "Neurodivergência", "Ansiedade", "TDAH", "TEA (Transtorno do Espectro Autista)", "Desregulação Emocional", "Habilidades Sociais", "Relacionamentos Amorosos"],
     tagsParaMatch: ["terapia-cognitivo-comportamental-tcc", "analise-do-comportamento-aplicada-aba", "adultos", "neurodivergencia", "ansiedade", "tdah", "tea-transtorno-do-espectro-autista", "desregulacao-emocional", "habilidades-sociais", "relacionamentos-amorosos"],
     crp: "05/71731",
     mensagemResultado: "Karine é especialista em Terapia Cognitivo-Comportamental com foco no desenvolvimento da autonomia e no bem-estar emocional. Ela vai te dar ferramentas práticas para lidar com os desafios do dia a dia e fortalecer sua segurança emocional!"
@@ -27,8 +27,8 @@ export const psicologasData = [
     fotoUrl: '/psicologas_fotos/juliana.webp',
     abordagem: 'Psicanálise',
     bio: "Psicóloga, especialista em Psicologia Hospitalar e da Saúde, Pós-Graduanda em Saúde Mental e Atenção Psicossocial. Sua prática é orientada pela psicanálise, com foco no atendimento de adultos e jovens adultos. Possui experiência no acompanhamento de questões como ansiedade, depressão, luto, conflitos relacionais, transtornos de personalidade e autismo, entre outras demandas ligadas ao sofrimento psíquico. Atua também como supervisora de estágio, com ampla vivência em contextos clínicos e institucionais na área da saúde mental.",
-    especialidades: ["Psicanálise", "Adultos", "Psicologia Hospitalar e da Saúde", "Saúde Mental", "Ansiedade", "Depressão", "Luto", "Transtornos de Personalidade", "Autismo", "Estresse"],
-    tagsParaMatch: ["psicanalise", "adultos", "psicologia-hospitalar-saude", "saude-mental", "ansiedade", "depressao", "luto", "transtornos-de-personalidade", "autismo", "estresse", "conflitos-relacionais"],
+    especialidades: ["Psicanálise", "Adultos", "Psicologia Hospitalar e da Saúde", "Saúde Mental", "Ansiedade", "Depressão", "Luto", "Transtornos de Personalidade", "Autismo", "Estresse", "Conflitos Relacionais"],
+    tagsParaMatch: ["psicanalise", "adultos", "psicologia-hospitalar-e-da-saude", "saude-mental", "ansiedade", "depressao", "luto", "transtornos-de-personalidade", "autismo", "estresse", "conflitos-relacionais"],
     crp: "05/64368",
     mensagemResultado: "Juliana é especialista em Psicanálise com foco em saúde mental e na elaboração de conflitos internos. Com sua vasta experiência, ela vai te oferecer uma escuta profunda para compreender suas questões e construir caminhos mais conscientes!"
   },
@@ -49,7 +49,7 @@ export const psicologasData = [
     fotoUrl: '/psicologas_fotos/andrezza.webp',
     abordagem: 'Psicanálise',
     bio: "Psicóloga, com Formação Clínica em Psicanálise pela Práxis Lacaniana. Ao longo de sua trajetória, participou de diversos cursos voltados à Psicanálise no Contemporâneo, aprofundando sua escuta clínica frente às singularidades da subjetividade atual. Sua atuação é orientada pela psicanálise, com experiência no atendimento clínico de adultos, abordando questões como angústia, sofrimento psíquico, relações familiares, conflitos subjetivos e processos de escuta e elaboração. Atende também sintomas psicossomáticos, quadros ansiosos, depressivos, Transtorno Obsessivo-Compulsivo (TOC), TDAH, bem como demandas relacionadas a relacionamentos amorosos, familiares e outras vivências afetivas.",
-    especialidades: ["Psicanálise", "Psicanálise Lacaniana", "Adultos", "Angústia", "TOC", "Sintomas Psicossomáticos", "TDAH"], // Updated
+    especialidades: ["Psicanálise", "Psicanálise Lacaniana", "Adultos", "Angústia", "Sofrimento Psíquico", "Ansiedade", "Depressão", "TOC (Transtorno Obsessivo-Compulsivo)", "TDAH", "Sintomas Psicossomáticos", "Relacionamentos (Amorosos e Familiares)"],
     tagsParaMatch: ["psicanalise", "psicanalise-lacaniana", "adultos", "angustia", "sofrimento-psiquico", "ansiedade", "depressao", "toc-transtorno-obsessivo-compulsivo", "tdah", "sintomas-psicossomaticos", "relacionamentos-amorosos-e-familiares"],
     crp: "05/62770",
     mensagemResultado: "Andrezza é psicanalista especialista na relação mente-corpo. Ela vai te ajudar a entender como suas emoções se manifestam fisicamente e encontrar formas saudáveis de expressão!"
