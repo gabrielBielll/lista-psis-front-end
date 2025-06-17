@@ -17,16 +17,16 @@ export const psicologasData = [
     abordagem: 'Terapia Cognitivo-Comportamental',
     bio: "Psicóloga com formação em Terapia Cognitivo-Comportamental e pós-graduanda em Psicopatologia. Atua no atendimento clínico de adultos, oferecendo uma escuta qualificada e acolhedora, com foco no desenvolvimento emocional e comportamental dos pacientes. Sua prática é fundamentada na Terapia Cognitivo-Comportamental (TCC), abordagem que busca identificar e ressignificar padrões de pensamento e comportamento que geram sofrimento. Possui experiência no acompanhamento de demandas relacionadas a transtornos de ansiedade, transtornos de humor, TDAH, dificuldades nos relacionamentos e questões ligadas à comunicação interpessoal.",
     especialidades: ["TCC", "Psicopatologia", "Adultos", "Ansiedade", "Transtornos de Humor", "TDAH"],
-    tagsParaMatch: ["humor", "comunicacao", "ferramentas-praticas", "tcc", "abordagem-direta", "tdah", "ansiedade"],
+    tagsParaMatch: ["humor", "comunicacao", "ferramentas-praticas", "tcc", "abordagem-direta", "tdah", "ansiedade", "habilidades-sociais", "controle", "estrutura", "bem-estar-emocional"], // Updated
     crp: "05/71439",
-    mensagemResultado: "Jéssica é especialista em Terapia Cognitivo-Comportamental com foco na reestruturação de pensamentos e no desenvolvimento de habilidades interpessoais. Ela vai te guiar com estratégias eficazes para promover seu desenvolvimento e melhorar sua qualidade de vida!"
+    mensagemResultado: "Jéssica é especialista em TCC para transtornos de humor e comunicação. Ela vai te ajudar a recuperar sua energia e melhorar suas habilidades sociais com estratégias eficazes!"
   },
   {
     id: 3,
     nome: "Juliana Dos Santos Reimol",
     fotoUrl: '/psicologas_fotos/juliana.webp',
     abordagem: 'Psicanálise',
-    bio: "Psicóloga (Universidade Salgado de Oliveira), pós-graduada em psicologia hospitalar e da saúde, e pós-graduanda em saúde mental e atenção psicossocial. Atua pela psicanálise com crianças, jovens e adultos, e como supervisora de estágio na Associação Fluminense de Reabilitação. Vasta experiência clínica e em saúde mental. Atendimentos online.", // Updated Bio
+    bio: "Psicóloga (Universidade Salgado de Oliveira), pós-graduada em psicologia hospitalar e da saúde, e pós-graduanda em saúde mental e atenção psicossocial. Atua pela psicanálise com crianças, jovens e adultos, e como supervisora de estágio na Associação Fluminense de Reabilitação. Vasta experiência clínica e em saúde mental. Atendimentos online.",
     especialidades: ["Psicanálise", "Paternidade", "Desenvolvimento Familiar", "Saúde Mental"],
     tagsParaMatch: ["psicanalise", "paternidade", "desenvolvimento-familiar", "saude-mental", "reflexao-profunda", "analise-profunda", "existencial", "personalidade"],
     crp: "05/64368",
@@ -63,7 +63,7 @@ export const perguntasMatch = [
       { texto: 'Ansioso(a) e preocupado(a) com tudo', tag: 'ansiedade', peso: 3 },
       { texto: 'Triste e sem energia para as coisas', tag: 'humor', peso: 3 },
       { texto: 'Confuso(a) e perdido(a) na vida', tag: 'existencial', peso: 2 },
-      { texto: 'Preso(a) em pensamentos que não saem da cabeça', tag: 'obsessivo', peso: 3 },
+      { texto: 'Preso(a) em pensamentos que não saem da cabeça', tag: 'tdah', peso: 3 }, // Q1 A4 Updated
       { texto: 'Estressado(a) e com sintomas físicos estranhos', tag: 'somatizacao', peso: 3 }
     ]
   },
@@ -73,7 +73,7 @@ export const perguntasMatch = [
       { texto: 'Melhorar meus relacionamentos amorosos', tag: 'relacionamentos-amorosos', peso: 3 },
       { texto: 'Me comunicar melhor com as pessoas', tag: 'comunicacao', peso: 2 },
       { texto: 'Questões do meu filho(a): comportamento, desenvolvimento, escola', tag: 'criancas', peso: 3 },
-      { texto: 'Me conhecer melhor e crescer como pessoa', tag: 'autoconhecimento', peso: 2 },
+      { texto: 'Me conhecer melhor e crescer como pessoa', tag: 'habilidades-sociais', peso: 3 }, // Q2 A4 Updated
       { texto: 'Entender por que meu corpo reage ao estresse', tag: 'mente-corpo', peso: 3 }
     ]
   },
@@ -83,7 +83,7 @@ export const perguntasMatch = [
       { texto: 'Quero soluções práticas e rápidas', tag: 'ferramentas-praticas', peso: 3 },
       { texto: 'Gosto de entender o \'porquê\' profundo das coisas', tag: 'reflexao-profunda', peso: 3 },
       { texto: 'Preciso me acalmar e focar no presente', tag: 'mindfulness', peso: 2 },
-      { texto: 'Prefiro ter controle e um plano estruturado', tag: 'controle', peso: 3 },
+      { texto: 'Prefiro ter controle e um plano estruturado', tag: 'controle', peso: 3 }, // Q3 A4 Updated
       { texto: 'Quero expressar o que sinto sem julgamento', tag: 'expressao-emocional', peso: 3 }
     ]
   },
@@ -93,7 +93,7 @@ export const perguntasMatch = [
       { texto: 'Preciso de ferramentas para usar no dia a dia', tag: 'tcc', peso: 3 },
       { texto: 'Quero explorar meus sentimentos profundamente', tag: 'psicanalise', peso: 3 },
       { texto: 'Meu filho(a) tem dificuldades na escola ou comportamento', tag: 'desenvolvimento-infantil', peso: 3 },
-      { texto: 'Busco entender o sentido da minha vida', tag: 'existencial-profundo', peso: 3 },
+      { texto: 'Busco entender o sentido da minha vida', tag: 'estrutura', peso: 3 }, // Q4 A4 Updated
       { texto: 'Quero entender a conexão entre mente e corpo', tag: 'psicossomatica', peso: 3 }
     ]
   },
@@ -103,7 +103,7 @@ export const perguntasMatch = [
       { texto: 'Alguém prático(a) e objetivo(a)', tag: 'abordagem-direta', peso: 3 },
       { texto: 'Alguém que me faça refletir profundamente', tag: 'abordagem-analitica', peso: 3 },
       { texto: 'Especialista em crianças e desenvolvimento', tag: 'especialista-infantil', peso: 3 },
-      { texto: 'Alguém que me ajude na jornada de autoconhecimento', tag: 'autodescobrimento', peso: 3 },
+      { texto: 'Alguém que me ajude na jornada de autoconhecimento', tag: 'bem-estar-emocional', peso: 3 }, // Q5 A4 Updated
       { texto: 'Especialista em sintomas físicos e emocionais', tag: 'especialista-somatico', peso: 3 }
     ]
   }
