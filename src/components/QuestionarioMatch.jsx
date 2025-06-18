@@ -47,7 +47,7 @@ const QuestionarioMatch = ({ onMatchComplete }) => {
                 psicologasData.forEach(psi => {
                     if(psi.tagsParaMatch.includes(item.tag)) {
                         const confianca = typeof item.confianca === 'number' ? item.confianca : 0;
-                        const pontuacaoIA = 10 * confianca; // Usando o seu multiplicador de teste
+                        const pontuacaoIA = 7 * confianca; // Usando o seu multiplicador de teste
                         scores[psi.id] += pontuacaoIA;
                     }
                 });
