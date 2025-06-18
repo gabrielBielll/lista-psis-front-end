@@ -85,7 +85,8 @@ const QuestionarioMatch = ({ onMatchComplete }) => {
       const todasAsTags = [...new Set(psicologasData.flatMap(p => p.tagsParaMatch))];
       const prompt = `Analise o seguinte texto de um paciente: "${texto}". Com base no texto, retorne uma lista em formato JSON com os 3 rótulos mais relevantes da lista de opções a seguir que descrevem as necessidades do paciente: ${JSON.stringify(todasAsTags)}. Para cada rótulo, forneça um 'score de confiança' de 0.0 a 1.0. O formato da resposta deve ser um array de objetos JSON, como neste exemplo: [{"tag": "ansiedade", "confianca": 0.95}, {"tag": "relacionamentos", "confianca": 0.70}]`;
 
-      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.0-pro:generateContent?key=${apiKey}`;
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+
 
       try {
         const response = await fetch(apiUrl, {
