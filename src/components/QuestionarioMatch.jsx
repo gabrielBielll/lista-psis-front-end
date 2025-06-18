@@ -21,6 +21,7 @@ const QuestionarioMatch = ({ onMatchComplete }) => {
 
     const scores = psicologasData.reduce((acc, psi) => ({ ...acc, [psi.id]: 0 }), {});
 
+    // Scores do Questionário
     respostas.forEach(resposta => {
         psicologasData.forEach(psi => {
         if (psi.tagsParaMatch.includes(resposta.tag)) {
@@ -29,31 +30,45 @@ const QuestionarioMatch = ({ onMatchComplete }) => {
       });
     });
 
+    // --- LOG DE DEBUG 1: Para ver a pontuação ANTES da IA ---
+    console.log("--- PONTUAÇÃO APÓS QUESTIONÁRIO ---");
+    console.log(JSON.stringify(scores, null, 2));
+
+
     if (textoLivre.trim().length > 0) {
         try {
             const tagsFromAI = await analisarTextoComIA(textoLivre);
+
+            // --- LOG DE DEBUG 2: Para ver EXATAMENTE o que a IA retornou ---
+            console.log("--- TAGS RECEBIDAS DA IA ---");
+            console.log(JSON.stringify(tagsFromAI, null, 2));
+
             tagsFromAI.forEach(item => {
                 psicologasData.forEach(psi => {
                     if(psi.tagsParaMatch.includes(item.tag)) {
-                        // Ensure item.confianca is a number, default to 0 if not
                         const confianca = typeof item.confianca === 'number' ? item.confianca : 0;
-                        const pontuacaoIA = 30 * confianca;
+                        const pontuacaoIA = 30 * confianca; // Usando o seu multiplicador de teste
                         scores[psi.id] += pontuacaoIA;
                     }
                 });
             });
         } catch (error) {
             console.error("Erro ao analisar texto com IA:", error);
-            // Optionally, inform the user that AI analysis failed but continue with questionnaire-based match
         }
     }
 
+    // --- LOG DE DEBUG 3: Para ver a pontuação FINAL ---
+    console.log("--- PONTUAÇÃO FINAL (APÓS IA) ---");
+    console.log(JSON.stringify(scores, null, 2));
+
+
+    // O resto da função continua igual
     const maiorScore = Math.max(...Object.values(scores));
 
     if (maiorScore === 0) {
       const shuffled = [...psicologasData].sort(() => 0.5 - Math.random());
       onMatchComplete(shuffled.slice(0, 1));
-      setIsLoading(false); // Ensure loading state is reset
+      setIsLoading(false);
       return;
     }
 
