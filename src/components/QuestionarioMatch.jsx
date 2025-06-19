@@ -1,71 +1,104 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { psicologasData, perguntasMatch } from '../data.js';
 
 const QuestionarioMatch = ({ onMatchComplete }) => {
   const [perguntaAtual, setPerguntaAtual] = useState(0);
   const [respostas, setRespostas] = useState([]);
+  const [selectedHorarios, setSelectedHorarios] = useState(new Set());
   const [textoLivre, setTextoLivre] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const totalPerguntas = perguntasMatch.length + 1; // +1 for the text input step
+  const totalPerguntas = perguntasMatch.length + 2; // Perguntas + Horários + Texto Livre
+
+  const todosOsHorarios = useMemo(() => {
+    const horariosSet = new Set(psicologasData.flatMap(p => p.horariosDisponiveis));
+    return Array.from(horariosSet).sort(); // Ordena para consistência
+  }, []);
 
   const handleRespostaClick = (resposta) => {
-    const novasRespostas = [...respostas, resposta];
-    setRespostas(novasRespostas);
+    setRespostas([...respostas, resposta]);
     setPerguntaAtual(perguntaAtual + 1);
+  };
+
+  const handleHorarioToggle = (horario) => {
+    const newSelected = new Set(selectedHorarios);
+    if (newSelected.has(horario)) {
+      newSelected.delete(horario);
+    } else {
+      newSelected.add(horario);
+    }
+    setSelectedHorarios(newSelected);
   };
 
   const handleTextoSubmit = async () => {
     if (isLoading) return;
     setIsLoading(true);
 
-    const scores = psicologasData.reduce((acc, psi) => ({ ...acc, [psi.id]: 0 }), {});
+    // 1. Filtrar psicólogas por horário
+    const horariosSelecionadosArray = Array.from(selectedHorarios);
+    const psicologasDisponiveis = psicologasData.filter(psi =>
+      psi.horariosDisponiveis.some(horarioPsi => horariosSelecionadosArray.includes(horarioPsi))
+    );
 
-    // Calcula os scores do Questionário
+    // 2. Determinar a lista de candidatas para o match
+    // Se houver psicólogas disponíveis, usamos essa lista. Senão, usamos todas como fallback.
+    const listaParaMatch = psicologasDisponiveis.length > 0 ? psicologasDisponiveis : psicologasData;
+
+    const scores = listaParaMatch.reduce((acc, psi) => ({ ...acc, [psi.id]: 0 }), {});
+
+    // 3. Calcular scores do questionário
     respostas.forEach(resposta => {
-      psicologasData.forEach(psi => {
+      listaParaMatch.forEach(psi => {
         if (psi.tagsParaMatch.includes(resposta.tag)) {
           scores[psi.id] += resposta.peso;
         }
       });
     });
 
-    // Adiciona os scores da IA, se houver texto
+    // 4. Adicionar scores da IA (se houver texto)
     if (textoLivre.trim().length > 0) {
       try {
         const tagsFromAI = await analisarTextoComIA(textoLivre);
         tagsFromAI.forEach(item => {
-          psicologasData.forEach(psi => {
-            if(psi.tagsParaMatch.includes(item.tag)) {
+          listaParaMatch.forEach(psi => {
+            if (psi.tagsParaMatch.includes(item.tag)) {
               const confianca = typeof item.confianca === 'number' ? item.confianca : 0;
-              const pontuacaoIA = 7 * confianca; // Multiplicador calibrado
-              scores[psi.id] += pontuacaoIA;
+              scores[psi.id] += 7 * confianca; // Multiplicador calibrado
             }
           });
         });
       } catch (error) {
-        // Loga apenas erros reais que podem acontecer na chamada da API
         console.error("Erro ao analisar texto com IA:", error);
       }
     }
 
-    // Encontra o melhor match
+    // 5. Encontrar o melhor match
     const maiorScore = Math.max(...Object.values(scores));
 
     if (maiorScore === 0) {
-      const shuffled = [...psicologasData].sort(() => 0.5 - Math.random());
-      onMatchComplete(shuffled.slice(0, 1));
-      setIsLoading(false);
-      return;
+        // Se nenhum score foi gerado, retorna uma aleatória da lista (disponível ou total)
+        const shuffled = [...listaParaMatch].sort(() => 0.5 - Math.random());
+        onMatchComplete(shuffled.slice(0, 1));
+        setIsLoading(false);
+        return;
     }
 
-    const melhoresMatches = psicologasData.filter(psi => scores[psi.id] === maiorScore);
+    let melhoresMatches = listaParaMatch.filter(psi => scores[psi.id] === maiorScore);
+    let melhorMatch = melhoresMatches[Math.floor(Math.random() * melhoresMatches.length)];
 
-    const randomIndex = Math.floor(Math.random() * melhoresMatches.length);
+    // 6. Adicionar aviso se o match final não tiver o horário desejado
+    if (psicologasDisponiveis.length === 0 && horariosSelecionadosArray.length > 0) {
+        melhorMatch = {
+            ...melhorMatch,
+            mensagemResultado: melhorMatch.mensagemResultado + " (Aviso: não encontramos uma especialista com os horários que você selecionou, mas esta é a melhor combinação para suas outras necessidades.)"
+        };
+    }
+
     setIsLoading(false);
-    onMatchComplete([melhoresMatches[randomIndex]]);
+    onMatchComplete([melhorMatch]);
   };
 
+  // A função analisarTextoComIA continua a mesma
   async function analisarTextoComIA(texto) {
     const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
     const todasAsTags = [...new Set(psicologasData.flatMap(p => p.tagsParaMatch))];
@@ -83,7 +116,7 @@ const QuestionarioMatch = ({ onMatchComplete }) => {
 
       if (!response.ok) {
         console.error(`API call failed with status: ${response.status}`, await response.text());
-        return []; // Retorna vazio em caso de erro na API
+        return [];
       }
 
       const result = await response.json();
@@ -105,19 +138,17 @@ const QuestionarioMatch = ({ onMatchComplete }) => {
       }
     } catch (error) {
       console.error("Error during fetch or processing AI response:", error);
-      return []; // Retorna vazio em caso de erro de rede ou outros
+      return [];
     }
-    return []; // Retorno padrão
+    return [];
   }
 
   const renderEtapaAtual = () => {
+    const progresso = ((perguntaAtual + 1) / totalPerguntas) * 100;
+
+    // Etapa das perguntas de múltipla escolha
     if (perguntaAtual < perguntasMatch.length) {
       const pergunta = perguntasMatch[perguntaAtual];
-      if (!pergunta) {
-        console.error("Pergunta não encontrada para o índice atual:", perguntaAtual);
-        return <p>Erro ao carregar pergunta. Tente novamente.</p>;
-      }
-      const progresso = ((perguntaAtual + 1) / totalPerguntas) * 100;
       return (
         <>
           <div className="match-progresso-barra"><div className="match-progresso-preenchimento" style={{ width: `${progresso}%` }}></div></div>
@@ -132,11 +163,37 @@ const QuestionarioMatch = ({ onMatchComplete }) => {
           <p className="match-progresso-texto">Passo {perguntaAtual + 1} de {totalPerguntas}</p>
         </>
       );
-    } else {
-      const finalProgresso = 100;
+    }
+    // Nova Etapa: Seleção de Horários
+    else if (perguntaAtual === perguntasMatch.length) {
+      return (
+         <>
+          <div className="match-progresso-barra"><div className="match-progresso-preenchimento" style={{ width: `${progresso}%` }}></div></div>
+          <h3 className="match-pergunta">Quais dias e horários funcionam para você?</h3>
+          <p className="match-subpergunta">Selecione todas as opções que se encaixam na sua rotina. Isso nos ajudará a encontrar uma especialista com agenda compatível.</p>
+          <div className="horarios-grid">
+            {todosOsHorarios.map(horario => (
+              <button
+                key={horario}
+                onClick={() => handleHorarioToggle(horario)}
+                className={`horario-botao ${selectedHorarios.has(horario) ? 'selecionado' : ''}`}
+              >
+                {horario}
+              </button>
+            ))}
+          </div>
+          <button className="botao-proximo" onClick={() => setPerguntaAtual(perguntaAtual + 1)}>
+             {selectedHorarios.size > 0 ? "Continuar" : "Pular esta etapa"}
+          </button>
+          <p className="match-progresso-texto">Passo {perguntaAtual + 1} de {totalPerguntas}</p>
+        </>
+      )
+    }
+    // Etapa Final: Texto Livre (opcional)
+    else {
       return (
         <>
-          <div className="match-progresso-barra"><div className="match-progresso-preenchimento" style={{ width: `${finalProgresso}%` }}></div></div>
+          <div className="match-progresso-barra"><div className="match-progresso-preenchimento" style={{ width: '100%' }}></div></div>
           <h3 className="match-pergunta">Descreva seu momento em suas palavras.</h3>
           <p className="match-subpergunta">Nossa Inteligência Artificial analisará sua descrição para refinar a recomendação, garantindo a escolha mais precisa. (Opcional)</p>
           <textarea
