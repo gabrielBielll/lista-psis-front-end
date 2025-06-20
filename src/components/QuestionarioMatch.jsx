@@ -34,38 +34,63 @@ const QuestionarioMatch = ({ onMatchComplete, psicologas, horariosGerais, isLoad
         if (isLoadingMatch) return;
         setIsLoadingMatch(true);
 
-        const scores = psicologas.reduce((acc, psi) => ({ ...acc, [psi.id]: 0 }), {});
+        // --- NOVA LÓGICA DE FILTRAGEM ---
+        let candidatasParaMatch = psicologas;
+        let avisoHorario = false;
+
+        // 1. Filtra por horário, se o utilizador selecionou algum.
+        if (horariosSelecionados.length > 0) {
+            const psicologasDisponiveis = psicologas.filter(psi => 
+                horariosSelecionados.some(horarioKey => {
+                    const [dia, hora] = horarioKey.split(':');
+                    return psi.horarios_disponiveis && psi.horarios_disponiveis[dia]?.includes(hora);
+                })
+            );
+
+            if (psicologasDisponiveis.length > 0) {
+                candidatasParaMatch = psicologasDisponiveis; // Usa a lista filtrada se houver compatibilidade.
+            } else {
+                avisoHorario = true; // Ativa o aviso para o resultado final.
+            }
+        }
+
+        // 2. Calcula scores APENAS para as candidatas.
+        const scores = candidatasParaMatch.reduce((acc, psi) => ({ ...acc, [psi.id]: 0 }), {});
 
         respostas.forEach(resposta => {
-            psicologas.forEach(psi => {
+            candidatasParaMatch.forEach(psi => {
                 if (psi.tagsParaMatch.includes(resposta.tag)) {
                     scores[psi.id] += resposta.peso;
                 }
             });
         });
 
-        if (horariosSelecionados.length > 0) {
-            horariosSelecionados.forEach(horarioKey => {
-                const [dia, hora] = horarioKey.split(':');
-                psicologas.forEach(psi => {
-                    if (psi.horarios_disponiveis && psi.horarios_disponiveis[dia]?.includes(hora)) {
-                        scores[psi.id] += 5;
-                    }
-                });
-            });
+        // 3. (Opcional) Refina com a IA.
+        if (textoLivre.trim().length > 0) {
+             // A sua lógica de chamada à API Gemini iria aqui...
+             // Lembre-se de passar as tags das `candidatasParaMatch` para a IA ser mais precisa.
         }
         
-        // A sua lógica de chamada à API Gemini iria aqui...
-
+        // 4. Encontra o melhor match dentro do grupo de candidatas.
         const maiorScore = Math.max(...Object.values(scores));
+
         if (maiorScore === 0) {
-            const shuffled = [...psicologas].sort(() => 0.5 - Math.random());
+            const shuffled = [...candidatasParaMatch].sort(() => 0.5 - Math.random());
             onMatchComplete(shuffled.slice(0, 1));
             setIsLoadingMatch(false);
             return;
         }
-        const melhoresMatches = psicologas.filter(psi => scores[psi.id] === maiorScore);
-        const melhorMatch = melhoresMatches[Math.floor(Math.random() * melhoresMatches.length)];
+
+        let melhoresMatches = candidatasParaMatch.filter(psi => scores[psi.id] === maiorScore);
+        let melhorMatch = melhoresMatches[Math.floor(Math.random() * melhoresMatches.length)];
+
+        // 5. Adiciona a mensagem de aviso se necessário.
+        if (avisoHorario) {
+            melhorMatch = {
+                ...melhorMatch,
+                mensagemResultado: (melhorMatch.mensagemResultado || "Esta é a melhor combinação para si.") + " (Aviso: não encontrámos uma especialista com os horários que selecionou, mas esta é a melhor combinação para as suas outras necessidades.)"
+            };
+        }
 
         setIsLoadingMatch(false);
         onMatchComplete([melhorMatch]);
