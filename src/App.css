@@ -345,3 +345,78 @@ button {
   border-color: var(--verde-oliva);
   box-shadow: 0 0 0 3px rgba(110, 119, 93, 0.2);
 }
+/* src/App.css (adicionar no final) */
+
+/* --- Estilos para a Grade de Seleção de Horários no Questionário --- */
+.horarios-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+  width: 100%;
+}
+
+.botao-horario {
+  padding: 12px 8px;
+  border-radius: 8px;
+  border: 2px solid var(--cinza-borda);
+  background-color: var(--fundo-bege);
+  color: var(--marrom-texto);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.botao-horario:hover {
+  border-color: var(--verde-oliva);
+  background-color: #f6f3ed;
+}
+
+.botao-horario.selecionado {
+  background-color: var(--verde-oliva);
+  color: var(--branco);
+  border-color: var(--verde-oliva);
+  font-weight: 700;
+}
+
+.botoes-navegacao-horarios {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.botao-proximo {
+  width: 100%;
+  max-width: 300px;
+  background-color: var(--laranja-acao);
+  color: var(--branco);
+  border: none;
+  border-radius: 50px;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.botao-proximo:hover {
+    background-color: #d48f70;
+    transform: translateY(-2px);
+}
+
+.botao-pular {
+  background: none;
+  border: none;
+  color: var(--marrom-texto);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.botao-pular:hover {
+    color: var(--verde-oliva);
+}
