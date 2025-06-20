@@ -305,3 +305,43 @@ button {
   color: #999;
   margin-top: 1rem;
 }
+/* src/App.css (adicionar no final) */
+
+/* --- Estilos para o Seletor de Horário no Resultado --- */
+.selecao-horario-container {
+  width: 100%;
+  margin-bottom: 0.75rem; /* Espaço antes do botão de agendar */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.selecao-horario-container label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--marrom-texto);
+  text-align: center;
+}
+
+.horario-select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 2px solid var(--cinza-borda);
+  background-color: var(--branco);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.horario-select:hover {
+  border-color: var(--verde-oliva);
+}
+
+.horario-select:focus {
+  outline: none;
+  border-color: var(--verde-oliva);
+  box-shadow: 0 0 0 3px rgba(110, 119, 93, 0.2);
+}
