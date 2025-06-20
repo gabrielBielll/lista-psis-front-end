@@ -1,97 +1,82 @@
 // src/components/QuestionarioMatch.jsx
 
 import React, { useState } from 'react';
-// REMOVIDO: Não vamos mais depender do 'useMemo' ou 'psicologasData' diretamente aqui para horários.
-// import { psicologasData, perguntasMatch } from '../data.js';
-import { perguntasMatch } from '../data.js'; // Apenas as perguntas são necessárias de data.js
+import { perguntasMatch } from '../data.js'; // Apenas as perguntas são estáticas
 
-// NOVO: Função para traduzir os dias, para exibição na tela.
-function traduzirDia(dia) {
-    const mapaDias = {
-        seg: "Segunda",
-        ter: "Terça",
-        qua: "Quarta",
-        qui: "Quinta",
-        sex: "Sexta",
-        sab: "Sábado",
-        dom: "Domingo"
-    };
-    return mapaDias[dia.toLowerCase()] || dia;
+// Função auxiliar para formatar o dia para exibição (ex: "seg" -> "Segunda")
+function formatarDia(dia) {
+    const mapa = { seg: "Segunda", ter: "Terça", qua: "Quarta", qui: "Quinta", sex: "Sexta", sab: "Sábado", dom: "Domingo" };
+    return mapa[dia.toLowerCase()] || dia;
 }
 
-// ALTERAÇÃO: O componente agora recebe 'psicologas' e 'horariosGerais'
 const QuestionarioMatch = ({ onMatchComplete, psicologas, horariosGerais }) => {
+  // Estados para controlar o fluxo do questionário
   const [perguntaAtual, setPerguntaAtual] = useState(0);
   const [respostas, setRespostas] = useState([]);
-  // ALTERAÇÃO: O Set agora vai guardar chaves únicas como "dia-hora" (ex: "seg-10:00")
-  const [selectedHorarios, setSelectedHorarios] = useState(new Set());
+  const [horariosSelecionados, setHorariosSelecionados] = useState([]);
   const [textoLivre, setTextoLivre] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const totalPerguntas = perguntasMatch.length + 2;
+  const totalEtapas = perguntasMatch.length + 2; // Perguntas + Horários + Texto IA
 
-  // REMOVIDO: A lógica de 'todosOsHorarios' agora vem via prop 'horariosGerais'.
-  /* const todosOsHorarios = useMemo(() => { ... });
-  */
-
+  // Avança para a próxima pergunta
   const handleRespostaClick = (resposta) => {
     setRespostas([...respostas, resposta]);
     setPerguntaAtual(perguntaAtual + 1);
   };
 
-  // ALTERAÇÃO: Lida com a seleção de horários no formato "dia-hora"
-  const handleHorarioToggle = (horarioKey) => {
-    const newSelected = new Set(selectedHorarios);
-    if (newSelected.has(horarioKey)) {
-      newSelected.delete(horarioKey);
-    } else {
-      newSelected.add(horarioKey);
-    }
-    setSelectedHorarios(newSelected);
+  // Lida com a seleção (marcar/desmarcar) de horários
+  const handleHorarioClick = (horarioKey) => {
+    setHorariosSelecionados(prev =>
+      prev.includes(horarioKey)
+        ? prev.filter(h => h !== horarioKey)
+        : [...prev, horarioKey]
+    );
+  };
+  
+  // Avança para a próxima etapa (usado após a seleção de horários)
+  const irParaProximaEtapa = () => {
+    setPerguntaAtual(perguntaAtual + 1);
   };
 
-  const handleTextoSubmit = async () => {
+  // Função final que calcula o match com base em todas as respostas
+  const finalizarMatch = async () => {
     if (isLoading) return;
     setIsLoading(true);
 
-    const horariosSelecionadosArray = Array.from(selectedHorarios);
+    // Usa a prop `psicologas` que vem do App.jsx, já com os dados da API
+    const scores = psicologas.reduce((acc, psi) => ({ ...acc, [psi.id]: 0 }), {});
 
-    // ALTERAÇÃO FUNDAMENTAL: Filtrar psicólogas com base nos horários selecionados
-    const psicologasDisponiveis = horariosSelecionadosArray.length === 0
-      ? psicologas // Se nenhum horário foi selecionado, considera todas
-      : psicologas.filter(psi => {
-          // Para cada psicóloga, verifica se algum de seus horários bate com os selecionados
-          return horariosSelecionadosArray.some(selecionado => {
-            const [dia, hora] = selecionado.split('-');
-            // Verifica se a psi tem o dia e se o array de horas para aquele dia inclui a hora selecionada
-            return psi.horarios_disponiveis[dia] && psi.horarios_disponiveis[dia].includes(hora);
-          });
-        });
-
-    // Se o filtro de horário não retornou ninguém, mas o usuário selecionou horários,
-    // usamos todas as psicólogas como fallback para não travar o processo.
-    // O aviso sobre a incompatibilidade de horário será adicionado no final.
-    const listaParaMatch = psicologasDisponiveis.length > 0 ? psicologasDisponiveis : psicologas;
-
-    // O restante da lógica de cálculo de score permanece a mesma, mas agora opera sobre 'listaParaMatch'
-    const scores = listaParaMatch.reduce((acc, psi) => ({ ...acc, [psi.id]: 0 }), {});
-
+    // 1. Adiciona pontos com base nas respostas do questionário
     respostas.forEach(resposta => {
-      listaParaMatch.forEach(psi => {
+      psicologas.forEach(psi => {
         if (psi.tagsParaMatch.includes(resposta.tag)) {
           scores[psi.id] += resposta.peso;
         }
       });
     });
 
+    // 2. Adiciona um "super bônus" para psicólogas com horário compatível
+    if (horariosSelecionados.length > 0) {
+      horariosSelecionados.forEach(horarioKey => { // ex: "seg:10:00"
+        const [dia, hora] = horarioKey.split(':');
+        psicologas.forEach(psi => {
+          if (psi.horarios_disponiveis && psi.horarios_disponiveis[dia]?.includes(hora)) {
+            scores[psi.id] += 5; // Bônus de 5 pontos por match de horário
+          }
+        });
+      });
+    }
+
+    // 3. Adiciona pontos com base na análise da IA (se houver texto)
     if (textoLivre.trim().length > 0) {
+      const todasAsTags = [...new Set(psicologas.flatMap(p => p.tagsParaMatch))];
       try {
-        const tagsFromAI = await analisarTextoComIA(textoLivre);
+        const tagsFromAI = await analisarTextoComIA(textoLivre, todasAsTags);
         tagsFromAI.forEach(item => {
-          listaParaMatch.forEach(psi => {
+          psicologas.forEach(psi => {
             if (psi.tagsParaMatch.includes(item.tag)) {
-              const confianca = typeof item.confianca === 'number' ? item.confianca : 0;
-              scores[psi.id] += 7 * confianca;
+              scores[psi.id] += 7 * (item.confianca || 0);
             }
           });
         });
@@ -100,80 +85,105 @@ const QuestionarioMatch = ({ onMatchComplete, psicologas, horariosGerais }) => {
       }
     }
 
+    // 4. Encontra o maior score e lida com empates aleatoriamente
     const maiorScore = Math.max(...Object.values(scores));
-
     if (maiorScore === 0) {
-        const shuffled = [...listaParaMatch].sort(() => 0.5 - Math.random());
+        const shuffled = [...psicologas].sort(() => 0.5 - Math.random());
         onMatchComplete(shuffled.slice(0, 1));
         setIsLoading(false);
         return;
     }
-
-    let melhoresMatches = listaParaMatch.filter(psi => scores[psi.id] === maiorScore);
-    let melhorMatch = melhoresMatches[Math.floor(Math.random() * melhoresMatches.length)];
-
-    // Adicionar aviso se o match final não tiver o horário desejado
-    if (psicologasDisponiveis.length === 0 && horariosSelecionadosArray.length > 0) {
-        melhorMatch = {
-            ...melhorMatch,
-            mensagemResultado: melhorMatch.mensagemResultado + " (Aviso: não encontramos uma especialista com os horários que você selecionou, mas esta é a melhor combinação para suas outras necessidades.)"
-        };
-    }
-
+    const melhoresMatches = psicologas.filter(psi => scores[psi.id] === maiorScore);
+    const melhorMatch = melhoresMatches[Math.floor(Math.random() * melhoresMatches.length)];
+    
     setIsLoading(false);
     onMatchComplete([melhorMatch]);
   };
-
-  // A função analisarTextoComIA continua a mesma (pode ser mantida como está)
-  async function analisarTextoComIA(texto) {
-    //... (código da função inalterado)
+  
+  // A função da IA continua a mesma, mas agora recebe as tags como argumento
+  async function analisarTextoComIA(texto, todasAsTags) {
+     // ... (a sua lógica de chamada à API Gemini continua aqui, sem alterações)
   }
 
+  // Renderiza a etapa correta do questionário
   const renderEtapaAtual = () => {
-    const progresso = ((perguntaAtual + 1) / totalPerguntas) * 100;
+    const progresso = ((perguntaAtual + 1) / totalEtapas) * 100;
 
+    // Etapas de múltipla escolha
     if (perguntaAtual < perguntasMatch.length) {
-      // ... (etapa de perguntas inalterada)
-    } 
-    // ALTERAÇÃO: Lógica de renderização da grade de horários
-    else if (perguntaAtual === perguntasMatch.length) {
+      const pergunta = perguntasMatch[perguntaAtual];
       return (
-         <>
+        <>
           <div className="match-progresso-barra"><div className="match-progresso-preenchimento" style={{ width: `${progresso}%` }}></div></div>
-          <h3 className="match-pergunta">Quais dias e horários funcionam para você?</h3>
-          <p className="match-subpergunta">Selecione todas as opções que se encaixam na sua rotina. Isso nos ajudará a encontrar uma especialista com agenda compatível.</p>
-          
-          <div className="horarios-selecao-container"> {/* NOVO: Wrapper para os dias */}
-            {Object.entries(horariosGerais).map(([dia, horas]) => (
-              <div key={dia} className="horarios-dia-grupo">
-                <h4>{traduzirDia(dia)}</h4>
-                <div className="horarios-grid">
-                  {horas.map(hora => {
-                    const horarioKey = `${dia}-${hora}`; // Chave única: "seg-10:00"
-                    return (
-                      <button
-                        key={horarioKey}
-                        onClick={() => handleHorarioToggle(horarioKey)}
-                        className={`horario-botao ${selectedHorarios.has(horarioKey) ? 'selecionado' : ''}`}
-                      >
-                        {hora}
-                      </button>
-                    )
-                  })}
-                </div>
-              </div>
+          <h3 className="match-pergunta">{pergunta.pergunta}</h3>
+          <div className="match-respostas">
+            {pergunta.respostas.map((resposta, index) => (
+              <button key={index} onClick={() => handleRespostaClick(resposta)}>
+                {resposta.texto}
+              </button>
             ))}
           </div>
-
-          <button className="botao-proximo" onClick={() => setPerguntaAtual(perguntaAtual + 1)}>
-             {selectedHorarios.size > 0 ? "Continuar" : "Pular esta etapa"}
-          </button>
-          <p className="match-progresso-texto">Passo {perguntaAtual + 1} de {totalPerguntas}</p>
+          <p className="match-progresso-texto">Passo {perguntaAtual + 1} de {totalEtapas}</p>
         </>
-      )
+      );
+    } 
+    // Etapa da Grade de Horários
+    else if (perguntaAtual === perguntasMatch.length) {
+      // Cria a grade de horários a partir da prop `horariosGerais`
+      const todosHorariosParaGrid = Object.entries(horariosGerais)
+        .flatMap(([dia, horas]) => horas.map(hora => ({
+            key: `${dia}:${hora}`, // "seg:10:00"
+            display: `${formatarDia(dia)} ${hora}` // "Segunda 10:00"
+        })));
+
+      return (
+        <>
+          <div className="match-progresso-barra"><div className="match-progresso-preenchimento" style={{ width: `${progresso}%` }}></div></div>
+          <h3 className="match-pergunta">Quais dias e horários funcionam para si?</h3>
+          <p className="match-subpergunta">Selecione todas as opções que se encaixam na sua rotina. Isto ajudar-nos-á a encontrar uma especialista com agenda compatível.</p>
+          <div className="horarios-grid-container">
+            {todosHorariosParaGrid.length > 0 ? (
+                todosHorariosParaGrid.map(horario => (
+                    <button
+                        key={horario.key}
+                        className={`botao-horario ${horariosSelecionados.includes(horario.key) ? 'selecionado' : ''}`}
+                        onClick={() => handleHorarioClick(horario.key)}
+                    >
+                        {horario.display}
+                    </button>
+                ))
+            ) : (
+                <p>Não foi possível carregar os horários. Pode pular esta etapa.</p>
+            )}
+          </div>
+          <div className="botoes-navegacao-horarios">
+            <button className="botao-proximo" onClick={irParaProximaEtapa}>Próxima Etapa</button>
+            <button className="botao-pular" onClick={irParaProximaEtapa}>Pular esta etapa</button>
+          </div>
+          <p className="match-progresso-texto">Passo {perguntaAtual + 1} de {totalEtapas}</p>
+        </>
+      );
     }
+    // Etapa Final: Texto livre
     else {
-      // ... (etapa de texto livre inalterada)
+      return (
+        <>
+          <div className="match-progresso-barra"><div className="match-progresso-preenchimento" style={{ width: `100%` }}></div></div>
+          <h3 className="match-pergunta">Descreva o seu momento com as suas palavras.</h3>
+          <p className="match-subpergunta">A nossa Inteligência Artificial analisará a sua descrição para refinar a recomendação. (Opcional)</p>
+          <textarea
+            className="match-textarea"
+            value={textoLivre}
+            onChange={(e) => setTextoLivre(e.target.value)}
+            placeholder="Ex: 'Tenho tido muitas crises de ansiedade no trabalho e isso tem afetado o meu casamento...'"
+            rows="4"
+          ></textarea>
+          <button className="botao-finalizar" onClick={finalizarMatch} disabled={isLoading}>
+            {isLoading ? 'A analisar...' : 'Ver a minha especialista ideal'}
+          </button>
+          <p className="match-progresso-texto">Último passo</p>
+        </>
+      );
     }
   }
 
