@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import CalendarIcon from './CalendarIcon.jsx';
+import Horarios from './Horarios.jsx'; // 1. Importe o novo componente
 
 const Catalogo = ({ psicologas }) => {
   const [expandedCardId, setExpandedCardId] = useState(null);
@@ -26,6 +27,10 @@ const Catalogo = ({ psicologas }) => {
                 {psi.crp && <p className="psi-crp"><strong>CRP:</strong> {psi.crp}</p>}
                 <p className="psi-abordagem">{psi.abordagem}</p>
                 <p className={`psi-bio ${!isExpanded ? 'psi-bio--collapsed' : ''}`}>{psi.bio}</p>
+                
+                {/* 2. Adicione o componente de horários aqui, renderizado condicionalmente */}
+                {isExpanded && <Horarios horarios={psi.horarios_disponiveis} />}
+
                 <div className="psi-especialidades">
                 {psi.especialidades.map((esp, index) => (
                     <span key={index} className="tag">{esp}</span>
