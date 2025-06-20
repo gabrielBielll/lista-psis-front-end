@@ -1,8 +1,11 @@
+// src/components/Catalogo.jsx
+
 import React, { useState } from 'react';
 import CalendarIcon from './CalendarIcon.jsx';
-import Horarios from './Horarios.jsx'; // 1. Importe o novo componente
+import Horarios from './Horarios.jsx';
 
-const Catalogo = ({ psicologas }) => {
+// O componente agora recebe a prop isLoadingHorarios
+const Catalogo = ({ psicologas, isLoadingHorarios }) => {
   const [expandedCardId, setExpandedCardId] = useState(null);
   const numeroClinica = '5521996561994';
 
@@ -28,8 +31,8 @@ const Catalogo = ({ psicologas }) => {
                 <p className="psi-abordagem">{psi.abordagem}</p>
                 <p className={`psi-bio ${!isExpanded ? 'psi-bio--collapsed' : ''}`}>{psi.bio}</p>
                 
-                {/* 2. Adicione o componente de horários aqui, renderizado condicionalmente */}
-                {isExpanded && <Horarios horarios={psi.horarios_disponiveis} />}
+                {/* O componente Horarios agora recebe os estados de loading e os dados */}
+                {isExpanded && <Horarios horarios={psi.horarios_disponiveis} isLoading={isLoadingHorarios} />}
 
                 <div className="psi-especialidades">
                 {psi.especialidades.map((esp, index) => (
