@@ -21,95 +21,105 @@ function traduzirDia(dia) {
 }
 
 export default function App() {
-  // Estado para a lista de psicólogas com todos os dados (locais + API)
+  // Estados da aplicação
   const [psicologasList, setPsicologasList] = useState([]);
-  
-  // Estado para controlar o carregamento inicial dos dados
   const [isLoading, setIsLoading] = useState(true);
-  
-  // Estados para controlar o fluxo do questionário (match)
   const [iniciarMatch, setIniciarMatch] = useState(false);
   const [resultadoMatch, setResultadoMatch] = useState([]);
-  
-  // Estado para armazenar a junção de todos os horários de todas as psicólogas
   const [horariosGerais, setHorariosGerais] = useState({});
-  
-  // Estado para armazenar o horário que o usuário seleciona na tela de resultado
   const [horarioSelecionado, setHorarioSelecionado] = useState('');
+  
+  // NOVO ESTADO PARA DIAGNÓSTICO DE ERRO
+  const [error, setError] = useState(null);
 
   // Constantes da aplicação
   const numeroClinica = '5521996561994';
   const API_URL = 'https://lista-psis-api.onrender.com/api/horarios';
 
-  // Efeito que executa apenas uma vez, quando o componente é montado, para buscar os dados
   useEffect(() => {
     const fetchAllData = async () => {
       setIsLoading(true);
+      setError(null); // Limpa erros anteriores
       try {
         // 1. Busca os horários da API
+        console.log("A iniciar busca de horários da API...");
         const response = await fetch(API_URL);
+        
         if (!response.ok) {
-          throw new Error('Falha ao carregar horários da API. Usando dados locais como fallback.');
+          // Lança um erro específico se a resposta da API não for bem-sucedida
+          throw new Error(`Erro na API: Recebeu o status ${response.status}. Verifique se o endereço da API está correto e se o servidor está no ar.`);
         }
+        
         const horariosData = await response.json();
+        console.log("Dados recebidos da API de horários:", horariosData); // LOG PARA DEBUG
 
-        // 2. Mapeia os horários por ID para fácil acesso (ex: {1: {seg: [...]}})
+        if (!Array.isArray(horariosData)) {
+            throw new Error("Formato de dados inesperado da API. Esperava um array.");
+        }
+
+        // 2. Mapeia os horários por ID para fácil acesso
         const horariosMap = horariosData.reduce((acc, curr) => {
           acc[curr.psicologa_id] = curr.horarios_disponiveis;
           return acc;
         }, {});
 
-        // 3. Une os dados locais das psicólogas com seus horários vindos da API
+        // 3. Une os dados locais com os da API
         const dadosCompletos = psicologasData.map(psi => ({
           ...psi,
-          horarios_disponiveis: horariosMap[psi.id] || {} // Garante que sempre haja um objeto de horários
+          horarios_disponiveis: horariosMap[psi.id] || {} 
         }));
+        console.log("Dados das psicólogas combinados com horários:", dadosCompletos); // LOG PARA DEBUG
 
         // 4. Calcula o objeto com todos os horários disponíveis consolidados
         const todosOsHorarios = {};
         dadosCompletos.forEach(psi => {
-            for (const dia in psi.horarios_disponiveis) {
-                if (!todosOsHorarios[dia]) {
-                    todosOsHorarios[dia] = new Set(); // Usa Set para evitar duplicatas
+            if (psi.horarios_disponiveis) {
+                for (const dia in psi.horarios_disponiveis) {
+                    if (!todosOsHorarios[dia]) {
+                        todosOsHorarios[dia] = new Set();
+                    }
+                    psi.horarios_disponiveis[dia].forEach(hora => {
+                        todosOsHorarios[dia].add(hora);
+                    });
                 }
-                psi.horarios_disponiveis[dia].forEach(hora => {
-                    todosOsHorarios[dia].add(hora);
-                });
             }
         });
 
-        // Converte os Sets de volta para arrays ordenados
         for (const dia in todosOsHorarios) {
             todosOsHorarios[dia] = Array.from(todosOsHorarios[dia]).sort();
         }
         setHorariosGerais(todosOsHorarios);
+        console.log("Horários gerais calculados:", todosOsHorarios); // LOG PARA DEBUG
         
         // 5. Embaralha a lista final e atualiza o estado
         const shuffled = [...dadosCompletos].sort(() => 0.5 - Math.random());
         setPsicologasList(shuffled);
         
-      } catch (error) {
-        console.error(error.message);
-        // Em caso de erro na API, carrega a lista apenas com os dados locais
+      } catch (err) {
+        // Se qualquer passo acima falhar, captura o erro
+        console.error("Ocorreu um erro ao buscar ou processar os dados:", err);
+        setError(err); // Define o estado de erro para exibição na UI
+        
+        // Carrega a lista apenas com os dados locais como fallback
         const shuffled = [...psicologasData].sort(() => 0.5 - Math.random());
         setPsicologasList(shuffled);
-        setHorariosGerais({}); // Define horários como vazio
+        setHorariosGerais({});
       } finally {
-        setIsLoading(false); // Finaliza o estado de carregamento
+        setIsLoading(false);
       }
     };
 
     fetchAllData();
-  }, []); // O array vazio [] garante que o useEffect rode apenas uma vez
+  }, []);
 
-  // Função chamada quando o questionário é completado
+  // ... (o resto das funções `handleMatchComplete`, `handleWhatsAppResultadoClick`, `resetApp` continua igual) ...
+
   const handleMatchComplete = (matches) => {
     setResultadoMatch(matches);
     setIniciarMatch(false);
-    setHorarioSelecionado(''); // Limpa a seleção de horário anterior
+    setHorarioSelecionado('');
   };
 
-  // Função para abrir o WhatsApp, agora incluindo o horário selecionado
   const handleWhatsAppResultadoClick = (psiNome) => {
     if (!horarioSelecionado) {
         alert('Por favor, selecione um horário para continuar o agendamento.');
@@ -119,17 +129,14 @@ export default function App() {
     window.open(`https://wa.me/${numeroClinica}?text=${mensagem}`, '_blank');
   };
 
-  // Função para voltar à tela inicial
   const resetApp = () => {
     setIniciarMatch(false);
     setResultadoMatch([]);
     setHorarioSelecionado('');
-    // Re-embaralha a lista para dar uma sensação de novidade
     const shuffled = [...psicologasList].sort(() => 0.5 - Math.random());
     setPsicologasList(shuffled);
   };
 
-  // Função que decide qual conteúdo principal renderizar na tela
   const renderContent = () => {
     if (isLoading) {
       return <p style={{ textAlign: 'center', fontSize: '1.2rem' }}>A carregar profissionais...</p>;
@@ -139,8 +146,8 @@ export default function App() {
        return (
          <QuestionarioMatch 
             onMatchComplete={handleMatchComplete} 
-            horariosGerais={horariosGerais} // Passa os horários para o questionário
-            psicologas={psicologasList} // Passa a lista completa para o match
+            horariosGerais={horariosGerais}
+            psicologas={psicologasList}
          />
        );
     }
@@ -150,7 +157,7 @@ export default function App() {
       return (
         <div className="resultado-container">
           <h2>✨ A sua especialista ideal</h2>
-          <p>{matchedPsi.mensagemResultado || `Baseado nas suas respostas, esta especialista é uma ótima combinação para você.`}</p>
+          <p>{matchedPsi.mensagemResultado || `Baseado nas suas respostas, esta especialista é uma ótima combinação para si.`}</p>
 
           <div key={matchedPsi.id} className="psi-card resultado-card">
             <img src={matchedPsi.fotoUrl} onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/150x150/EAE5DE/CCC?text=Foto'; }} alt={`Foto de ${matchedPsi.nome}`} className="psi-foto" />
@@ -161,7 +168,6 @@ export default function App() {
               <p className="psi-bio">{matchedPsi.bio}</p>
             </div>
             <div className="card-botoes">
-                {/* Seletor de Horário na tela de resultado */}
                 <div className="selecao-horario-container">
                     <label htmlFor="horario-select">Escolha um horário para iniciar:</label>
                     <select 
@@ -169,17 +175,22 @@ export default function App() {
                         className="horario-select" 
                         value={horarioSelecionado} 
                         onChange={(e) => setHorarioSelecionado(e.target.value)}
+                        disabled={Object.keys(horariosGerais).length === 0}
                     >
                         <option value="" disabled>Selecione um horário</option>
-                        {Object.entries(horariosGerais).map(([dia, horas]) => (
-                            <optgroup key={dia} label={traduzirDia(dia)}>
-                                {horas.map(hora => (
-                                    <option key={`${dia}-${hora}`} value={`${traduzirDia(dia)} às ${hora}`}>
-                                        {hora}
-                                    </option>
-                                ))}
-                            </optgroup>
-                        ))}
+                        {Object.keys(horariosGerais).length === 0 ? (
+                            <option disabled>Horários indisponíveis</option>
+                        ) : (
+                            Object.entries(horariosGerais).map(([dia, horas]) => (
+                                <optgroup key={dia} label={traduzirDia(dia)}>
+                                    {horas.map(hora => (
+                                        <option key={`${dia}-${hora}`} value={`${traduzirDia(dia)} às ${hora}`}>
+                                            {hora}
+                                        </option>
+                                    ))}
+                                </optgroup>
+                            ))
+                        )}
                     </select>
                 </div>
 
@@ -193,26 +204,30 @@ export default function App() {
       );
     }
     
-    // Renderização padrão: o catálogo
     return <Catalogo psicologas={psicologasList} />;
   }
 
   return (
     <>
       <div className="AppContainer">
+        {/* EXIBIÇÃO DA MENSAGEM DE ERRO */}
+        {error && (
+            <div style={{ padding: '1rem', backgroundColor: '#fff0f0', border: '1px solid #ffaaaa', color: '#d8000c', borderRadius: '8px', marginBottom: '2rem', textAlign: 'center' }}>
+                <strong>Erro de Conexão:</strong> {error.message}
+            </div>
+        )}
+
         <header className="app-header">
           <h1>Encontre uma especialista ideal para si</h1>
           <p>Cuidar da sua saúde mental é um ato de amor-próprio. Estamos aqui para ajudar.</p>
         </header>
 
-        {/* Botão para voltar para a home, visível apenas fora da tela inicial */}
         {(iniciarMatch || resultadoMatch.length > 0) && (
           <button onClick={resetApp} className="botao-home">
             ‹ Ver todas as profissionais
           </button>
         )}
 
-        {/* Bloco de chamada para o questionário, visível apenas na tela inicial */}
         {!iniciarMatch && resultadoMatch.length === 0 && !isLoading && (
           <div className="promo-match-container">
             <h2>Não sabe qual profissional escolher?</h2>
@@ -223,7 +238,6 @@ export default function App() {
           </div>
         )}
 
-        {/* Renderiza o conteúdo principal (catálogo, questionário ou resultado) */}
         {renderContent()}
 
         <footer className="app-footer">
