@@ -1,22 +1,19 @@
-// src/components/QuestionarioMatch.jsx
-
 import React, { useState } from 'react';
 import { perguntasMatch } from '../data.js';
+// 1. IMPORTA O NOSSO NOVO LOGGER
+import logger from '../utils/logger.js'; 
 
 function formatarDia(dia) {
     const mapa = { seg: "Segunda", ter: "Terça", qua: "Quarta", qui: "Quinta", sex: "Sexta", sab: "Sábado", dom: "Domingo" };
     return mapa[dia.toLowerCase()] || dia;
 }
 
-// FUNÇÃO COMPLETA DA API GEMINI
+// FUNÇÃO COMPLETA DA API GEMINI JÁ A USAR O LOGGER
 async function analisarTextoComIA(texto, todasAsTags) {
-    console.log("--- DEBUG IA: Etapa 1 ---");
-    console.log("Texto a ser analisado:", texto);
+    logger.log("--- INÍCIO ANÁLISE IA ---", { texto });
     
     const prompt = `Analise o seguinte texto de um utilizador que procura terapia: "${texto}". Com base no texto, identifique as 3 tags mais relevantes da lista abaixo. Responda APENAS com um array de objetos JSON. Cada objeto deve ter uma chave "tag" (string) e uma chave "confianca" (um número de 0 a 1). Lista de tags disponíveis: ${JSON.stringify(todasAsTags)}`;
     
-    console.log("Prompt final enviado para a API:", prompt);
-
     const payload = {
       contents: [{ role: "user", parts: [{ text: prompt }] }],
       generationConfig: {
@@ -35,14 +32,11 @@ async function analisarTextoComIA(texto, todasAsTags) {
       }
     };
     
-    // ===================================================================
-    //  LENDO A CHAVE DA SUA VARIÁVEL DE AMBIENTE (.env)
-    // ===================================================================
     const apiKey = import.meta.env.VITE_GEMINI_API_KEY; 
 
     if (!apiKey) {
-        console.error("ERRO: Variável de ambiente VITE_GEMINI_API_KEY não encontrada. Verifique o seu ficheiro .env no Render.");
-        return []; // Retorna um array vazio para não quebrar a aplicação
+        logger.error("ERRO CRÍTICO: Variável de ambiente VITE_GEMINI_API_KEY não encontrada.");
+        return [];
     }
 
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
@@ -55,21 +49,19 @@ async function analisarTextoComIA(texto, todasAsTags) {
 
     if (!response.ok) {
         const errorBody = await response.text();
+        logger.error(`Erro na API Gemini: ${response.status}`, { errorBody });
         throw new Error(`Erro na API Gemini: ${response.status} - ${errorBody}`);
     }
 
     const result = await response.json();
-    console.log("--- DEBUG IA: Etapa 2 ---");
-    console.log("Resposta completa da API:", result);
     
     if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0]) {
         const text = result.candidates[0].content.parts[0].text;
         const parsedJson = JSON.parse(text);
-        console.log("--- DEBUG IA: Etapa 3 ---");
-        console.log("JSON extraído e analisado:", parsedJson);
+        logger.log("--- SUCESSO ANÁLISE IA ---", { resultado: parsedJson });
         return parsedJson;
     } else {
-        console.warn("A resposta da API Gemini foi bem-sucedida, mas não continha os dados esperados.");
+        logger.warn("Resposta da API Gemini bem-sucedida, mas sem conteúdo esperado.", { apiResponse: result });
         return [];
     }
 }
@@ -100,6 +92,8 @@ const QuestionarioMatch = ({ onMatchComplete, psicologas, horariosGerais, isLoad
     const finalizarMatch = async () => {
         if (isLoadingMatch) return;
         setIsLoadingMatch(true);
+        // 2. USA O LOGGER PARA MONITORAR O INÍCIO DO PROCESSO
+        logger.log("--- INÍCIO DO MATCH ---", { num_respostas: respostas.length, num_horarios: horariosSelecionados.length, tem_texto: textoLivre.trim().length > 0 });
 
         let candidatasParaMatch = psicologas;
         let avisoHorario = false;
@@ -131,18 +125,24 @@ const QuestionarioMatch = ({ onMatchComplete, psicologas, horariosGerais, isLoad
         if (textoLivre.trim().length > 0) {
             const tagsParaIA = [...new Set(candidatasParaMatch.flatMap(p => p.tagsParaMatch))];
             try {
+                const startTime = performance.now();
                 const tagsFromAI = await analisarTextoComIA(textoLivre, tagsParaIA);
+                const endTime = performance.now();
+                const duration = Math.round(endTime - startTime);
+                
+                logger.log("--- Performance Análise IA ---", { duration_ms: duration });
+
                 tagsFromAI.forEach(item => {
                     candidatasParaMatch.forEach(psi => {
                         if (psi.tagsParaMatch.includes(item.tag)) {
                             const pontosIA = Math.round(7 * (item.confianca || 0.5));
                             scores[psi.id] += pontosIA;
-                            console.log(`--- DEBUG IA: Etapa 4 --- \nIA adicionou +${pontosIA} pontos para ${psi.nome} pela tag '${item.tag}'`);
                         }
                     });
                 });
             } catch (error) {
-                console.error("ERRO AO PROCESSAR RESPOSTA DA IA:", error);
+                // 2. USA O LOGGER PARA CAPTURAR ERROS
+                logger.error("Falha ao adicionar pontos da IA", { error: error.message });
             }
         }
         
@@ -150,7 +150,9 @@ const QuestionarioMatch = ({ onMatchComplete, psicologas, horariosGerais, isLoad
 
         if (maiorScore === 0) {
             const shuffled = [...candidatasParaMatch].sort(() => 0.5 - Math.random());
-            onMatchComplete(shuffled.slice(0, 1));
+            const resultadoFinal = shuffled.slice(0, 1);
+            logger.log("--- FIM DO MATCH (Score Zero) ---", { resultado: resultadoFinal[0]?.nome });
+            onMatchComplete(resultadoFinal);
             setIsLoadingMatch(false);
             return;
         }
@@ -164,6 +166,9 @@ const QuestionarioMatch = ({ onMatchComplete, psicologas, horariosGerais, isLoad
                 mensagemResultado: (melhorMatch.mensagemResultado || "Esta é a melhor combinação para si.") + " (Aviso: não encontrámos uma especialista com os horários que selecionou, mas esta é a melhor combinação para as suas outras necessidades.)"
             };
         }
+        
+        // 2. USA O LOGGER PARA REGISTAR O SUCESSO
+        logger.log("--- FIM DO MATCH (Sucesso) ---", { resultado: melhorMatch.nome, score: maiorScore, aviso_horario: avisoHorario });
 
         setIsLoadingMatch(false);
         onMatchComplete([melhorMatch]);
