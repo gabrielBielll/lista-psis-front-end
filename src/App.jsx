@@ -1,9 +1,11 @@
+// src/App.jsx
+
 import React, { useState, useEffect } from 'react';
 import Catalogo from './components/Catalogo.jsx';
 import QuestionarioMatch from './components/QuestionarioMatch.jsx';
 import CalendarIcon from './components/CalendarIcon.jsx';
 import { psicologasData } from './data.js';
-import logger from './utils/logger.js'; // Importa o nosso logger
+import logger from './utils/logger.js';
 
 function traduzirDia(dia) {
     const mapaDias = { seg: "Segunda-feira", ter: "Terça-feira", qua: "Quarta-feira", qui: "Quinta-feira", sex: "Sexta-feira", sab: "Sábado", dom: "Domingo" };
@@ -64,9 +66,8 @@ export default function App() {
                 setHorariosGerais(todosOsHorarios);
 
             } catch (err) {
-                // LOG DE ERRO + MENSAGEM VISÍVEL
                 logger.error("--- ERRO API HORÁRIOS ---", { erro: err.message });
-                setError(err); // Define o erro para ser mostrado na UI
+                setError(err);
             } finally {
                 setIsLoadingHorarios(false);
             }
@@ -75,13 +76,11 @@ export default function App() {
         fetchHorarios();
     }, []);
     
-    // LOG DE INÍCIO DA JORNADA
     const handleStartMatch = () => {
         logger.log("--- QUESTIONÁRIO INICIADO ---");
         setIniciarMatch(true);
     };
 
-    // LOG DE CONVERSÃO
     const handleWhatsAppResultadoClick = (psiNome) => {
         if (!horarioSelecionado && Object.keys(horariosGerais).length > 0) {
             alert('Por favor, selecione um horário para continuar o agendamento.');
@@ -97,7 +96,6 @@ export default function App() {
         window.open(`https://wa.me/${numeroClinica}?text=${mensagem}`, '_blank');
     };
     
-    // As outras funções (handleMatchComplete, resetApp) continuam as mesmas
     const handleMatchComplete = (matches) => {
         setResultadoMatch(matches);
         setIniciarMatch(false);
@@ -110,6 +108,12 @@ export default function App() {
         setHorarioSelecionado('');
         const shuffled = [...psicologasList].sort(() => 0.5 - Math.random());
         setPsicologasList(shuffled);
+
+        // NOVO: Scroll suave para o topo da página ao resetar
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     };
 
     const renderContent = () => {
@@ -170,7 +174,6 @@ export default function App() {
 
     return (
         <div className="AppContainer">
-            {/* MENSAGEM DE ERRO DESTACADA PARA O UTILIZADOR */}
             {error && (
                 <div className="error-banner">
                     <strong>Ops! Ocorreu um problema.</strong> 
@@ -186,7 +189,7 @@ export default function App() {
                     ‹ Ver todas as profissionais
                 </button>
             )}
-            {!iniciarMatch && resultadoMatch.length === 0 && (
+            {!iniciarMatch && (psicologasList.length > 0) && (
                 <div className="promo-match-container">
                     <h2>Não sabe qual profissional escolher?</h2>
                     <p>Responda a 5 perguntas rápidas e o nosso sistema inteligente encontra a especialista que mais combina com o seu momento e as suas preferências.</p>
