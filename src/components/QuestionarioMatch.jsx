@@ -1,5 +1,3 @@
-// src/components/QuestionarioMatch.jsx
-
 import React, { useState } from 'react';
 import { perguntasMatch } from '../data.js';
 
@@ -7,6 +5,64 @@ function formatarDia(dia) {
     const mapa = { seg: "Segunda", ter: "Terça", qua: "Quarta", qui: "Quinta", sex: "Sexta", sab: "Sábado", dom: "Domingo" };
     return mapa[dia.toLowerCase()] || dia;
 }
+
+// FUNÇÃO COMPLETA DA API GEMINI
+async function analisarTextoComIA(texto, todasAsTags) {
+    console.log("--- DEBUG IA: Etapa 1 ---");
+    console.log("Texto a ser analisado:", texto);
+    console.log("Tags disponíveis para a IA:", todasAsTags);
+    
+    const prompt = `Analise o seguinte texto de um utilizador que procura terapia: "${texto}". Com base no texto, identifique as 3 tags mais relevantes da lista abaixo. Responda APENAS com um array de objetos JSON. Cada objeto deve ter uma chave "tag" (string) e uma chave "confianca" (um número de 0 a 1). Lista de tags disponíveis: ${JSON.stringify(todasAsTags)}`;
+    
+    console.log("Prompt final enviado para a API:", prompt);
+
+    const payload = {
+      contents: [{ role: "user", parts: [{ text: prompt }] }],
+      generationConfig: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: "ARRAY",
+          items: {
+            type: "OBJECT",
+            properties: {
+              "tag": { "type": "STRING" },
+              "confianca": { "type": "NUMBER" }
+            },
+            required: ["tag", "confianca"]
+          }
+        }
+      }
+    };
+    
+    const apiKey = ""; // Fornecido automaticamente pelo ambiente
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+        const errorBody = await response.text();
+        throw new Error(`Erro na API Gemini: ${response.status} - ${errorBody}`);
+    }
+
+    const result = await response.json();
+    console.log("--- DEBUG IA: Etapa 2 ---");
+    console.log("Resposta completa da API:", result);
+    
+    if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0]) {
+        const text = result.candidates[0].content.parts[0].text;
+        const parsedJson = JSON.parse(text);
+        console.log("--- DEBUG IA: Etapa 3 ---");
+        console.log("JSON extraído e analisado:", parsedJson);
+        return parsedJson;
+    } else {
+        throw new Error("Resposta inesperada ou sem conteúdo da API Gemini.");
+    }
+}
+
 
 const QuestionarioMatch = ({ onMatchComplete, psicologas, horariosGerais, isLoadingHorarios }) => {
     const [perguntaAtual, setPerguntaAtual] = useState(0);
@@ -34,11 +90,9 @@ const QuestionarioMatch = ({ onMatchComplete, psicologas, horariosGerais, isLoad
         if (isLoadingMatch) return;
         setIsLoadingMatch(true);
 
-        // --- NOVA LÓGICA DE FILTRAGEM ---
         let candidatasParaMatch = psicologas;
         let avisoHorario = false;
 
-        // 1. Filtra por horário, se o utilizador selecionou algum.
         if (horariosSelecionados.length > 0) {
             const psicologasDisponiveis = psicologas.filter(psi => 
                 horariosSelecionados.some(horarioKey => {
@@ -46,15 +100,13 @@ const QuestionarioMatch = ({ onMatchComplete, psicologas, horariosGerais, isLoad
                     return psi.horarios_disponiveis && psi.horarios_disponiveis[dia]?.includes(hora);
                 })
             );
-
             if (psicologasDisponiveis.length > 0) {
-                candidatasParaMatch = psicologasDisponiveis; // Usa a lista filtrada se houver compatibilidade.
+                candidatasParaMatch = psicologasDisponiveis;
             } else {
-                avisoHorario = true; // Ativa o aviso para o resultado final.
+                avisoHorario = true;
             }
         }
 
-        // 2. Calcula scores APENAS para as candidatas.
         const scores = candidatasParaMatch.reduce((acc, psi) => ({ ...acc, [psi.id]: 0 }), {});
 
         respostas.forEach(resposta => {
@@ -65,13 +117,25 @@ const QuestionarioMatch = ({ onMatchComplete, psicologas, horariosGerais, isLoad
             });
         });
 
-        // 3. (Opcional) Refina com a IA.
+        // CHAMADA FUNCIONAL À API GEMINI
         if (textoLivre.trim().length > 0) {
-             // A sua lógica de chamada à API Gemini iria aqui...
-             // Lembre-se de passar as tags das `candidatasParaMatch` para a IA ser mais precisa.
+            const tagsParaIA = [...new Set(candidatasParaMatch.flatMap(p => p.tagsParaMatch))];
+            try {
+                const tagsFromAI = await analisarTextoComIA(textoLivre, tagsParaIA);
+                tagsFromAI.forEach(item => {
+                    candidatasParaMatch.forEach(psi => {
+                        if (psi.tagsParaMatch.includes(item.tag)) {
+                            const pontosIA = Math.round(7 * (item.confianca || 0.5));
+                            scores[psi.id] += pontosIA;
+                            console.log(`--- DEBUG IA: Etapa 4 --- \nIA adicionou +${pontosIA} pontos para ${psi.nome} pela tag '${item.tag}'`);
+                        }
+                    });
+                });
+            } catch (error) {
+                console.error("ERRO AO PROCESSAR RESPOSTA DA IA:", error);
+            }
         }
         
-        // 4. Encontra o melhor match dentro do grupo de candidatas.
         const maiorScore = Math.max(...Object.values(scores));
 
         if (maiorScore === 0) {
@@ -84,7 +148,6 @@ const QuestionarioMatch = ({ onMatchComplete, psicologas, horariosGerais, isLoad
         let melhoresMatches = candidatasParaMatch.filter(psi => scores[psi.id] === maiorScore);
         let melhorMatch = melhoresMatches[Math.floor(Math.random() * melhoresMatches.length)];
 
-        // 5. Adiciona a mensagem de aviso se necessário.
         if (avisoHorario) {
             melhorMatch = {
                 ...melhorMatch,
