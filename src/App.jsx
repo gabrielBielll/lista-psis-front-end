@@ -1,6 +1,6 @@
 // src/App.jsx
 
-import React, { useState, useEffect, useRef } from 'react'; // 1. Importar useRef
+import React, { useState, useEffect, useRef } from 'react';
 import Catalogo from './components/Catalogo.jsx';
 import QuestionarioMatch from './components/QuestionarioMatch.jsx';
 import CalendarIcon from './components/CalendarIcon.jsx';
@@ -21,7 +21,6 @@ export default function App() {
     const [error, setError] = useState(null);
     const [isLoadingHorarios, setIsLoadingHorarios] = useState(true);
 
-    // 2. Criar uma referência para o container do resultado
     const resultadoRef = useRef(null);
 
     const numeroClinica = '5521996561994';
@@ -79,18 +78,16 @@ export default function App() {
         fetchHorarios();
     }, []);
 
-    // 3. NOVO: Efeito para rolar até ao resultado quando ele aparecer
     useEffect(() => {
         if (resultadoMatch.length > 0 && resultadoRef.current) {
-            // Atraso mínimo para garantir que o elemento está visível antes do scroll
             setTimeout(() => {
                 resultadoRef.current.scrollIntoView({
                     behavior: 'smooth',
-                    block: 'start' // Alinha o topo do resultado ao topo do ecrã
+                    block: 'start'
                 });
             }, 100);
         }
-    }, [resultadoMatch]); // Este efeito executa sempre que `resultadoMatch` muda
+    }, [resultadoMatch]); 
 
     
     const handleStartMatch = () => {
@@ -146,8 +143,11 @@ export default function App() {
 
         if (resultadoMatch.length > 0) {
             const matchedPsi = resultadoMatch[0];
+            // NOVO: Pega os horários apenas da psicóloga que deu match
+            const horariosDaPsi = matchedPsi.horarios_disponiveis || {};
+            const temHorariosDisponiveis = Object.values(horariosDaPsi).some(dias => dias.length > 0);
+
             return (
-                // 4. Associar a referência ao container do resultado
                 <div className="resultado-container" ref={resultadoRef}>
                     <h2>✨ A sua especialista ideal</h2>
                     <p>{matchedPsi.mensagemResultado || `Baseado nas suas respostas, esta especialista é uma ótima combinação para si.`}</p>
@@ -162,14 +162,18 @@ export default function App() {
                         <div className="card-botoes">
                             <div className="selecao-horario-container">
                                 <label htmlFor="horario-select">Escolha um horário para iniciar:</label>
-                                <select id="horario-select" className="horario-select" value={horarioSelecionado} onChange={(e) => setHorarioSelecionado(e.target.value)} disabled={isLoadingHorarios || Object.keys(horariosGerais).length === 0}>
+                                {/* O dropdown agora usa a agenda da psicóloga específica */}
+                                <select 
+                                    id="horario-select" 
+                                    className="horario-select" 
+                                    value={horarioSelecionado} 
+                                    onChange={(e) => setHorarioSelecionado(e.target.value)} 
+                                    disabled={!temHorariosDisponiveis}
+                                >
                                     <option value="" disabled>
-                                        {isLoadingHorarios ? "A carregar..." : "Selecione um horário"}
+                                        {temHorariosDisponiveis ? "Selecione um horário" : "Nenhum horário disponível"}
                                     </option>
-                                    {!isLoadingHorarios && Object.keys(horariosGerais).length === 0 && (
-                                        <option disabled>Horários indisponíveis</option>
-                                    )}
-                                    {Object.entries(horariosGerais).map(([dia, horas]) => (
+                                    {Object.entries(horariosDaPsi).map(([dia, horas]) => (
                                         <optgroup key={dia} label={traduzirDia(dia)}>
                                             {horas.map(hora => (<option key={`${dia}-${hora}`} value={`${traduzirDia(dia)} às ${hora}`}>{hora}</option>))}
                                         </optgroup>
