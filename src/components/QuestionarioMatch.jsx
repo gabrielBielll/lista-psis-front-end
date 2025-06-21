@@ -1,3 +1,5 @@
+// src/components/QuestionarioMatch.jsx
+
 import React, { useState } from 'react';
 import { perguntasMatch } from '../data.js';
 
@@ -10,7 +12,6 @@ function formatarDia(dia) {
 async function analisarTextoComIA(texto, todasAsTags) {
     console.log("--- DEBUG IA: Etapa 1 ---");
     console.log("Texto a ser analisado:", texto);
-    console.log("Tags disponíveis para a IA:", todasAsTags);
     
     const prompt = `Analise o seguinte texto de um utilizador que procura terapia: "${texto}". Com base no texto, identifique as 3 tags mais relevantes da lista abaixo. Responda APENAS com um array de objetos JSON. Cada objeto deve ter uma chave "tag" (string) e uma chave "confianca" (um número de 0 a 1). Lista de tags disponíveis: ${JSON.stringify(todasAsTags)}`;
     
@@ -34,7 +35,16 @@ async function analisarTextoComIA(texto, todasAsTags) {
       }
     };
     
-    const apiKey = ""; // Fornecido automaticamente pelo ambiente
+    // ===================================================================
+    //  LENDO A CHAVE DA SUA VARIÁVEL DE AMBIENTE (.env)
+    // ===================================================================
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY; 
+
+    if (!apiKey) {
+        console.error("ERRO: Variável de ambiente VITE_GEMINI_API_KEY não encontrada. Verifique o seu ficheiro .env no Render.");
+        return []; // Retorna um array vazio para não quebrar a aplicação
+    }
+
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
     const response = await fetch(apiUrl, {
@@ -59,7 +69,8 @@ async function analisarTextoComIA(texto, todasAsTags) {
         console.log("JSON extraído e analisado:", parsedJson);
         return parsedJson;
     } else {
-        throw new Error("Resposta inesperada ou sem conteúdo da API Gemini.");
+        console.warn("A resposta da API Gemini foi bem-sucedida, mas não continha os dados esperados.");
+        return [];
     }
 }
 
@@ -117,7 +128,6 @@ const QuestionarioMatch = ({ onMatchComplete, psicologas, horariosGerais, isLoad
             });
         });
 
-        // CHAMADA FUNCIONAL À API GEMINI
         if (textoLivre.trim().length > 0) {
             const tagsParaIA = [...new Set(candidatasParaMatch.flatMap(p => p.tagsParaMatch))];
             try {
