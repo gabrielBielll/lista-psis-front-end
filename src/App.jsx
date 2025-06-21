@@ -1,6 +1,6 @@
 // src/App.jsx
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react'; // 1. Importar useRef
 import Catalogo from './components/Catalogo.jsx';
 import QuestionarioMatch from './components/QuestionarioMatch.jsx';
 import CalendarIcon from './components/CalendarIcon.jsx';
@@ -20,6 +20,9 @@ export default function App() {
     const [horarioSelecionado, setHorarioSelecionado] = useState('');
     const [error, setError] = useState(null);
     const [isLoadingHorarios, setIsLoadingHorarios] = useState(true);
+
+    // 2. Criar uma referência para o container do resultado
+    const resultadoRef = useRef(null);
 
     const numeroClinica = '5521996561994';
     const API_URL = 'https://lista-psis-api.onrender.com/api/horarios';
@@ -75,6 +78,20 @@ export default function App() {
 
         fetchHorarios();
     }, []);
+
+    // 3. NOVO: Efeito para rolar até ao resultado quando ele aparecer
+    useEffect(() => {
+        if (resultadoMatch.length > 0 && resultadoRef.current) {
+            // Atraso mínimo para garantir que o elemento está visível antes do scroll
+            setTimeout(() => {
+                resultadoRef.current.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start' // Alinha o topo do resultado ao topo do ecrã
+                });
+            }, 100);
+        }
+    }, [resultadoMatch]); // Este efeito executa sempre que `resultadoMatch` muda
+
     
     const handleStartMatch = () => {
         logger.log("--- QUESTIONÁRIO INICIADO ---");
@@ -109,7 +126,6 @@ export default function App() {
         const shuffled = [...psicologasList].sort(() => 0.5 - Math.random());
         setPsicologasList(shuffled);
 
-        // NOVO: Scroll suave para o topo da página ao resetar
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
@@ -131,7 +147,8 @@ export default function App() {
         if (resultadoMatch.length > 0) {
             const matchedPsi = resultadoMatch[0];
             return (
-                <div className="resultado-container">
+                // 4. Associar a referência ao container do resultado
+                <div className="resultado-container" ref={resultadoRef}>
                     <h2>✨ A sua especialista ideal</h2>
                     <p>{matchedPsi.mensagemResultado || `Baseado nas suas respostas, esta especialista é uma ótima combinação para si.`}</p>
                     <div key={matchedPsi.id} className="psi-card resultado-card">
