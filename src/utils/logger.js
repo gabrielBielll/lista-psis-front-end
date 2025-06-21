@@ -1,4 +1,3 @@
-// src/utils/logger.js - VERSÃO MELHORADA DO SEU CÓDIGO ATUAL
 import { initializeFaro, getWebInstrumentations } from '@grafana/faro-web-sdk';
 
 const GRAFANA_FARO_URL = import.meta.env.VITE_GRAFANA_FARO_URL;
