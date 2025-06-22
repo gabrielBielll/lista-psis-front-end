@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { perguntasMatch } from '../data.js';
-// 1. IMPORTA O NOSSO NOVO LOGGER
-import logger from '../utils/logger.js'; 
+import logger from '../utils/logger.js';
 
 function formatarDia(dia) {
     const mapa = { seg: "Segunda", ter: "Terça", qua: "Quarta", qui: "Quinta", sex: "Sexta", sab: "Sábado", dom: "Domingo" };
     return mapa[dia.toLowerCase()] || dia;
 }
 
-// FUNÇÃO COMPLETA DA API GEMINI JÁ A USAR O LOGGER
 async function analisarTextoComIA(texto, todasAsTags) {
     logger.log("--- INÍCIO ANÁLISE IA ---", { texto });
     
@@ -92,25 +90,36 @@ const QuestionarioMatch = ({ onMatchComplete, psicologas, horariosGerais, isLoad
     const finalizarMatch = async () => {
         if (isLoadingMatch) return;
         setIsLoadingMatch(true);
-        // 2. USA O LOGGER PARA MONITORAR O INÍCIO DO PROCESSO
         logger.log("--- INÍCIO DO MATCH ---", { num_respostas: respostas.length, num_horarios: horariosSelecionados.length, tem_texto: textoLivre.trim().length > 0 });
 
-        let candidatasParaMatch = psicologas;
+        let candidatasParaMatch;
         let avisoHorario = false;
 
+        // --- LÓGICA DE FILTRAGEM CORRIGIDA ---
         if (horariosSelecionados.length > 0) {
             const psicologasDisponiveis = psicologas.filter(psi => 
                 horariosSelecionados.some(horarioKey => {
                     const [dia, hora] = horarioKey.split(':');
+                    // Garante que a estrutura de horários existe antes de tentar acessá-la
                     return psi.horarios_disponiveis && psi.horarios_disponiveis[dia]?.includes(hora);
                 })
             );
+
             if (psicologasDisponiveis.length > 0) {
+                // SUCESSO: Encontramos psicólogas com o horário. O match será feito apenas com elas.
                 candidatasParaMatch = psicologasDisponiveis;
+                logger.log("Filtro de horário aplicado. Candidatas reduzidas para:", { count: candidatasParaMatch.length });
             } else {
+                // FALLBACK: Nenhuma psicóloga encontrada para os horários. Usaremos todas e avisaremos.
+                candidatasParaMatch = psicologas;
                 avisoHorario = true;
+                logger.warn("Nenhuma psicóloga encontrada com os horários selecionados. Usando lista completa como fallback.");
             }
+        } else {
+            // PADRÃO: Nenhum horário foi selecionado. O match será feito com todas as psicólogas.
+            candidatasParaMatch = psicologas;
         }
+        // --- FIM DA CORREÇÃO ---
 
         const scores = candidatasParaMatch.reduce((acc, psi) => ({ ...acc, [psi.id]: 0 }), {});
 
@@ -141,23 +150,37 @@ const QuestionarioMatch = ({ onMatchComplete, psicologas, horariosGerais, isLoad
                     });
                 });
             } catch (error) {
-                // 2. USA O LOGGER PARA CAPTURAR ERROS
                 logger.error("Falha ao adicionar pontos da IA", { error: error.message });
             }
         }
         
-        const maiorScore = Math.max(...Object.values(scores));
+        const maiorScore = Math.max(...Object.values(scores), 0); // Adicionado 0 para evitar -Infinity em lista vazia
 
         if (maiorScore === 0) {
             const shuffled = [...candidatasParaMatch].sort(() => 0.5 - Math.random());
             const resultadoFinal = shuffled.slice(0, 1);
-            logger.log("--- FIM DO MATCH (Score Zero) ---", { resultado: resultadoFinal[0]?.nome });
-            onMatchComplete(resultadoFinal);
+            // Verifica se há um resultado para evitar erros
+            if (resultadoFinal.length > 0) {
+               logger.log("--- FIM DO MATCH (Score Zero) ---", { resultado: resultadoFinal[0]?.nome });
+               onMatchComplete(resultadoFinal);
+            } else {
+               logger.error("--- FIM DO MATCH (Falha) ---", { erro: "Nenhuma psicóloga encontrada após filtros e score zero." });
+               onMatchComplete([]); // Retorna vazio para evitar erros
+            }
             setIsLoadingMatch(false);
             return;
         }
 
         let melhoresMatches = candidatasParaMatch.filter(psi => scores[psi.id] === maiorScore);
+        
+        // Se não houver matches (caso raro), retorna array vazio para não quebrar
+        if (melhoresMatches.length === 0) {
+            logger.error("--- FIM DO MATCH (Falha) ---", { erro: "Nenhuma psicóloga encontrada com o maior score.", score: maiorScore });
+            onMatchComplete([]);
+            setIsLoadingMatch(false);
+            return;
+        }
+
         let melhorMatch = melhoresMatches[Math.floor(Math.random() * melhoresMatches.length)];
 
         if (avisoHorario) {
@@ -167,7 +190,6 @@ const QuestionarioMatch = ({ onMatchComplete, psicologas, horariosGerais, isLoad
             };
         }
         
-        // 2. USA O LOGGER PARA REGISTAR O SUCESSO
         logger.log("--- FIM DO MATCH (Sucesso) ---", { resultado: melhorMatch.nome, score: maiorScore, aviso_horario: avisoHorario });
 
         setIsLoadingMatch(false);
