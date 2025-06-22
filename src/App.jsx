@@ -202,7 +202,7 @@ export default function App() {
                 </div>
             )}
             <header className="app-header">
-                <h1>Encontre uma especialista ideal para si</h1>
+                <h1>Encontre uma especialista ideal para você!</h1>
                 <p>Cuidar da sua saúde mental é um ato de amor-próprio. Estamos aqui para ajudar.</p>
             </header>
             {(iniciarMatch || resultadoMatch.length > 0) && (
@@ -213,7 +213,7 @@ export default function App() {
             {!iniciarMatch && (psicologasList.length > 0) && (
                 <div className="promo-match-container">
                     <h2>Não sabe qual profissional escolher?</h2>
-                    <p>Responda a 5 perguntas rápidas e o nosso sistema inteligente encontra a especialista que mais combina com o seu momento e as suas preferências.</p>
+                    <p>Responda a 7 perguntas rápidas e o nosso sistema inteligente encontra a especialista que mais combina com o seu momento e as suas preferências.</p>
                     <button className="botao-iniciar-match" onClick={handleStartMatch}>
                         ✨ Encontrar a minha especialista ideal
                     </button>
