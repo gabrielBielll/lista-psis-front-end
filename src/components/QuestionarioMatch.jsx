@@ -222,8 +222,8 @@ const QuestionarioMatch = ({ onMatchComplete, psicologas, horariosGerais, isLoad
             return (
                 <>
                     <div className="match-progresso-barra"><div className="match-progresso-preenchimento" style={{ width: `${progresso}%` }}></div></div>
-                    <h3 className="match-pergunta">Quais dias e horários funcionam para si?</h3>
-                    <p className="match-subpergunta">Selecione todas as opções que se encaixam na sua rotina. Isto ajudar-nos-á a encontrar uma especialista com agenda compatível.</p>
+                    <h3 className="match-pergunta">Quais dias e horários você tem disponivel?</h3>
+                    <p className="match-subpergunta">Selecione todas as opções que se encaixam na sua rotina. Isto nos ajuda a encontrar uma especialista com agenda compatível.</p>
                     
                     {/* 3. Nova estrutura de renderização agrupada por dia */}
                     <div className="dias-container">
