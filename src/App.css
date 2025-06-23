@@ -264,3 +264,40 @@ button {
         padding: 10px 5px;
     }
 }
+
+/* --- Estilos para a nova organização de horários no Quiz --- */
+
+.dias-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Espaço entre os blocos de cada dia */
+  margin: 2rem 0;
+  text-align: left;
+}
+
+.dia-horarios-grupo h4 {
+  font-family: var(--font-serif);
+  color: var(--marrom-texto);
+  border-bottom: 2px solid var(--cinza-borda);
+  padding-bottom: 0.5rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.horarios-grid {
+  display: grid;
+  /* Cria colunas responsivas para os botões de horário */
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 0.75rem;
+}
+
+/* O antigo .horarios-grid-container não é mais necessário para esta lógica,
+   mas podemos manter para não quebrar nada. A nova classe .horarios-grid 
+   dentro de cada grupo de dia fará o trabalho pesado. */
+
+/* Ajusta o texto do botão de horário para ser apenas a hora */
+.horarios-grid .botao-horario {
+    font-size: 1rem;
+    padding: 10px;
+}
