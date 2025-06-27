@@ -140,38 +140,15 @@ Array de objetos, cada um definindo uma pergunta do questionário.
 
 ## 6. Lógica de Pontuação das PSIs (Sistema de Match)
 
-Implementada em `QuestionarioMatch.jsx#finalizarMatch`.
+A lógica de pontuação para recomendar a psicóloga mais compatível é um aspecto central do sistema e é implementada primariamente no componente `src/components/QuestionarioMatch.jsx`. Ela considera as respostas do usuário a um questionário, a seleção opcional de horários de preferência e uma análise opcional de texto livre por Inteligência Artificial (Google Gemini).
 
-1.  **Filtragem Inicial por Horários (Opcional):**
-    *   Se o usuário selecionou horários, a lista de `candidatasParaMatch` é filtrada para incluir apenas psicólogas com disponibilidade correspondente.
-    *   Se nenhuma psicóloga corresponder aos horários, o filtro é ignorado, e um aviso (`avisoHorario`) é ativado.
+O processo envolve:
+1.  **Filtragem Inicial por Horários:** As psicólogas candidatas podem ser filtradas com base na disponibilidade de horário informada pelo usuário.
+2.  **Cálculo de Score Base:** As respostas do questionário, que possuem `tags` e `pesos` associados, contribuem para o score de cada psicóloga.
+3.  **Pontuação Adicional por IA:** O texto livre fornecido pelo usuário é analisado pela API Gemini, que identifica tags relevantes. Essas tags, com seus níveis de confiança, adicionam pontos aos scores das psicólogas.
+4.  **Seleção Final:** A psicóloga com o maior score total é selecionada, com mecanismos de desempate aleatório e tratamento para casos de score zero ou não correspondência de horários.
 
-2.  **Cálculo de Score Base (Questionário):**
-    *   Cada psicóloga candidata inicia com score `0`.
-    *   Para cada resposta do usuário:
-        *   Se a `tag` da resposta estiver nas `tagsParaMatch` da psicóloga, o `peso` da resposta é somado ao score da psicóloga.
-        *   `score_psi += resposta.peso`
-
-3.  **Pontuação Adicional (Análise de Texto Livre via IA - Gemini):**
-    *   Se o usuário forneceu texto livre:
-        *   O texto e uma lista de todas as `tagsParaMatch` únicas das psicólogas candidatas são enviados à API Gemini.
-        *   A API retorna até 3 tags relevantes com um nível de `confianca` (0-1).
-        *   Para cada tag retornada pela IA que também está nas `tagsParaMatch` de uma psicóloga:
-            *   `pontosIA = Math.round(7 * (item.confianca || 0.5))`
-            *   `score_psi += pontosIA`
-            *   O multiplicador `7` e o fallback `0.5` para confiança são constantes definidas no código.
-
-4.  **Seleção da Melhor Psicóloga:**
-    *   Identifica-se o `maiorScore` entre todas as candidatas.
-    *   **Score Zero:** Se `maiorScore` for `0`, uma psicóloga é selecionada aleatoriamente das candidatas.
-    *   **Score > 0:**
-        *   Cria-se uma lista `melhoresMatches` com todas as psicólogas que atingiram o `maiorScore`.
-        *   **Desempate:** Uma psicóloga é selecionada aleatoriamente de `melhoresMatches`.
-    *   Se `avisoHorario` estiver ativo, uma mensagem é adicionada ao resultado.
-
-5.  **Resultado:** A psicóloga selecionada é passada para `App.jsx` via callback `onMatchComplete`.
-
-Este sistema combina preferências explícitas do usuário com uma análise mais sutil via IA, aplicando pesos para diferentes critérios e garantindo uma seleção mesmo em casos de empate ou baixa correspondência.
+**Para uma descrição detalhada e completa de todo o processo de pontuação, incluindo exemplos e o tratamento de casos específicos, por favor, consulte o documento dedicado: [`docs/LOGICA_MATCH.md`](./docs/LOGICA_MATCH.md).**
 
 ## 7. Detalhamento por Arquivo
 
