@@ -173,7 +173,208 @@ Implementada em `QuestionarioMatch.jsx#finalizarMatch`.
 
 Este sistema combina preferências explícitas do usuário com uma análise mais sutil via IA, aplicando pesos para diferentes critérios e garantindo uma seleção mesmo em casos de empate ou baixa correspondência.
 
-## 7. Considerações Futuras e Melhorias
+## 7. Detalhamento por Arquivo
+
+Esta seção aprofunda a responsabilidade e funcionamento de cada arquivo chave do projeto.
+
+### 7.1. Arquivos de Configuração (Raiz do Projeto)
+
+*   **`.gitignore`**
+    *   **Propósito:** Especifica intencionalmente arquivos e pastas não rastreados que o Git deve ignorar.
+    *   **Funcionamento:** Contém padrões (ex: `node_modules/`, `dist/`, `.env`) que o Git usa para excluir arquivos de serem adicionados ao repositório. Essencial para manter o repositório limpo e focado no código-fonte.
+
+*   **`eslint.config.js`**
+    *   **Propósito:** Arquivo de configuração para o ESLint, uma ferramenta de linting para JavaScript.
+    *   **Funcionamento:** Define regras de estilo de código, identifica potenciais erros e impõe boas práticas. Ajuda a manter a consistência e qualidade do código em todo o projeto.
+    *   **Configurações Relevantes:** Pode incluir plugins (ex: para React, hooks), regras específicas (ex: indentação, uso de aspas) e ambientes (ex: browser, node).
+
+*   **`index.html`**
+    *   **Propósito:** Ponto de entrada HTML da Single Page Application (SPA).
+    *   **Funcionamento:** É o arquivo HTML principal servido ao navegador. Contém o elemento raiz (geralmente um `<div id="root">`) onde a aplicação React será montada. O Vite injeta automaticamente as tags `<script>` necessárias durante o desenvolvimento e build.
+
+*   **`package.json`**
+    *   **Propósito:** Arquivo fundamental em projetos Node.js e JavaScript. Contém metadados sobre o projeto e gerencia suas dependências e scripts.
+    *   **Funcionamento:**
+        *   `name`, `version`, `private`: Metadados básicos.
+        *   `type: "module"`: Indica que o projeto usa módulos ES.
+        *   `scripts`: Define comandos para tarefas comuns (ex: `dev` para iniciar o servidor de desenvolvimento Vite, `build` para criar a versão de produção, `lint` para rodar o ESLint, `test` para executar testes com Vitest).
+        *   `dependencies`: Lista as bibliotecas necessárias para a aplicação em produção (ex: `react`, `react-dom`).
+        *   `devDependencies`: Lista as bibliotecas usadas apenas durante o desenvolvimento e teste (ex: `vite`, `eslint`, `vitest`).
+    *   **Interação:** Usado pelo `npm` ou `yarn` para instalar dependências e executar scripts.
+
+*   **`package-lock.json`**
+    *   **Propósito:** Registra as versões exatas de cada dependência instalada, incluindo suas sub-dependências.
+    *   **Funcionamento:** Garante que as instalações sejam consistentes em diferentes ambientes e momentos, prevenindo problemas causados por atualizações inesperadas de pacotes. Gerado e atualizado automaticamente pelo `npm`.
+
+*   **`vite.config.js`**
+    *   **Propósito:** Arquivo de configuração para o Vite, o build tool e servidor de desenvolvimento do projeto.
+    *   **Funcionamento:**
+        *   Importa `defineConfig` do Vite e o plugin `@vitejs/plugin-react`.
+        *   `plugins: [react()]`: Habilita o suporte para React, incluindo Fast Refresh.
+        *   `test`: Configura o Vitest para testes unitários e de componentes.
+            *   `globals: true`: Permite usar APIs do Vitest globalmente nos testes.
+            *   `environment: 'jsdom'`: Simula um ambiente de navegador para testes de componentes React.
+            *   `setupFiles`: Especifica arquivos de setup para testes (ex: `./src/__tests__/setup.js`).
+            *   `env`: Permite definir variáveis de ambiente específicas para o ambiente de teste (ex: mock de `VITE_GEMINI_API_KEY`).
+    *   **Interação:** Lido pelo Vite ao iniciar o servidor de desenvolvimento ou ao construir o projeto.
+
+### 7.2. Código Fonte (`src/`)
+
+*   **`src/main.jsx`**
+    *   **Propósito:** Ponto de entrada da aplicação React.
+    *   **Funcionamento:**
+        *   Importa `React`, `ReactDOM`, o componente principal `App` e os arquivos CSS globais (`App.css`, `index.css`).
+        *   Usa `ReactDOM.createRoot()` para obter o elemento DOM raiz (com `id="root"` em `index.html`).
+        *   Renderiza o componente `App` dentro de `<React.StrictMode>` nesse elemento raiz. `StrictMode` ativa verificações e avisos adicionais em desenvolvimento.
+    *   **Interação:** É o primeiro arquivo JavaScript da aplicação a ser executado, iniciando a renderização da interface React.
+
+*   **`src/App.jsx`**
+    *   **Propósito:** Componente principal (raiz) da aplicação. Orquestra a exibição de diferentes seções (catálogo, questionário, resultado), gerencia o estado global da UI, busca dados externos (horários) e passa dados e callbacks para componentes filhos.
+    *   **Estado Chave:**
+        *   `psicologasList`: Array com os dados das psicólogas, incluindo seus horários carregados da API.
+        *   `iniciarMatch`: Boolean que controla a exibição do `QuestionarioMatch`.
+        *   `resultadoMatch`: Array contendo a psicóloga recomendada após o match.
+        *   `horariosGerais`: Objeto com todos os horários únicos disponíveis, usado no filtro do questionário.
+        *   `horarioSelecionado`: String do horário escolhido na tela de resultado para agendamento.
+        *   `error`: Armazena erros da API de horários.
+        *   `isLoadingHorarios`: Boolean para feedback de carregamento dos horários.
+    *   **Efeitos (`useEffect`):**
+        *   **Busca de Horários (no mount):**
+            *   Define `isLoadingHorarios` para `true`.
+            *   Chama a API `https://lista-psis-api.onrender.com/api/horarios`.
+            *   Processa os dados recebidos, mapeando `horarios_disponiveis` para cada psicóloga em `psicologasList` pelo `psi.id`.
+            *   Agrega todos os horários únicos em `horariosGerais`.
+            *   Atualiza `isLoadingHorarios` para `false` e `error` se necessário.
+        *   **Scroll para Resultado:** Quando `resultadoMatch` é populado, rola a tela suavemente para a seção de resultados.
+    *   **Funções Principais:**
+        *   `traduzirDia(dia)`: Converte abreviações de dias para nomes completos (ex: "seg" para "Segunda-feira").
+        *   `handleStartMatch()`: Ativa o modo questionário (`setIniciarMatch(true)`).
+        *   `handleWhatsAppResultadoClick(psiNome)`: Abre o WhatsApp com uma mensagem pré-formatada para agendamento, incluindo o `horarioSelecionado` se houver.
+        *   `handleMatchComplete(matches)`: Callback para `QuestionarioMatch`; atualiza `resultadoMatch` e desativa o modo questionário.
+        *   `resetApp()`: Restaura o estado inicial da aplicação, permitindo ao usuário recomeçar.
+        *   `renderContent()`: Renderiza condicionalmente `Catalogo`, `QuestionarioMatch`, ou a tela de resultado.
+    *   **Interações:**
+        *   Importa `psicologasData` de `data.js` como base.
+        *   Passa `psicologasList`, `horariosGerais`, `isLoadingHorarios` e callbacks para `Catalogo` e `QuestionarioMatch`.
+        *   Usa `logger` para registrar eventos e erros.
+
+*   **`src/data.js`**
+    *   **Propósito:** Fornece os dados estáticos da aplicação, incluindo os perfis das psicólogas e a estrutura das perguntas do questionário de match.
+    *   **Exportações:**
+        *   `psicologasData` (Array de Objetos): Cada objeto descreve uma psicóloga.
+            *   **Campos Cruciais para Lógica:**
+                *   `id`: Usado para vincular com horários da API e como chave interna.
+                *   `tagsParaMatch`: Array de strings (kebab-case) que define as especialidades e características da psicóloga. Usadas diretamente no cálculo de score do questionário e como vocabulário para a análise da IA.
+                *   `mensagemResultado`: Texto exibido quando a psicóloga é o resultado do match.
+                *   `horariosDisponiveis` (no `data.js`): É um placeholder; os horários reais são carregados da API.
+        *   `perguntasMatch` (Array de Objetos): Cada objeto define uma pergunta do questionário.
+            *   **Campos Cruciais para Lógica (dentro de cada `respostas` da pergunta):**
+                *   `tag`: String (kebab-case) que corresponde a uma ou mais `tagsParaMatch` em `psicologasData`.
+                *   `peso`: Número que quantifica a importância daquela resposta/tag para o score.
+    *   **Interação:** Importado por `App.jsx` (para `psicologasData`) e `QuestionarioMatch.jsx` (para `perguntasMatch`). Desacopla os dados da lógica dos componentes.
+
+*   **`src/index.css` e `src/App.css`**
+    *   **Propósito:** Arquivos CSS para estilização global e específica do componente App, respectivamente.
+    *   **Funcionamento:** Contêm regras CSS que definem a aparência da aplicação (layout, cores, fontes, etc.). `index.css` geralmente contém estilos mais globais ou resets, enquanto `App.css` pode conter estilos para o layout principal gerenciado por `App.jsx`.
+    *   **Interação:** Importados em `src/main.jsx` e `src/App.jsx` para serem aplicados pela engine do navegador.
+
+### 7.3. Componentes (`src/components/`)
+
+*   **`src/components/QuestionarioMatch.jsx`**
+    *   **Propósito:** Componente interativo que guia o usuário através de um questionário de múltipla escolha, permite a seleção de horários e a entrada de texto livre para encontrar a psicóloga mais compatível. Contém a lógica central de pontuação e match.
+    *   **Props:**
+        *   `onMatchComplete` (Function): Callback chamada ao final do match com a psicóloga recomendada.
+        *   `psicologas` (Array): Lista completa de psicólogas (com seus horários já carregados da API).
+        *   `horariosGerais` (Object): Objeto com todos os horários disponíveis para popular o seletor.
+        *   `isLoadingHorarios` (Boolean): Para feedback de UI na etapa de seleção de horários.
+    *   **Estado:**
+        *   `perguntaAtual`: Índice da etapa atual do questionário.
+        *   `respostas`: Array das respostas selecionadas pelo usuário (objetos com `tag` e `peso`).
+        *   `horariosSelecionados`: Array de strings dos horários preferidos.
+        *   `textoLivre`: String da descrição do usuário.
+        *   `isLoadingMatch`: Boolean para feedback durante o processamento do match.
+    *   **Funções Chave:**
+        *   `handleRespostaClick(resposta)`: Adiciona resposta e avança.
+        *   `handleHorarioClick(horarioKey)`: Gerencia seleção de horários.
+        *   `finalizarMatch()`: Orquestra a lógica de match:
+            1.  Filtra `psicologas` por `horariosSelecionados` (se houver). Se não encontrar, usa todas e ativa `avisoHorario`.
+            2.  Calcula scores baseados nas `respostas` (comparando `resposta.tag` com `psi.tagsParaMatch` e somando `resposta.peso`).
+            3.  Se `textoLivre` existir, chama `analisarTextoComIA`.
+            4.  Adiciona pontos ao score com base nas tags e confiança retornadas pela IA (`pontosIA = Math.round(7 * (confianca || 0.5))`).
+            5.  Determina `maiorScore` e seleciona a(s) psicóloga(s). Desempate aleatório.
+            6.  Chama `onMatchComplete`.
+        *   `analisarTextoComIA(texto, todasAsTags)`: (Função externa ao componente, mas usada por ele)
+            *   Formata o prompt para a API Gemini, incluindo o texto do usuário e as `tagsParaMatch` das psicólogas candidatas.
+            *   Define `responseMimeType: "application/json"` e um schema de resposta para garantir que a IA retorne um JSON estruturado (`[{tag, confianca}]`).
+            *   Envia a requisição para a API Gemini (modelo `gemini-2.0-flash`).
+            *   Retorna as tags e confianças ou um array vazio em caso de erro.
+        *   `renderEtapaAtual()`: Controla qual parte do questionário é exibida.
+    *   **Interações:**
+        *   Importa `perguntasMatch` de `src/data.js`.
+        *   Usa `logger` para registrar o processo de match.
+        *   Renderiza dinamicamente as perguntas, opções de horários e campo de texto.
+
+*   **`src/components/Catalogo.jsx`**
+    *   **Propósito:** Exibe a lista completa de psicólogas em formato de "cards". Cada card mostra informações resumidas e pode ser expandido para detalhes e horários.
+    *   **Props:**
+        *   `psicologas` (Array): Lista de psicólogas a serem exibidas.
+        *   `isLoadingHorarios` (Boolean): Passado para o componente `Horarios`.
+    *   **Estado:**
+        *   `expandedCardId`: ID da psicóloga cujo card está expandido, ou `null`.
+    *   **Referências (`useRef`):**
+        *   `cardRefs`: Usado para armazenar referências aos elementos DOM dos cards para a funcionalidade de scroll suave ao expandir.
+    *   **Funcionalidades:**
+        *   Mapeia `psicologas` para renderizar um `psi-card` para cada uma.
+        *   `handleToggleExpand(psiId)`: Alterna o estado `expandedCardId` e aciona o scroll suave para o card.
+        *   `handleWhatsAppClick(psiNome)`: Abre o WhatsApp para agendamento direto do catálogo.
+        *   Quando um card é expandido, renderiza o componente `Horarios` passando os `horarios_disponiveis` da psicóloga específica.
+    *   **Interações:**
+        *   Usa `Horarios.jsx` para exibir a disponibilidade.
+        *   Usa `CalendarIcon.jsx` nos botões.
+
+*   **`src/components/Horarios.jsx`**
+    *   **Propósito:** Componente simples para exibir os horários disponíveis de uma psicóloga ou mensagens de status (carregando, indisponível).
+    *   **Props:**
+        *   `horarios` (Object): Horários da psicóloga (ex: `{ seg: ['10:00'], ter: ['14:00'] }`).
+        *   `isLoading` (Boolean): Indica se os horários estão carregando.
+    *   **Funcionamento:**
+        *   Renderiza condicionalmente: mensagem de carregamento, mensagem de "nenhum horário" ou a lista de horários formatada.
+        *   Usa a função `traduzirDia` para formatar os nomes dos dias.
+    *   **Interações:** Usado por `Catalogo.jsx` e `App.jsx` (na tela de resultado do match).
+
+*   **`src/components/CalendarIcon.jsx`**
+    *   **Propósito:** Componente funcional que renderiza um ícone de calendário SVG.
+    *   **Funcionamento:** Retorna diretamente a marcação SVG do ícone. Reutilizável em botões de agendamento.
+
+### 7.4. Utilitários (`src/utils/`)
+
+*   **`src/utils/logger.js`**
+    *   **Propósito:** Módulo de logging centralizado com integração opcional com Grafana Faro.
+    *   **Funcionamento:**
+        *   Inicializa o Grafana Faro se `VITE_GRAFANA_FARO_URL` estiver definido nas variáveis de ambiente.
+        *   Exporta métodos (`log`, `info`, `warn`, `error`).
+        *   Em desenvolvimento, os logs (exceto erros, que sempre aparecem) vão para o console.
+        *   Se Faro estiver ativo, todos os logs são enviados para o Grafana com o nível apropriado e contexto.
+    *   **Interações:** Usado por `App.jsx` e `QuestionarioMatch.jsx` para registrar eventos importantes e erros.
+
+### 7.5. Testes (`src/__tests__/`)
+
+*   **`src/__tests__/setup.js`**
+    *   **Propósito:** Arquivo de configuração para o ambiente de teste Vitest.
+    *   **Funcionamento:** Geralmente usado para importar polyfills, mocks globais ou configurações que devem ser aplicadas a todos os testes (ex: `@testing-library/jest-dom/vitest` para estender os matchers do Vitest com os do jest-dom).
+    *   **Interação:** Especificado na configuração `test.setupFiles` em `vite.config.js`.
+
+*   **`src/__tests__/App.test.jsx` e `src/__tests__/QuestionarioMatch.test.jsx`**
+    *   **Propósito:** Arquivos contendo testes unitários e de integração para os componentes `App` e `QuestionarioMatch`, respectivamente.
+    *   **Funcionamento:** Usam Vitest como test runner e React Testing Library para renderizar componentes, simular interações do usuário (cliques, digitação) e fazer asserções sobre o estado e a saída dos componentes.
+    *   **Exemplos de Testes (Conceitual):**
+        *   Verificar se o `App` renderiza o catálogo inicialmente.
+        *   Simular cliques para iniciar o questionário e verificar se `QuestionarioMatch` é renderizado.
+        *   Testar a lógica de pontuação do `QuestionarioMatch` com diferentes respostas (pode requerer mock da API Gemini).
+        *   Verificar se a seleção de horários filtra corretamente as psicólogas.
+    *   **Interação:** Executados pelo comando `npm run test` (ou similar) que invoca o Vitest.
+
+## 8. Considerações Futuras e Melhorias
 
 *   **Testes:** Expandir a cobertura de testes, especialmente para a lógica de match e interações com API.
 *   **Gerenciamento de Estado:** Para aplicações maiores, considerar bibliotecas de gerenciamento de estado como Redux ou Zustand.
