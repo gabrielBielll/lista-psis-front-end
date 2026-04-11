@@ -151,6 +151,16 @@ body {
 button {
   -webkit-tap-highlight-color: transparent;
 }
+/* Remove o contorno azul padrão e adiciona um brilho suave que combina com o design */
+button:focus, 
+button:active,
+.botao-home:focus, 
+.botao-iniciar-match:focus,
+.botao-agendar:focus,
+.botao-perfil:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(110, 119, 93, 0.3) !important;
+}
 
 /* --- Promo Match Container --- */
 .promo-match-container {
@@ -190,7 +200,7 @@ button {
 .selecao-horario-container label { font-size: 0.9rem; font-weight: 500; color: var(--marrom-texto); text-align: center; }
 .horario-select { width: 100%; padding: 10px; border-radius: 8px; border: 2px solid var(--cinza-borda); background-color: var(--branco); font-family: var(--font-sans); font-size: 1rem; font-weight: 500; cursor: pointer; transition: border-color 0.2s ease; color: var(--marrom-texto); }
 .horario-select:hover { border-color: var(--verde-oliva); }
-.horario-select:focus { outline: none; border-color: var(--verde-oliva); box-shadow: 0 0 0 3px rgba(110, 119, 93, 0.2); }
+.horario-select:focus { outline: none; box-shadow: 0 0 0 3px rgba(110, 119, 93, 0.2); border-color: var(--verde-oliva); }
 
 /* --- Horarios (Grid no Questionário) --- */
 .horarios-grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 1rem; margin: 1.5rem 0; width: 100%; }
