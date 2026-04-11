@@ -29,8 +29,8 @@ export const psicologasData = [
     fotoUrl: '/psicologas_fotos/juliana.webp',
     abordagem: 'Psicanálise',
     bio: "Psicóloga, especialista em Psicologia Hospitalar e da Saúde, Pós-Graduanda em Saúde Mental e Atenção Psicossocial. Sua prática é orientada pela psicanálise, com foco no atendimento de adultos e jovens adultos. Possui experiência no acompanhamento de questões como ansiedade, depressão, luto, conflitos relacionais, transtornos de personalidade e autismo, entre outras demandas ligadas ao sofrimento psíquico. Atua também como supervisora de estágio, com ampla vivência em contextos clínicos e institucionais na área da saúde mental.",
-    especialidades: ["Psicanálise", "Adultos", "Psicologia Hospitalar e da Saúde", "Saúde Mental", "Ansiedade", "Depressão", "Luto", "Transtornos de Personalidade", "Autismo", "Estresse", "Conflitos Relacionais"],
-    tagsParaMatch: ["psicanalise", "adultos", "psicologia-hospitalar-e-da-saude", "saude-mental", "ansiedade", "depressao", "luto", "transtornos-de-personalidade", "autismo", "estresse", "conflitos-relacionais"],
+    especialidades: ["Psicanálise", "Adultos", "Psicologia Hospitalar e da Saúde", "Saúde Mental", "Ansiedade", "Depressão", "Luto", "Transtornos de Personalidade", "Autismo", "Estresse", "Conflitos Relacionais", "Problemas no Trabalho"],
+    tagsParaMatch: ["psicanalise", "adultos", "psicologia-hospitalar-e-da-saude", "saude-mental", "ansiedade", "depressao", "luto", "transtornos-de-personalidade", "autismo", "estresse", "conflitos-relacionais", "problemas-no-trabalho"],
     crp: "05/64368",
     horariosDisponiveis: ["Terça 08:00", "Quarta 19:00", "Quinta 14:00", "Sexta 16:00"],
     mensagemResultado: "Juliana é especialista em Psicanálise com foco em saúde mental e na elaboração de conflitos internos. Com sua vasta experiência, ela vai te oferecer uma escuta profunda para compreender suas questões e construir caminhos mais conscientes!"
@@ -58,6 +58,17 @@ export const psicologasData = [
     crp: "05/62770",
     horariosDisponiveis: ["Terça 11:00", "Quarta 18:00", "Quinta 09:00", "Sexta 14:00"],
     mensagemResultado: "Andrezza é psicanalista especialista na relação mente-corpo. Ela vai te ajudar a entender como suas emoções se manifestam fisicamente e encontrar formas saudáveis de expressão!"
+  },
+  { 
+    id: 6,
+    nome: "Erika Santos de Souza Soares",
+    fotoUrl: '/psicologas_fotos/erika.png',
+    abordagem: 'Terapia Cognitivo-Comportamental',
+    bio: "Psicóloga com formação em Terapia Cognitivo-Comportamental (TCC), Psicopatologia, Terapia Comportamental Dialética (DBT) e Obesidade e Emagrecimento. Sua atuação é fundamentada na abordagem da Terapia Cognitivo-Comportamental, com foco no desenvolvimento emocional e comportamental dos pacientes. Possui experiência no atendimento clínico de adultos, com atuação em demandas relacionadas à ansiedade, TDAH, psicopatologias, além de questões ligadas a relacionamentos e relações interpessoais. Sua prática é voltada para a promoção de autonomia, regulação emocional e construção de estratégias que favoreçam o bem-estar e a qualidade de vida.",
+    especialidades: ["Terapia Cognitivo-Comportamental (TCC)", "Terapia Comportamental Dialética (DBT)", "Obesidade e Emagrecimento", "Psicopatologia", "Adultos", "Ansiedade", "TDAH", "Relacionamentos Amorosos e Familiares", "Regulação Emocional", "Problemas no Trabalho"],
+    tagsParaMatch: ["terapia-cognitivo-comportamental-tcc", "terapia-comportamental-dialetica-dbt", "obesidade-e-emagrecimento", "psicopatologia", "adultos", "ansiedade", "tdah", "relacionamentos-amorosos-e-familiares", "desregulacao-emocional", "problemas-no-trabalho"],
+    crp: "05/64462", 
+    mensagemResultado: "Erika é especialista em TCC e DBT, com um olhar muito cuidadoso para dinâmicas de relacionamentos, carreira e regulação emocional. Ela oferece estratégias práticas para lidar com ansiedade e tem um olhar super especializado para comportamento alimentar!"
   }
 ];
 
@@ -75,48 +86,52 @@ export const perguntasMatch = [
     ]
   },
 
-  // Pergunta 2: Focada no contexto do problema (relacional, pessoal, etc.).
+  // Pergunta 2
   {
     pergunta: 'Onde você sente que sua principal dificuldade aparece?',
     respostas: [
-      { texto: 'Nos meus relacionamentos, que estão gerando conflitos e sofrimento.', tag: 'conflitos-relacionais', peso: 3 },
+      { texto: 'Nos meus relacionamentos em geral, que estão gerando conflitos.', tag: 'conflitos-relacionais', peso: 3 },
       { texto: 'Sinto que minha forma de pensar e sentir é diferente da maioria, o que me traz desafios.', tag: 'neurodivergencia', peso: 3 },
       { texto: 'Na minha autoconfiança, que está baixa e me impede de avançar.', tag: 'autoconfianca', peso: 3 },
       { texto: 'Estou lidando com a dor de uma grande perda ou luto.', tag: 'luto', peso: 3 },
       { texto: 'Em conversas e interações, pois quero me comunicar melhor com as pessoas.', tag: 'comunicacao-interpessoal', peso: 3 },
+      { texto: 'Em minhas dinâmicas e relacionamentos amorosos ou familiares.', tag: 'relacionamentos-amorosos-e-familiares', peso: 4 },
+      { texto: 'No meu ambiente de trabalho ou carreira, me gerando estresse e esgotamento.', tag: 'problemas-no-trabalho', peso: 3 }
     ]
   },
-  
-  // Pergunta 3: A mais importante para diferenciar as ABORDAGENS.
+
+  // Pergunta 3
   {
     pergunta: 'Que tipo de ajuda você imagina que seria mais útil para você?',
     respostas: [
       { texto: 'Quero ferramentas práticas e estratégias claras para aplicar no dia a dia.', tag: 'terapia-cognitivo-comportamental-tcc', peso: 3 },
       { texto: 'Prefiro um espaço para explorar as raízes profundas das minhas questões e me entender.', tag: 'psicanalise', peso: 3 },
       { texto: 'Preciso de uma abordagem bem estruturada, focada em análise do comportamento.', tag: 'analise-do-comportamento-aplicada-aba', peso: 4 },
-      { texto: 'Me interesso por uma análise profunda, focada na linguagem e no inconsciente.', tag: 'psicanalise-lacaniana', peso: 4 }
+      { texto: 'Me interesso por uma análise profunda, focada na linguagem e no inconsciente.', tag: 'psicanalise-lacaniana', peso: 4 },
+      { texto: 'Busco estratégias focadas em regulação emocional e aceitação.', tag: 'terapia-comportamental-dialetica-dbt', peso: 4 }
     ]
   },
 
-  // Pergunta 4: Focada nos objetivos a longo prazo.
+  // Pergunta 4
   {
     pergunta: 'Qual o seu maior objetivo com a terapia?',
     respostas: [
       { texto: 'Meu maior objetivo é o autoconhecimento, entender quem eu sou.', tag: 'autoconhecimento', peso: 3 },
       { texto: 'Amadurecer e aprender a regular melhor minhas emoções intensas.', tag: 'desregulacao-emocional', peso: 3 },
       { texto: 'Tenho interesse em entender a fundo as diferentes condições da saúde mental.', tag: 'psicopatologia', peso: 2 },
-      { texto: 'Desenvolver e treinar minhas habilidades sociais para interagir melhor.', tag: 'habilidades-sociais', peso: 3 }
+      { texto: 'Conseguir me relacionar melhor com as pessoas (Habilidades Sociais)', tag: 'habilidades-sociais', peso: 3 }
     ]
   },
 
-  // Pergunta 5: Uma pergunta final para capturar demandas específicas.
+  // Pergunta 5
   {
     pergunta: 'Qual destas frases tem mais a ver com você?',
     respostas: [
       { texto: 'Eu uso a palavra "sofrimento" para descrever o que sinto, é algo que me angustia.', tag: 'sofrimento-psiquico', peso: 3 },
       { texto: 'Meu caso está ligado a um contexto de saúde (hospital, doença crônica, etc.).', tag: 'psicologia-hospitalar-e-da-saude', peso: 4 },
       { texto: 'Eu sinto que preciso amadurecer meu lado emocional como um todo.', tag: 'desenvolvimento-emocional', peso: 3 },
-      { texto: 'Como adulto, me identifico com características do espectro autista e busco ajuda para isso.', tag: 'tea-transtorno-do-espectro-autista', peso: 4 }
+      { texto: 'Como adulto, me identifico com características do espectro autista e busco ajuda para isso.', tag: 'tea-transtorno-do-espectro-autista', peso: 4 },
+      { texto: 'Busco ajuda psicológica para lidar com questões de comportamento alimentar, obesidade ou emagrecimento.', tag: 'obesidade-e-emagrecimento', peso: 4 }
     ]
   }
 ];

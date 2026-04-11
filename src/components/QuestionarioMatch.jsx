@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { perguntasMatch } from '../data.js';
 import logger from '../utils/logger.js';
 
@@ -193,88 +194,112 @@ const QuestionarioMatch = ({ onMatchComplete, psicologas, horariosGerais, isLoad
     const renderEtapaAtual = () => {
         const progresso = ((perguntaAtual + 1) / totalEtapas) * 100;
 
-        if (perguntaAtual < perguntasMatch.length) {
-            const pergunta = perguntasMatch[perguntaAtual];
-            return (
-                <>
-                    <div className="match-progresso-barra"><div className="match-progresso-preenchimento" style={{ width: `${progresso}%` }}></div></div>
-                    <h3 className="match-pergunta">{pergunta.pergunta}</h3>
-                    <div className="match-respostas">
-                        {pergunta.respostas.map((resposta, index) => (
-                            <button key={index} onClick={() => handleRespostaClick(resposta)}>{resposta.texto}</button>
-                        ))}
-                    </div>
-                    <p className="match-progresso-texto">Passo {perguntaAtual + 1} de {totalEtapas}</p>
-                </>
-            );
-        } else if (perguntaAtual === perguntasMatch.length) {
-            // 1. Definir a ordem correta dos dias da semana
-            const ordemDosDias = ['seg', 'ter', 'qua', 'qui', 'sex', 'sab', 'dom'];
+        return (
+            <div className="match-questionnaire-inner">
+                <div className="match-progresso-barra">
+                    <motion.div 
+                        className="match-progresso-preenchimento" 
+                        initial={{ width: 0 }}
+                        animate={{ width: `${progresso}%` }}
+                        transition={{ duration: 0.5, ease: "easeOut" }}
+                    />
+                </div>
 
-            // 2. Filtrar e ordenar os dias que realmente têm horários disponíveis
-            const diasDisponiveisOrdenados = ordemDosDias
-                .filter(dia => horariosGerais[dia] && horariosGerais[dia].length > 0)
-                .map(dia => ({
-                    dia,
-                    horarios: [...horariosGerais[dia]].sort() // Garante que os horários também estão em ordem
-                }));
-
-            return (
-                <>
-                    <div className="match-progresso-barra"><div className="match-progresso-preenchimento" style={{ width: `${progresso}%` }}></div></div>
-                    <h3 className="match-pergunta">Quais dias e horários você tem disponivel?</h3>
-                    <p className="match-subpergunta">Selecione todas as opções que se encaixam na sua rotina. Isto nos ajuda a encontrar uma especialista com agenda compatível.</p>
-                    
-                    {/* 3. Nova estrutura de renderização agrupada por dia */}
-                    <div className="dias-container">
-                        {isLoadingHorarios ? (
-                            <p className="sem-horarios-texto">A carregar horários disponíveis...</p>
-                        ) : diasDisponiveisOrdenados.length > 0 ? (
-                            diasDisponiveisOrdenados.map(diaInfo => (
-                                <div key={diaInfo.dia} className="dia-horarios-grupo">
-                                    <h4>{formatarDia(diaInfo.dia)}</h4>
-                                    <div className="horarios-grid">
-                                        {diaInfo.horarios.map(hora => {
-                                            const horarioKey = `${diaInfo.dia}:${hora}`;
-                                            return (
-                                                <button 
-                                                    key={horarioKey} 
-                                                    className={`botao-horario ${horariosSelecionados.includes(horarioKey) ? 'selecionado' : ''}`} 
-                                                    onClick={() => handleHorarioClick(horarioKey)}
-                                                >
-                                                    {hora}
-                                                </button>
-                                            );
-                                        })}
-                                    </div>
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={perguntaAtual}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        transition={{ duration: 0.3 }}
+                        className="match-step-content"
+                    >
+                        {perguntaAtual < perguntasMatch.length ? (
+                            <>
+                                <h3 className="match-pergunta">{perguntasMatch[perguntaAtual].pergunta}</h3>
+                                <div className="match-respostas">
+                                    {perguntasMatch[perguntaAtual].respostas.map((resposta, index) => (
+                                        <motion.button 
+                                            key={index} 
+                                            whileHover={{ scale: 1.02, translateX: 5 }}
+                                            whileTap={{ scale: 0.98 }}
+                                            onClick={() => handleRespostaClick(resposta)}
+                                        >
+                                            {resposta.texto}
+                                        </motion.button>
+                                    ))}
                                 </div>
-                            ))
-                        ) : (
-                            <p className="sem-horarios-texto">Não foi possível carregar os horários. Pode pular esta etapa.</p>
-                        )}
-                    </div>
+                                <p className="match-progresso-texto">Passo {perguntaAtual + 1} de {totalEtapas}</p>
+                            </>
+                        ) : perguntaAtual === perguntasMatch.length ? (
+                            <>
+                                <h3 className="match-pergunta">Quais dias e horários você tem disponivel?</h3>
+                                <p className="match-subpergunta">Selecione todas as opções que se encaixam na sua rotina. Isto nos ajuda a encontrar uma especialista com agenda compatível.</p>
+                                
+                                <div className="dias-container">
+                                    {isLoadingHorarios ? (
+                                        <p className="sem-horarios-texto">A carregar horários disponíveis...</p>
+                                    ) : (
+                                        ['seg', 'ter', 'qua', 'qui', 'sex', 'sab', 'dom']
+                                            .filter(dia => horariosGerais[dia] && horariosGerais[dia].length > 0)
+                                            .map(dia => (
+                                                <div key={dia} className="dia-horarios-grupo">
+                                                    <h4>{formatarDia(dia)}</h4>
+                                                    <div className="horarios-grid">
+                                                        {horariosGerais[dia].sort().map(hora => {
+                                                            const horarioKey = `${dia}:${hora}`;
+                                                            return (
+                                                                <motion.button 
+                                                                    key={horarioKey} 
+                                                                    whileHover={{ scale: 1.05 }}
+                                                                    whileTap={{ scale: 0.95 }}
+                                                                    className={`botao-horario ${horariosSelecionados.includes(horarioKey) ? 'selecionado' : ''}`} 
+                                                                    onClick={() => handleHorarioClick(horarioKey)}
+                                                                >
+                                                                    {hora}
+                                                                </motion.button>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                </div>
+                                            ))
+                                    )}
+                                </div>
 
-                    <div className="botoes-navegacao-horarios">
-                        <button className="botao-proximo" onClick={irParaProximaEtapa}>Próxima Etapa</button>
-                        <button className="botao-pular" onClick={irParaProximaEtapa}>Pular esta etapa</button>
-                    </div>
-                    <p className="match-progresso-texto">Passo {perguntaAtual + 1} de {totalEtapas}</p>
-                </>
-            );
-        } else {
-            return (
-                <>
-                    <div className="match-progresso-barra"><div className="match-progresso-preenchimento" style={{ width: '100%' }}></div></div>
-                    <h3 className="match-pergunta">Descreva o seu momento com as suas palavras.</h3>
-                    <p className="match-subpergunta">A nossa Inteligência Artificial analisará a sua descrição para refinar a recomendação. (Opcional)</p>
-                    <textarea className="match-textarea" value={textoLivre} onChange={(e) => setTextoLivre(e.target.value)} placeholder="Ex: 'Tenho tido muitas crises de ansiedade no trabalho...'" rows="4"></textarea>
-                    <button className="botao-finalizar" onClick={finalizarMatch} disabled={isLoadingMatch}>
-                        {isLoadingMatch ? 'A analisar...' : 'Ver a minha especialista ideal'}
-                    </button>
-                    <p className="match-progresso-texto">Último passo</p>
-                </>
-            );
-        }
+                                <div className="botoes-navegacao-horarios">
+                                    <motion.button 
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        className="botao-proximo" 
+                                        onClick={irParaProximaEtapa}
+                                    >
+                                        Próxima Etapa
+                                    </motion.button>
+                                    <button className="botao-pular" onClick={irParaProximaEtapa}>Pular esta etapa</button>
+                                </div>
+                                <p className="match-progresso-texto">Passo {perguntaAtual + 1} de {totalEtapas}</p>
+                            </>
+                        ) : (
+                            <>
+                                <h3 className="match-pergunta">Descreva o seu momento com as suas palavras.</h3>
+                                <p className="match-subpergunta">A nossa Inteligência Artificial analisará a sua descrição para refinar a recomendação. (Opcional)</p>
+                                <textarea className="match-textarea" value={textoLivre} onChange={(e) => setTextoLivre(e.target.value)} placeholder="Ex: 'Tenho tido muitas crises de ansiedade no trabalho...'" rows="4"></textarea>
+                                <motion.button 
+                                    whileHover={!isLoadingMatch ? { scale: 1.05 } : {}}
+                                    whileTap={!isLoadingMatch ? { scale: 0.95 } : {}}
+                                    className="botao-finalizar" 
+                                    onClick={finalizarMatch} 
+                                    disabled={isLoadingMatch}
+                                >
+                                    {isLoadingMatch ? 'A analisar...' : 'Ver a minha especialista ideal'}
+                                </motion.button>
+                                <p className="match-progresso-texto">Último passo</p>
+                            </>
+                        )}
+                    </motion.div>
+                </AnimatePresence>
+            </div>
+        );
     };
 
     return (

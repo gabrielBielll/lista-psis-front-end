@@ -1,9 +1,11 @@
 // src/App.jsx
 
 import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Catalogo from './components/Catalogo.jsx';
 import QuestionarioMatch from './components/QuestionarioMatch.jsx';
 import CalendarIcon from './components/CalendarIcon.jsx';
+import PremiumBackground from './components/PremiumBackground.jsx';
 import { psicologasData } from './data.js';
 import logger from './utils/logger.js';
 
@@ -85,7 +87,7 @@ export default function App() {
                     behavior: 'smooth',
                     block: 'start'
                 });
-            }, 100);
+            }, 500); // Maior delay para acomodar a animação do match
         }
     }, [resultadoMatch]); 
 
@@ -132,23 +134,37 @@ export default function App() {
     const renderContent = () => {
         if (iniciarMatch) {
             return (
-                <QuestionarioMatch 
-                    onMatchComplete={handleMatchComplete} 
-                    horariosGerais={horariosGerais}
-                    psicologas={psicologasList}
-                    isLoadingHorarios={isLoadingHorarios}
-                />
+                <motion.div
+                    key="questionario"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.4 }}
+                >
+                    <QuestionarioMatch 
+                        onMatchComplete={handleMatchComplete} 
+                        horariosGerais={horariosGerais}
+                        psicologas={psicologasList}
+                        isLoadingHorarios={isLoadingHorarios}
+                    />
+                </motion.div>
             );
         }
 
         if (resultadoMatch.length > 0) {
             const matchedPsi = resultadoMatch[0];
-            // NOVO: Pega os horários apenas da psicóloga que deu match
             const horariosDaPsi = matchedPsi.horarios_disponiveis || {};
             const temHorariosDisponiveis = Object.values(horariosDaPsi).some(dias => dias.length > 0);
 
             return (
-                <div className="resultado-container" ref={resultadoRef}>
+                <motion.div 
+                    key="resultado"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
+                    className="resultado-container" 
+                    ref={resultadoRef}
+                >
                     <h2>✨ A sua especialista ideal</h2>
                     <p>{matchedPsi.mensagemResultado || `Baseado nas suas respostas, esta especialista é uma ótima combinação para si.`}</p>
                     <div key={matchedPsi.id} className="psi-card resultado-card">
@@ -162,7 +178,6 @@ export default function App() {
                         <div className="card-botoes">
                             <div className="selecao-horario-container">
                                 <label htmlFor="horario-select">Escolha um horário para iniciar:</label>
-                                {/* O dropdown agora usa a agenda da psicóloga específica */}
                                 <select 
                                     id="horario-select" 
                                     className="horario-select" 
@@ -186,43 +201,90 @@ export default function App() {
                             <button className="botao-perfil" onClick={resetApp}>Ver outras profissionais</button>
                         </div>
                     </div>
-                </div>
+                </motion.div>
             );
         }
 
-        return <Catalogo psicologas={psicologasList} isLoadingHorarios={isLoadingHorarios} />;
+        return (
+            <motion.div
+                key="catalogo"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4 }}
+            >
+                <Catalogo psicologas={psicologasList} isLoadingHorarios={isLoadingHorarios} />
+            </motion.div>
+        );
     }
 
     return (
-        <div className="AppContainer">
+        <>
+            <PremiumBackground />
+            <div className="AppContainer">
             {error && (
                 <div className="error-banner">
                     <strong>Ops! Ocorreu um problema.</strong> 
                     <p>Não foi possível carregar os horários disponíveis no momento. Pode continuar a navegar, mas a funcionalidade de agendamento pode estar limitada.</p>
                 </div>
             )}
-            <header className="app-header">
+            
+            <motion.header 
+                className="app-header"
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.6 }}
+            >
                 <h1>Encontre uma especialista ideal para você!</h1>
                 <p>Cuidar da sua saúde mental é um ato de amor-próprio. Estamos aqui para ajudar.</p>
-            </header>
-            {(iniciarMatch || resultadoMatch.length > 0) && (
-                <button onClick={resetApp} className="botao-home">
-                    ‹ Ver todas as profissionais
-                </button>
-            )}
-            {!iniciarMatch && (psicologasList.length > 0) && (
-                <div className="promo-match-container">
-                    <h2>Não sabe qual profissional escolher?</h2>
-                    <p>Responda a 7 perguntas rápidas e o nosso sistema inteligente encontra a especialista que mais combina com o seu momento e as suas preferências.</p>
-                    <button className="botao-iniciar-match" onClick={handleStartMatch}>
-                        ✨ Encontrar a minha especialista ideal
-                    </button>
-                </div>
-            )}
-            {renderContent()}
+            </motion.header>
+
+            <AnimatePresence>
+                {(iniciarMatch || resultadoMatch.length > 0) && (
+                    <motion.button 
+                        key="home-button"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -10 }}
+                        onClick={resetApp} 
+                        className="botao-home"
+                    >
+                        ‹ Ver todas as profissionais
+                    </motion.button>
+                )}
+            </AnimatePresence>
+
+            <AnimatePresence mode="wait">
+                {!iniciarMatch && resultadoMatch.length === 0 && (
+                    <motion.div 
+                        key="promo-banner"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        className="promo-match-container"
+                    >
+                        <h2>Não sabe qual profissional escolher?</h2>
+                        <p>Responda a 7 perguntas rápidas e o nosso sistema inteligente encontra a especialista que mais combina com o seu momento e as suas preferências.</p>
+                        <motion.button 
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="botao-iniciar-match" 
+                            onClick={handleStartMatch}
+                        >
+                            ✨ Encontrar a minha especialista ideal
+                        </motion.button>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            <AnimatePresence mode="wait">
+                {renderContent()}
+            </AnimatePresence>
+
             <footer className="app-footer">
                 <p>&copy; {new Date().getFullYear()} DeepSaúde. Todos os direitos reservados.</p>
             </footer>
         </div>
+        </>
     );
 }
