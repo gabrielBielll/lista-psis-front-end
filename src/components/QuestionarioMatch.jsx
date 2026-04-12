@@ -84,6 +84,17 @@ const QuestionarioMatch = ({ onMatchComplete, psicologas, horariosGerais, isLoad
         setHorariosSelecionados(prev => prev.includes(horarioKey) ? prev.filter(h => h !== horarioKey) : [...prev, horarioKey]);
     };
 
+    const toggleDiaInteiro = (dia) => {
+        const horariosDoDia = horariosGerais[dia].map(hora => `${dia}:${hora}`);
+        const todosSelecionados = horariosDoDia.every(h => horariosSelecionados.includes(h));
+        
+        if (todosSelecionados) {
+            setHorariosSelecionados(prev => prev.filter(h => !horariosDoDia.includes(h)));
+        } else {
+            setHorariosSelecionados(prev => [...new Set([...prev, ...horariosDoDia])]);
+        }
+    };
+
     const irParaProximaEtapa = () => {
         setPerguntaAtual(perguntaAtual + 1);
     };
@@ -235,6 +246,9 @@ const QuestionarioMatch = ({ onMatchComplete, psicologas, horariosGerais, isLoad
                             <>
                                 <h3 className="match-pergunta">Quais dias e horários você tem disponivel?</h3>
                                 <p className="match-subpergunta">Selecione todas as opções que se encaixam na sua rotina. Isto nos ajuda a encontrar uma especialista com agenda compatível.</p>
+                                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '0.5rem', marginTop: '-0.5rem' }}>
+                                    <button className="botao-pular" onClick={irParaProximaEtapa}>Pular esta etapa &rarr;</button>
+                                </div>
                                 
                                 <div className="dias-container">
                                     {isLoadingHorarios ? (
@@ -242,9 +256,20 @@ const QuestionarioMatch = ({ onMatchComplete, psicologas, horariosGerais, isLoad
                                     ) : (
                                         ['seg', 'ter', 'qua', 'qui', 'sex', 'sab', 'dom']
                                             .filter(dia => horariosGerais[dia] && horariosGerais[dia].length > 0)
-                                            .map(dia => (
+                                            .map(dia => {
+                                                const horariosDoDia = horariosGerais[dia].map(hora => `${dia}:${hora}`);
+                                                const todosSelecionados = horariosDoDia.every(h => horariosSelecionados.includes(h));
+                                                return (
                                                 <div key={dia} className="dia-horarios-grupo">
-                                                    <h4>{formatarDia(dia)}</h4>
+                                                    <div className="dia-header-wrapper">
+                                                        <h4>{formatarDia(dia)}</h4>
+                                                        <button 
+                                                            className="botao-marcar-todos" 
+                                                            onClick={(e) => { e.preventDefault(); toggleDiaInteiro(dia); }}
+                                                        >
+                                                            {todosSelecionados ? 'Desmarcar todos' : 'Marcar todos'}
+                                                        </button>
+                                                    </div>
                                                     <div className="horarios-grid">
                                                         {horariosGerais[dia].sort().map(hora => {
                                                             const horarioKey = `${dia}:${hora}`;
@@ -262,7 +287,8 @@ const QuestionarioMatch = ({ onMatchComplete, psicologas, horariosGerais, isLoad
                                                         })}
                                                     </div>
                                                 </div>
-                                            ))
+                                            );
+                                        })
                                     )}
                                 </div>
 
@@ -275,7 +301,6 @@ const QuestionarioMatch = ({ onMatchComplete, psicologas, horariosGerais, isLoad
                                     >
                                         Próxima Etapa
                                     </motion.button>
-                                    <button className="botao-pular" onClick={irParaProximaEtapa}>Pular esta etapa</button>
                                 </div>
                                 <p className="match-progresso-texto">Passo {perguntaAtual + 1} de {totalEtapas}</p>
                             </>
