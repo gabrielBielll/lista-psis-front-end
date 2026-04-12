@@ -304,14 +304,37 @@ button:active,
   text-align: left;
 }
 
+.dia-header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--cinza-borda);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
 .dia-horarios-grupo h4 {
   font-family: var(--font-serif);
   color: var(--marrom-texto);
-  border-bottom: 2px solid var(--cinza-borda);
-  padding-bottom: 0.5rem;
-  margin-top: 0;
-  margin-bottom: 1rem;
+  margin: 0;
   font-size: 1.2rem;
+}
+
+.botao-marcar-todos {
+  background: transparent;
+  border: 1px solid var(--verde-oliva);
+  color: var(--verde-oliva);
+  font-size: 0.8rem;
+  padding: 4px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.botao-marcar-todos:hover {
+  background-color: var(--verde-oliva);
+  color: var(--branco);
 }
 
 .horarios-grid {
